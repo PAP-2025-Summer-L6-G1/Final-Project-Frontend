@@ -12,11 +12,8 @@
   "dependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-<<<<<<< HEAD
-    "react-router-dom": "^7.7.1"
-=======
+    "react-router-dom": "^7.7.1",
     "vite-plugin-mkcert": "^1.17.8"
->>>>>>> 787b5ae2bdacfee7b73cdece699e79f757716f86
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
