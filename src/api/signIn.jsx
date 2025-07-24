@@ -1,4 +1,4 @@
-
+const hostURL = "http://localhost:3002";
 
 const apiSignup = hostURL+ "/signup";
 const apiLogin = hostURL+ "/login";
@@ -20,95 +20,78 @@ const postLogoutParams = {
   credentials: 'include'
 };
 
- async function signupUser(user) {
-    try {
-      const postSignupParamsWithBody = {
-        ...postSignupParams,
-        body: JSON.stringify(user)
-      };
+export async function signupUser(user, setLoggedInUser) {
+  try {
+    const postSignupParamsWithBody = {
+      ...postSignupParams,
+      body: JSON.stringify(user)
+    };
 
-      const response = await fetch(apiSignup, postSignupParamsWithBody);
-      if (response.status === 201) {
-        setLoggedInUser(user.username);
-        saveLocalAccountData(user.username);
+    const response = await fetch(apiSignup, postSignupParamsWithBody);
+    if (response.status === 201) {
+      setLoggedInUser(user.username);
+      saveLocalAccountData(user.username);
 
-        return true;
-      }
-    } catch (error) {
-      console.error(error);
+      return true;
     }
-
-    return false;
+  } catch (error) {
+    console.error(error);
   }
 
-  async function loginUser(user) {
-    try {
-      const postLoginParamsWithBody = {
-        ...postLoginParams,
-        body: JSON.stringify(user)
-      };
+  return false;
+}
 
-      const response = await fetch(apiLogin, postLoginParamsWithBody);
-      if (response.status === 200) {
-        setLoggedInUser(user.username);
-        saveLocalAccountData(user.username);
+export async function loginUser(user, setLoggedInUser) {
+  try {
+    const postLoginParamsWithBody = {
+      ...postLoginParams,
+      body: JSON.stringify(user)
+    };
 
-        return true;
-      }
-    } catch (error) {
-      console.error(error);
+    const response = await fetch(apiLogin, postLoginParamsWithBody);
+    if (response.status === 200) {
+      setLoggedInUser(user.username);
+      saveLocalAccountData(user.username);
+
+      return true;
     }
-
-    return false;
+  } catch (error) {
+    console.error(error);
   }
 
-  async function logoutUser() {
-    try {
-      const response = await fetch(apiLogout, postLogoutParams);
-      if (response.status === 200) {
-        setLoggedInUser("");
-        clearLocalAccountData();
+  return false;
+}
 
-        return true;
-      }
-    } catch (error) {
-      console.error(error);
+export async function logoutUser(setLoggedInUser) {
+  try {
+    const response = await fetch(apiLogout, postLogoutParams);
+    if (response.status === 200) {
+      setLoggedInUser("");
+      clearLocalAccountData();
+
+      return true;
     }
-
-    return false;
+  } catch (error) {
+    console.error(error);
   }
 
-  function loadLocalAccountData() {
-    const username = localStorage.getItem("username");
-    if (username !== null) {
-      setLoggedInUser(username);
-    }
+  return false;
+}
+
+export function loadLocalAccountData(setLoggedInUser) {
+  const username = localStorage.getItem("username");
+  if (username !== null) {
+    setLoggedInUser(username);
   }
+}
 
-  function saveLocalAccountData(username) {
-    localStorage.setItem("username", username);
-  }
+export function saveLocalAccountData(username) {
+  localStorage.setItem("username", username);
+}
 
-  function clearLocalAccountData() {
-    localStorage.removeItem("username");
-  }
+export function clearLocalAccountData() {
+  localStorage.removeItem("username");
+}
 
-  async function newMessage(message) {
-    try {
-      message.date = (new Date()).toISOString();
 
-      const postNewParamsWithBody = {
-        ...postNewParams,
-        body: JSON.stringify(message)
-      };
-
-      const response = await fetch(apiPostNew, postNewParamsWithBody);
-      if (response.status === 201) {
-        if (message.secret === isSecret) {
-          showMessages([message, ...messages]);  
-        }
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
+//export default {signupUser, loginUser, logoutUser, loadLocalAccountData, saveLocalAccountData, clearLocalAccountData}

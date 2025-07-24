@@ -1,6 +1,5 @@
 .navbar {
     background-color: darkgreen;
-    position: sticky;
     height: 50px;
     display: flex;
     align-items: center;
