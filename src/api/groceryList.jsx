@@ -54,9 +54,7 @@ async function newItem(item, items, setItems){ // [items, setItems] = useState()
   } catch(e) {
       console.error(e);
   }
-
-
-  //update ui
+  
 }
 
 // Just like isSecret, we will have a filter option to show items of a certain type
