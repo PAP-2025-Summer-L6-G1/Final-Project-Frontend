@@ -2,3 +2,24 @@ button {
     height: 100%;
     margin: 0 5px;
 }
+label {
+    display: block;
+}
+form {
+    padding: 2rem;
+}
+header {
+    background-color: white;
+    color: black;
+    text-align: center;
+}
+.close-modal {
+    height: 2rem;
+    float: right;
+    border: none;
+    background-color: black;
+
+}
+dialog {
+    position: relative;
+}
