@@ -112,3 +112,5 @@ const postLogoutParams = {
       console.error(error);
     }
   }
+
+  export default {signupUser, loginUser, logoutUser, loadLocalAccountData,saveLocalAccountData, clearLocalAccountData, newMessage}

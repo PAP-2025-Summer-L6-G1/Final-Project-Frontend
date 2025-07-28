@@ -26,35 +26,47 @@ const deleteOneParams = {
   credentials: 'include'
 };
 
-async function newItem(item, items, showItems){ // [items, showItems] = useState()...
+async function newItem(item, items, setItems){ // [items, setItems] = useState()...
   try {
 
       const postNewParamsWithBody = {
       ...postNewParams,
       body: JSON.stringify(item)
     };
+    const prev = items;
+    //Begin Fetch
+    fetch(apiAddItem, postNewParamsWithBody).then(response => {
+      //If add fails...
+      if(!response.ok){
+        //Reset items to previous
+        items = prev;
+        throw new Error("Add Item Failed!")
+      }
+      
+      return response.json()
+    }).then(() => {
+      //If add succeeds, add the item
+      setItems([item, ...items]);
+    });
 
-    const response = await fetch(apiAddItem, postNewParamsWithBody);
-
-    if (response.status === 201) {
-      showItems([item, ...items]);
-    }else{
-      console.error(`Failed to add item: ${response.status}`);
-    }
-
+    //Show the item (we don't know if add failed or not yet, show the user what they want)
+    setItems([item, ...items]);
   } catch(e) {
       console.error(e);
   }
+
+
+  //update ui
 }
 
 // Just like isSecret, we will have a filter option to show items of a certain type
 // Perhaps we have the Dairy section unopened...
-async function getItems(isVisible, showItems){ 
+async function getItems(isVisible, setItems){ 
   try{
       const response = await fetch(apiGetAll + isVisible, getAllParams)
       if (response.status === 200) {
       let receivedItems = await response.json();
-      showItems(receivedItems);
+      setItems(receivedItems);
     }
   } catch (error) {
     console.error(error);
@@ -62,7 +74,7 @@ async function getItems(isVisible, showItems){
 }
 
 //This update function will be used whenever quantity is updated by hand or by the decrement / increment
-async function updateQuantity(itemId, newQuantity, items, showItems){// [items, showItems] = useState()...
+async function updateQuantity(itemId, newQuantity, items, setItems){// [items, showItems] = useState()...
   try {
       //If the newQuantity is zero, delete it
       if(newQuantity > 0){
@@ -75,7 +87,7 @@ async function updateQuantity(itemId, newQuantity, items, showItems){// [items, 
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
         item.quantity = newQuantity;
-        showItems([...items]);
+        setItems([...items]);
       }
       }else {
         //If the newQuantity is zero, delete it
@@ -119,3 +131,4 @@ async function deleteItem(itemId, items, showItems) { // [items, showItems] = us
       console.error(error);
     }
   }
+
