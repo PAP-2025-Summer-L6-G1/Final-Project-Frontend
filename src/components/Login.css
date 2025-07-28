@@ -5,21 +5,36 @@ button {
 label {
     display: block;
 }
-form {
-    padding: 2rem;
-}
-header {
-    background-color: white;
-    color: black;
-    text-align: center;
+article {
+    form {
+        padding: 2rem;
+        text-align: center;
+        button:is([type=submit]) {
+            margin-top: 10px;
+            display: inline;
+        }
+    }
+    header {
+        text-align: center;
+    }
+
 }
 .close-modal {
-    height: 2rem;
     float: right;
-    border: none;
     background-color: black;
 
 }
 dialog {
     position: relative;
+    top: 60px;
+    bottom: 60px;
+    width: 400px;
+    border-radius: 20px;
+}
+dialog::backdrop { 
+    background-color: rgb(50 50 50 / 60%)
+}
+.auth-error-message {
+    color: red;
+    font-style: italic;
 }
