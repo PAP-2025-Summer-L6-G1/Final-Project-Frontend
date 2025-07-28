@@ -27,7 +27,6 @@ article {
 dialog {
     position: relative;
     top: 60px;
-    bottom: 60px;
     width: 400px;
     border-radius: 20px;
 }
