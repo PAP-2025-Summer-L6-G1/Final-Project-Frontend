@@ -6,9 +6,10 @@ import {Link} from "react-router-dom"
 export default function Navbar() {
     return (
         <header className="navbar">
-            <img src={logo} className="logo"/>
             <nav>
-                <Link to="/">Main Page</Link>
+                <Link to="/">
+                <img src={logo} className="logo"/>
+                </Link>
             </nav>
             <Accounts/>
         </header>
