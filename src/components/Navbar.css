@@ -1,0 +1,14 @@
+.navbar {
+    background-color: darkgreen;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 100%;
+    top: 0px;
+    padding: 0 1%;
+}
+.logo {
+    float: left;
+    flex-direction: row;
+}
