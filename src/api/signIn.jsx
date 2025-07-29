@@ -1,4 +1,4 @@
-const hostURL = "http://localhost:3002";
+const hostURL = "https://localhost:3002";
 
 const apiSignup = hostURL+ "/signup";
 const apiLogin = hostURL+ "/login";
