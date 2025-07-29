@@ -26,7 +26,7 @@ const deleteOneParams = {
   credentials: 'include'
 };
 
-async function newItem(item, items, setItems){ // [items, setItems] = useState()...
+export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
   try {
 
       const postNewParamsWithBody = {
@@ -54,12 +54,12 @@ async function newItem(item, items, setItems){ // [items, setItems] = useState()
   } catch(e) {
       console.error(e);
   }
-  
+
 }
 
 // Just like isSecret, we will have a filter option to show items of a certain type
 // Perhaps we have the Dairy section unopened...
-async function getItems(isVisible, setItems){ 
+export async function getItems(isVisible, setItems){ 
   try{
       const response = await fetch(apiGetAll + isVisible, getAllParams)
       if (response.status === 200) {
@@ -72,7 +72,7 @@ async function getItems(isVisible, setItems){
 }
 
 //This update function will be used whenever quantity is updated by hand or by the decrement / increment
-async function updateQuantity(itemId, newQuantity, items, setItems){// [items, showItems] = useState()...
+export async function updateQuantity(itemId, newQuantity, items, setItems){// [items, showItems] = useState()...
   try {
       //If the newQuantity is zero, delete it
       if(newQuantity > 0){
@@ -96,28 +96,49 @@ async function updateQuantity(itemId, newQuantity, items, setItems){// [items, s
   }
 }
 
-async function updateName(itemId, newName, items, showItems){// [items, showItems] = useState()...
+export async function updateName(itemId, newName, items, setItems){// [items, setItems] = useState()...
     try {
-        
         const response = await fetch(apiUpdateItem + itemId, {
             ...updateOneParams,
             body: JSON.stringify({
                 name: newName
             })
         });
+        const prev = items;
+
+        fetch(response => {
+
+        })
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
         item.name = newName;
-        showItems([...items]);
+        setItems([...items]);
       }
     } catch (error) {
       console.error(error);
     }
 }
 
-//UpdateCheckMark?
+export async function updateIsBought(itemId, newIsBought,items, setItems){// [items, setItems] = useState()...
+    try {
+        
+        const response = await fetch(apiUpdateItem + itemId, {
+            ...updateOneParams,
+            body: JSON.stringify({
+                isBought: newIsBought
+            })
+        });
+        if (response.status === 200) {
+        const item = items.find(item => item._id === itemId);
+        item.isBought = newIsBought;
+        setItems([...items]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+}
 
-async function deleteItem(itemId, items, showItems) { // [items, showItems] = useState()...
+export async function deleteItem(itemId, items, showItems) { // [items, showItems] = useState()...
     try {
       const response = await fetch(apiDeleteItem + itemId, deleteOneParams);
       if (response.status === 200) {
