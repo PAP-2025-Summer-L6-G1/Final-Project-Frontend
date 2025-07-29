@@ -1,14 +1,35 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './pages/App.jsx'
+import Home from './pages/Home.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
 
-const router = createBrowserRouter([{
+const router = createBrowserRouter([
+  {
   path: "/",
-  element: <App />,
-  }
+  element: <Home />,
+  },
+  {
+  path: "/inventory",
+  element: <Home />,
+  },
+  {
+  path: "/grocery",
+  element: <Home />,
+  },
+  {
+  path: "/health",
+  element: <Home />,
+  },
+  {
+  path: "/recipes",
+  element: <Home />,
+  },
+  {
+  path: "/budget",
+  element: <Home />,
+  },
 ])
 
 

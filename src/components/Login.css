@@ -7,7 +7,7 @@ label {
 }
 article {
     form {
-        padding: 2rem;
+        
         text-align: center;
         button:is([type=submit]) {
             margin-top: 10px;
@@ -25,6 +25,7 @@ article {
 
 }
 dialog {
+    padding: 2rem;
     position: relative;
     top: 60px;
     width: 400px;
