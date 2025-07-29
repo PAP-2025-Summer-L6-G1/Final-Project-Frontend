@@ -26,7 +26,7 @@ const deleteOneParams = {
   credentials: 'include'
 };
 
-export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
+export async function newItem(item, items, setItems){ // [items, setItems] = useState()... (Equivalent to messages and showMessages from lesson10)
   try {
 
       const postNewParamsWithBody = {
