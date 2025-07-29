@@ -5,11 +5,15 @@
 }
 .card {
     border: black solid;
+
     border-radius: 25px;
     padding: 10px;
     margin: 20px 2.5%;
     flex: 0.5 40%;
-    overflow-wrap: break-word;
+    h2 {
+        width: 70px;
+    }
+
 }
 .card-container {
     width: 100%;
