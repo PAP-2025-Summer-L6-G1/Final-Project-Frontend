@@ -12,3 +12,6 @@
     float: left;
     flex-direction: row;
 }
+a {
+    margin: 0 5px;
+}
