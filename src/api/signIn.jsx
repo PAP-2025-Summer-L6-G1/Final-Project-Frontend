@@ -1,4 +1,4 @@
-const hostURL = "http://localhost:3002";
+const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "https://localhost:3002";;
 
 const apiSignup = hostURL+ "/signup";
 const apiLogin = hostURL+ "/login";
