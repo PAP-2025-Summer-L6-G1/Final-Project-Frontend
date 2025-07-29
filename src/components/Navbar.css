@@ -1,17 +1,18 @@
 .navbar {
     background-color: darkgreen;
-    height: 50px;
+    height: fit-content;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex: 0 0 100%;
     top: 0px;
-    padding: 0 1%;
-}
-.logo {
-    float: left;
+    padding: 10px 1%;
     flex-direction: row;
 }
 a {
     margin: 0 5px;
+}
+nav {
+    display: flex;
+    align-items: center;
 }
