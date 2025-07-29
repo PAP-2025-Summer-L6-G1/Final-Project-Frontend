@@ -21,7 +21,7 @@ function Home() {
           <div className='card'>
               <img src=""></img>
               <Link to="/inventory"><h2>Inventory</h2></Link>
-              <p></p>
+              <p>Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing </p>
           </div>
           <div className='card'>
               <img src=""></img>
