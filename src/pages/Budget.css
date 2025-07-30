@@ -1,0 +1,10 @@
+.pieContainer {
+    width: 30%;
+}
+main > form {
+    border: black solid;
+    border-radius: 25px;
+    padding: 10px;
+    margin: 20px 2.5%;
+    width:50%
+}
