@@ -4,6 +4,7 @@ import './index.css'
 import Home from './pages/Home.jsx'
 import Storage from './pages/storagePage.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import Budget from './pages/budget.jsx'
 
 
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
   path: "/budget",
-  element: <Home />,
+  element: <Budget />,
   },
   {
     path: "/storage",
