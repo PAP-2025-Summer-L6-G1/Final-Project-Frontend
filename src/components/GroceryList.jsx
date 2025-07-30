@@ -7,11 +7,10 @@ import { useRef } from "react";
 export default function GroceryList() {
     const groceryContext = useContext(GroceryContext);
     const accountContext = useContext(AccountContext);
-
-    const items = groceryContext.items;
+    
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState(1);
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("dairy");
     const [isBought, setIsBought] = useState(false);
 
     async function handleAddItem(event) {
@@ -21,8 +20,9 @@ export default function GroceryList() {
             name: name, 
             quantity: quantity,
             category: category,
-            isBought: isBought
-        }, items, groceryContext.setItems);
+            isBought: isBought,
+            storageType: "list"
+        }, groceryContext.items, groceryContext.setItems);
 
         if (success) {
             setName("");
@@ -30,7 +30,20 @@ export default function GroceryList() {
             setCategory("");
             setIsBought(false);
         } 
+
+        await groceryContext.getItems(accountContext.loggedInUser, groceryContext.setItems);
     }
+
+    async function sendAllBoughtToBag() {
+        const checkedItem = groceryContext.items.filter((item) => item.storageType === "list" && item.isBought)
+
+        for (let item of checkedItem) {
+            await groceryContext.updateStorageType(item._id, "bag", groceryContext.items, groceryContext.setItems);
+        }
+
+    }
+    
+
     return (
         <div className="grocery-list">
             <h2> Grocery list </h2>
@@ -65,12 +78,12 @@ export default function GroceryList() {
                 </select>
                 <button type="submit">Add Item</button>
                 <ul>
-                    {items.map((item) => (
-                        <li key={item._id}>
+                    {groceryContext.items.filter((item) => item.storageType === "list").map((item, index) => (
+                        <li key={index}>
                             <input
                                 type="checkbox"
                                 checked={item.isBought}
-                                onChange={() => groceryContext.updateIsBought(item._id, !item.isBought, items, groceryContext.setItems)}
+                                onChange={() => groceryContext.updateIsBought(item._id, !item.isBought, groceryContext.items, groceryContext.setItems)}
                             />
                             Name: {item.name}, 
                             Quantity: {item.quantity}, 
@@ -79,6 +92,7 @@ export default function GroceryList() {
                         </li>
                     ))}
                 </ul>
+                <button type="button" onClick={sendAllBoughtToBag}>Send bought to bag</button>
             </form>
         </div>
     )

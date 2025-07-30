@@ -8,6 +8,7 @@ const defaultValues = {
   updateQuantity: null,
   updateName: null,
   updateIsBought: null,
+  updateStorageType: null,
   deleteItem: null
 };
 

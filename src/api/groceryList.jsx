@@ -26,6 +26,37 @@ const deleteOneParams = {
   credentials: 'include'
 };
 
+// export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
+//   try {
+
+//       const postNewParamsWithBody = {
+//       ...postNewParams,
+//       body: JSON.stringify(item)
+//     };
+//     const prev = items;
+//     //Begin Fetch
+//     fetch(apiAddItem, postNewParamsWithBody).then(response => {
+//       //If add fails...
+//       if(!response.ok){
+//         //Reset items to previous
+//         items = prev;
+//         throw new Error("Add Item Failed!")
+//       }
+      
+//       return response.json()
+//     }).then(() => {
+//       //If add succeeds, add the item
+//       setItems([item, ...items]);
+//     });
+
+//     //Show the item (we don't know if add failed or not yet, show the user what they want)
+//     setItems([item, ...items]);
+//   } catch(e) {
+//       console.error(e);
+//   }
+
+// }
+
 export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
   try {
 
@@ -33,35 +64,24 @@ export async function newItem(item, items, setItems){ // [items, setItems] = use
       ...postNewParams,
       body: JSON.stringify(item)
     };
-    const prev = items;
-    //Begin Fetch
-    fetch(apiAddItem, postNewParamsWithBody).then(response => {
-      //If add fails...
-      if(!response.ok){
-        //Reset items to previous
-        items = prev;
-        throw new Error("Add Item Failed!")
-      }
-      
-      return response.json()
-    }).then(() => {
-      //If add succeeds, add the item
-      setItems([item, ...items]);
-    });
 
-    //Show the item (we don't know if add failed or not yet, show the user what they want)
+    const response = await fetch(apiAddItem, postNewParamsWithBody);
+    if (!response.ok) {
+      throw new Error("Add Item Failed!")
+    }
+
     setItems([item, ...items]);
-  } catch(e) {
-      console.error(e);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
   }
-
 }
 
-// Just like isSecret, we will have a filter option to show items of a certain type
-// Perhaps we have the Dairy section unopened...
-export async function getItems(isVisible, setItems){ 
+// get all items from certain user via the ownerId
+export async function getItems(ownerId, setItems){ 
   try{
-      const response = await fetch(apiGetAll + isVisible, getAllParams)
+      const response = await fetch(apiGetAll + ownerId, getAllParams)
       if (response.status === 200) {
       let receivedItems = await response.json();
       setItems(receivedItems);
@@ -131,6 +151,25 @@ export async function updateIsBought(itemId, newIsBought,items, setItems){// [it
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
         item.isBought = newIsBought;
+        setItems([...items]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+export async function updateStorageType(itemId, newStorageType, items, setItems) {
+  try {
+        
+        const response = await fetch(apiUpdateItem + itemId, {
+            ...updateOneParams,
+            body: JSON.stringify({
+                storageType: newStorageType
+            })
+        });
+        if (response.status === 200) {
+        const item = items.find(item => item._id === itemId);
+        item.storageType = newStorageType;
         setItems([...items]);
       }
     } catch (error) {
