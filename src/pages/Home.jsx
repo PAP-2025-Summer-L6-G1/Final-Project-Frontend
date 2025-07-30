@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './Home.css'
 import Navbar from '../components/Navbar.jsx'
 import AccountContext from '../contexts/AccountContext.jsx'
-import {signupUser, loginUser, logoutUser, loadLocalAccountData, saveLocalAccountData, clearLocalAccountData} from '../api/signIn.jsx'
+import {signupUser, loginUser, logoutUser, loadLocalAccountData} from '../api/signIn.jsx'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 function Home() {
