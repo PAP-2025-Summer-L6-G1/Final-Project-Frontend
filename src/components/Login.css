@@ -1,0 +1,39 @@
+button {
+    height: 100%;
+    margin: 0 5px;
+}
+label {
+    display: block;
+}
+article {
+    form {
+        padding: 2rem;
+        text-align: center;
+        button:is([type=submit]) {
+            margin-top: 10px;
+            display: inline;
+        }
+    }
+    header {
+        text-align: center;
+    }
+
+}
+.close-modal {
+    float: right;
+    background-color: black;
+
+}
+dialog {
+    position: relative;
+    top: 60px;
+    width: 400px;
+    border-radius: 20px;
+}
+dialog::backdrop { 
+    background-color: rgb(50 50 50 / 60%)
+}
+.auth-error-message {
+    color: red;
+    font-style: italic;
+}
