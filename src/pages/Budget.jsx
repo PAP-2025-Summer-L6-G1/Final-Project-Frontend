@@ -38,7 +38,7 @@ export default function Budget() {
                 datasets: [{
                     label: "$",
                     data: [],
-                    backgroundColor: ["Red", "Blue", "Green"]
+
                 }]
             }
             let itemsData = {
@@ -46,7 +46,7 @@ export default function Budget() {
                 datasets: [{
                     label: "$",
                     data: [],
-                    backgroundColor: ["Red", "Blue", "Green"]
+
                 }]
             }
             let categories = {};
@@ -64,56 +64,63 @@ export default function Budget() {
                 categoriesData.labels.push(category[0])
                 categoriesData.datasets[0].data.push(category[1])
             }
-            
-            Chart.getChart(categoriesCanvas.current)?.destroy(); //https://www.chartjs.org/docs/latest/charts/doughnut.html
+
+            Chart.getChart(categoriesCanvas.current)?.destroy(); // make chart for categories
             const categoriesChart = new Chart(categoriesCanvas.current,
                 {
                     type: 'doughnut',
                     data: categoriesData,
-            }
+                }
             );
-            Chart.getChart(itemsCanvas.current)?.destroy(); //https://www.chartjs.org/docs/latest/charts/doughnut.html
+            Chart.getChart(itemsCanvas.current)?.destroy(); //make chart for items
             const itemsChart = new Chart(itemsCanvas.current,
                 {
                     type: 'doughnut',
                     data: itemsData,
-            }
-        );
-        console.log(itemsData)
-        console.log(categoriesData)
-    }
-    makeCharts();
+                }
+            );
+
+        }
+        makeCharts();
     }, []);
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
             <Navbar />
         </AccountContext.Provider>
         <main>
-            <div className="pieContainer">
-                <h2>Price by Category</h2>
-                <canvas className="categories-chart"
-                    ref={categoriesCanvas}
-                >
-                    The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
-                </canvas>
-            </div>
-            <div className="pieContainer">
-                <h2>Price by Item</h2>
-                <canvas className="items-chart"
-                    ref={itemsCanvas}
+            <div className="gridContainer">
+                <div className="pieContainer cell1">
+                    <h2>Price by Category</h2>
+                    <canvas className="categories-chart"
+                        ref={categoriesCanvas}
                     >
-                    The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
-                </canvas>
-                    </div>
-            <form onSubmit={handleFormSubmit}>
-                <label htmlFor="name">Item name:</label>
-                <input type="text" id="name" />
-                <label htmlFor="price">Price:</label>
-                <input type="number" id="price" />
-                <label htmlFor="category">Category</label>
-                <input type="text" id="category" />
-                <button type="submit">Submit</button>
-            </form>
+                        The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
+                    </canvas>
+                </div>
+                <div className="pieContainer cell2">
+                    <h2>Price by Item</h2>
+                    <canvas className="items-chart"
+                        ref={itemsCanvas}
+                    >
+                        The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
+                    </canvas>
+                </div>
+                <form onSubmit={handleFormSubmit} id="budgetForm">
+                    <label htmlFor="name">Item name:</label>
+                    <input type="text" id="name" />
+                    <label htmlFor="price">Price:</label>
+                    <input type="number" id="price" />
+                    <label htmlFor="category">Category</label>
+                    <select id="category">
+                        <option value="Food">Food</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Transportation">Transportation</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
         </main>
         <script>
 
