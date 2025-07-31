@@ -1,10 +1,31 @@
 .pieContainer {
-    width: 30%;
+    border: solid black;
+    .cell1 {
+        grid-column: 1 / 2;
+        grid-row: 1 / 2
+    }
+    .cell2 {
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+    }
 }
-main > form {
+#budgetForm {
     border: black solid;
     border-radius: 25px;
-    padding: 10px;
-    margin: 20px 2.5%;
-    width:50%
+    padding: 1em;
+    margin: 20px 0;
+    width: fit-content;
+    height: fit-content;
+
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    button {
+        height:fit-content;
+    }
+}
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 2em;
 }
