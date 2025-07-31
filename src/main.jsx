@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './pages/App.jsx'
-import Storage from './pages/storage.jsx'
+import Storage from './pages/storagePage.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
 
