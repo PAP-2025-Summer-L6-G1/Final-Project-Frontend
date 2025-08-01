@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard.jsx'
 
 function Recipe() {
-    test = [
+    let test = [
         {
             "id": 715415,
             "image": "https://img.spoonacular.com/recipes/715415-312x231.jpg",
@@ -57,25 +57,52 @@ function Recipe() {
             "spoonacularSourceUrl": "https://spoonacular.com/red-lentil-soup-with-chicken-and-turnips-715415"
         }
     ]
+    
     const [Recipes, SetRecipes] = useState(test);
     const [RecipeSearch, SetRecipeSearch] = useState("");
-    useEffect(()=>{
+    
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const onSearchSubmit = (event)=> {
+        var raw = JSON.stringify({
+        "query": RecipeSearch,
+        "ingreds": [
+            "cheese"
+        ]
+        });
+    
+        var requestOptions = {
+        method: 'POST',
+        body: raw,
+        headers: myHeaders,
+        redirect: 'follow'
+        };
+        
+        event.preventDefault();
         console.log(RecipeSearch);
-    }, [RecipeSearch])
+        fetch("https://localhost:3002/recipe/search", requestOptions)
+        .then(response => response.json())
+        .then(result => SetRecipes(result.results))
+        .catch(error => console.log('error', error));
+    }
 
     return (
         <>
             <main>
-                <input type='text' id='searchQuery' placeholder='Search recipe' value={RecipeSearch} onChange={(event)=>{
-                    SetRecipeSearch(event.target.value);
-                }}></input>
+                <form onSubmit={onSearchSubmit}>
+                    <input type='text' placeholder='Search recipe' value={RecipeSearch} onChange={(event)=>{
+                        SetRecipeSearch(event.target.value);
+                    }}></input>
+                    <button type='submit'>Search</button>
+                </form>
+
                 <Link to="/recipe/saved-recipes"><h2>Saved recipes</h2></Link>
 
                 <input type='text' id='filterIngreds' placeholder='Filter by ingredient'></input>
 
-                <div className='recipe-container'>
-                    {test.map((recipe)=>{ return <RecipeCard title={recipe.title} servings={recipe.servings}/> })}
-                </div>
+                {/*setRecipes calls a rerender which calls .map again*/}
+                {Recipes.map((recipe)=>{ return <RecipeCard key={recipe.id} image={recipe.image} title={recipe.title} servings={recipe.servings}/> })}
 
             </main>
         </>

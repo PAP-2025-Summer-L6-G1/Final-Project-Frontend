@@ -4,6 +4,7 @@ import './index.css'
 import Home from './pages/Home.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import Budget from './pages/budget.jsx'
+import Recipe from './pages/Recipe.jsx'
 
 
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
   path: "/recipes",
-  element: <Home />,
+  element: <Recipe />,
   },
   {
   path: "/budget",
