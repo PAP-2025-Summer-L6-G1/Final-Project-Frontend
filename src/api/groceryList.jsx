@@ -1,4 +1,4 @@
-const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-vincently-api.onrender.com" : "https://localhost:3002";
+const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "https://localhost:3002";
 
 const apiAddItem = hostURL+ "/grocery";
 const apiGetAll = hostURL+ "/grocery/";
@@ -109,7 +109,7 @@ export async function updateQuantity(itemId, newQuantity, items, setItems){// [i
       }
       }else {
         //If the newQuantity is zero, delete it
-        deleteItem(itemId)
+        deleteItem(itemId, items, setItems)
       }
   } catch (error) {
     console.error(error);

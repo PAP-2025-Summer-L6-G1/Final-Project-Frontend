@@ -1,0 +1,72 @@
+.grocery-item-container {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    padding: 8px 16px;
+    background-color: white;
+    border: 1px solid darkgrey;
+    margin-bottom: 8px;
+}
+
+.item-container-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.item-container-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.menu-container {
+    position: relative;
+}
+
+.menu-button {
+    background: transparent;
+    color: black;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-style: bold;
+}
+
+.menu-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 20px;
+    top: 0;
+    background-color: white;
+    border: 1px solid whitesmoke;
+    z-index: 50;
+    padding: 4px 0;
+}
+
+.menu-dropdown button {
+    background: none;
+    color: black;
+    border: none;
+    width: 90%;
+    cursor: pointer;
+    text-align: left;
+    padding: 4px 12px;
+}
+
+.menu-dropdown button:hover {
+    background-color: lightgray;
+}
+
+.quantity-button {
+    color:black;
+    background-color: whitesmoke;
+}
+
+.item-quantity {
+    display: inline-block;
+    text-align: center;
+    width: 40px;
+}
+
