@@ -9,6 +9,23 @@ import { addBudgetItem, getBudgetItems } from "../api/budget.jsx";
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController, Title);
 
+
+let categoriesData = {
+    labels: [],
+    datasets: [{
+        label: "$",
+        data: [],
+        backgroundColor: ["red", "blue", "green"]
+    }]
+}
+let itemsData = {
+    labels: [],
+    datasets: [{
+        label: "$",
+        data: [],
+        backgroundColor: ["red", "blue", "green"]
+    }]
+}
 export default function Budget() {
     const [loggedInUser, setLoggedInUser] = useState(""); // login code
     useEffect(() => {
@@ -17,23 +34,6 @@ export default function Budget() {
 
     const [counter, setCounter] = useState(0); // increase to trigger an update
 
-    let categoriesData = {
-        labels: [],
-        datasets: [{
-            label: "$",
-            data: [],
-            backgroundColor: ["red", "blue", "green"]
-
-        }]
-    }
-    let itemsData = {
-        labels: [],
-        datasets: [{
-            label: "$",
-            data: [],
-            backgroundColor: ["red", "blue", "green"]
-        }]
-    }
     const categoriesCanvas = useRef("") //maybe add reduced motion options?
     const itemsCanvas = useRef("")
 
@@ -53,13 +53,18 @@ export default function Budget() {
         }
     }
 
-    function addItemsToChartData(items) {
+    function addItemsToChartData(items, clearData=false) {
+        if (clearData == true) {
+            itemsData.datasets[0].data
+            categoriesData.datasets[0].data = []
+            itemsData.labels = []
+            categoriesData.labels = [] // empty out the data and labels
+
+        }
         let categories = {};
         for (let item of items) {
-            if (itemsData.labels.indexOf(item.name) == -1) { // if there is no item with the given name, add it to the data
-                itemsData.labels.push(item.name)
-                itemsData.datasets[0].data.push(item.price) // set itemDatapoints to itemDatapoints with item.price at the end 
-            }
+            itemsData.labels.push(item.name)
+            itemsData.datasets[0].data.push(item.price) // set itemDatapoints to itemDatapoints with item.price at the end 
 
             if (!categories[item.category]) { // if the category is not already in categories, create it and set the category's value to the item price
                 categories[item.category] = item.price;
@@ -81,20 +86,14 @@ export default function Budget() {
                 categoriesData.datasets[0].data[indexOfCategory] += category[1]
             }
         }
-        setCounter(prevCount => prevCount + 1)
+        setCounter(prevCount => prevCount + 1) // only used to make the page update
     }
 
 
     async function getItemsAndAddToData() {
         try {// get the budget items from the current user and send them to the addItemsToChartData method
-            const items = await getBudgetItems(); // an array of objects
-
-            itemsData.datasets[0].data
-            categoriesData.datasets[0].data = []
-            itemsData.labels = []
-            categoriesData.labels = [] // empty out the data
-
-            addItemsToChartData(items);
+            const items = await getBudgetItems(); // an array of objects            
+            addItemsToChartData(items, true);
         }
         catch (error) {
             console.error(error);
@@ -112,6 +111,14 @@ export default function Budget() {
                         title: {
                             display: true,
                             text: "Price by Category"
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    return `\$${context.parsed}`
+
+                                }
+                            }
                         }
                     }
                 }
@@ -129,6 +136,17 @@ export default function Budget() {
                         title: {
                             display: true,
                             text: "Price by Item"
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    return `\$${context.parsed}`
+
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
                         }
                     }
                 }
@@ -147,7 +165,6 @@ export default function Budget() {
     useEffect(() => {
         Chart.getChart(categoriesCanvas.current).update()
         Chart.getChart(itemsCanvas.current).update()
-        console.log("actual: ", itemsData)
     }, [counter])
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
@@ -173,7 +190,7 @@ export default function Budget() {
                     <label htmlFor="name">Item name:</label>
                     <input type="text" id="name" />
                     <label htmlFor="price">Price:</label>
-                    <input type="number" id="price" />
+                    <input type="number" id="price" step=".01" min="0" inputMode="decimal"/>
                     <label htmlFor="category">Category</label>
                     <select id="category" required>
                         <option value="Entertainment">Entertainment</option>
@@ -185,7 +202,15 @@ export default function Budget() {
                     <button type="submit">Submit</button>
                 </form>
             </div>
-            <button onClick={() => setCounter(prevCount => prevCount + 1)}></button>
+            <button onClick={() => {
+                addItemsToChartData([{
+                    ownerId: localStorage.getItem("userId"),
+                    name: "Test",
+                    price: 10,
+                    date: new Date(),
+                    category: "Transportation"
+                }])
+            }}></button>
         </main>
         <script>
 
