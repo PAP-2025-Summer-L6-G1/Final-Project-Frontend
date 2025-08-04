@@ -19,27 +19,23 @@ function Home() {
         <div className='card-container'>
 
           <div className='card'>
-              <img src=""></img>
               <Link to="/inventory"><h2>Inventory</h2></Link>
               <p>Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing </p>
           </div>
           <div className='card'>
-              <img src=""></img>
               <Link to="/grocery"><h2>Grocery List</h2></Link>
               <p></p>
           </div>
           <div className='card'>
-              <img src=""></img>
               <Link to="/health"><h2>Health</h2></Link>
               <p></p>
           </div>
           <div className='card'>
-              <img src=""></img>
               <Link to="/recipes"><h2>Recipes</h2></Link>
               <p></p>
           </div>
           <div className='card'>
-              <img src=""></img>
+
               <Link to="/budget"><h2>Budget Tracker</h2></Link>
               <p></p>
           </div>

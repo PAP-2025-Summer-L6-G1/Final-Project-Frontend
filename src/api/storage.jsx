@@ -1,9 +1,9 @@
 const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "https://localhost:3002";
 
 //No adding items in storage
-const apiGetAll = hostURL+ "/storage/";
-const apiUpdateItem = hostURL+ "/storage/";
-const apiDeleteItem = hostURL+ "/storage/";
+const apiGetAll = hostURL+ "/inventory/";
+const apiUpdateItem = hostURL+ "/inventory/";
+const apiDeleteItem = hostURL+ "/inventory/";
 
 //These will help us define our Params for our CRUD operations.
 

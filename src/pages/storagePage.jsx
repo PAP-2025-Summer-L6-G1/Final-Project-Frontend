@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar.jsx'
 import StorageContext from '../contexts/StorageContext.jsx'
 import {getItems} from '../api/storage.jsx'
-//import StorageItemsAccordion from '../components/StorageItemsAccordion.jsx'
+import StorageItemsAccordion from '../components/StorageItemsAccordion.jsx'
 
 function Storage(props) {
   const [items, setItems] = useState([]); 
   const [itemsByCategory, setItemsByCategory] = useState({});
   const [isVisible, setIsVisible] = useState(new Set());
-  const [currentStorage, setCurrentStorage] = useState("");
+  const [currentStorage, setCurrentStorage] = useState("bag");
   
   // Toggle visibility category, make sure to re-render after change
 function toggleVisibility(type) {
@@ -31,10 +31,15 @@ useEffect(() => {
   const groups = {}
   //Go through each item and add it to the correct group
   for (const item of items) {
-    if (!groups[item.storageType]) {//If groups doesn't exist in groups, add it
-      groups[item.storageType] = []
+
+    // Only include items with matching storageType
+    console.log(item.storageType, currentStorage)
+    if (item.storageType !== currentStorage) continue;
+
+    if (!groups[item.category]) {//If groups doesn't exist in groups, add it
+      groups[item.category] = []
     }
-    groups[item.storageType].push(item)//Don't forget to add item to new groups
+    groups[item.category].push(item)//Don't forget to add item to new groups
   }
   setItemsByCategory(groups)
      // Use the getItems to retrieve items for the items state
@@ -44,9 +49,7 @@ useEffect(() => {
     <StorageContext.Provider value={{items, getItems, isVisible, currentStorage}}>
         <Navbar />
         <h1>Storage</h1>
-        {items.map((item) => (
-          <div key={item._id}>{item.name}</div>
-        ))}
+        <StorageItemsAccordion itemsByCategory={itemsByCategory}/>
     </StorageContext.Provider>
   )
 }

@@ -1,0 +1,106 @@
+.accordion-parent {
+  background-color: #6b8c8e; /* match the overall teal page background */
+  padding: 1rem;
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.accordion {
+  background-color: #fff;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 5px 15px 5px 5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.accordion .toggle {
+  background-color: #f0e9c3;
+  border: none;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.accordion.toggled .toggle {
+  background-color: #f0e9c3;
+}
+
+.accordion .content-parent {
+  padding: 10px 15px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.accordion .item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fdfdfd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.item-name {
+  font-weight: 500;
+}
+
+.item-expiry {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantity-controls button {
+  background-color: #ccc;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.quantity-controls input {
+  width: 30px;
+  text-align: center;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.delete-button {
+  background-color: #f99;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.item-checkbox {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: gray; /* gets overridden dynamically via inline style */
+}
+
