@@ -76,7 +76,7 @@ export default function Budget() {
                 setCategoriesDatapoints(prevDatapoints => [...prevDatapoints, category[1]]) // set categoriesDatapoints to itemDatapoints with the at the end 
             }
             else {
-                setCategoriesDatapoints(categoriesDatapoints.map((index) => index == indexOfCategory ? categories[1] : categoriesDatapoints[index]))
+                setCategoriesDatapoints(categoriesDatapoints.map((element, index) => index == indexOfCategory ? (categories[1] + categoriesDatapoints[index]) : (categoriesDatapoints[index])))
             }
         }
     }
@@ -84,9 +84,13 @@ export default function Budget() {
 
     async function getItemsAndAddToData() {
         try {// get the budget items from the current user and send them to the addItemsToChartData method
-            const items = await getBudgetItems();
+            const items = await getBudgetItems(); // an array of objects
+            
             setItemsDatapoints([])
             setCategoriesDatapoints([])
+            itemsData.labels = []
+            categoriesData.labels = [] // empty out the data
+
             addItemsToChartData(items);
         }
         catch (error) {
@@ -140,9 +144,9 @@ export default function Budget() {
     useEffect(() => {
         categoriesData.datasets.data = categoriesDatapoints
         itemsData.datasets.data = itemsDatapoints
-        Chart.getChart(categoriesCanvas.current)?.update()
-        Chart.getChart(itemsCanvas.current)?.update()
-        console.log(itemsData)
+        Chart.getChart(categoriesCanvas.current).update()
+        Chart.getChart(itemsCanvas.current).update()
+        console.log("actual: ", itemsData)
     }, [categoriesDatapoints, itemsDatapoints])
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
