@@ -35,3 +35,15 @@ export async function getItems(setItems, type){
     console.error(error);
   }
 }
+
+export async function Items(setItems, type){ 
+  try{
+      const response = await fetch(apiGetAll, getAllParams)
+      if (response.status === 200) {
+      let receivedItems = await response.json();
+      setItems(receivedItems);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}

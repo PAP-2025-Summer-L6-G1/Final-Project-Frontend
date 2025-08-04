@@ -3,23 +3,28 @@ import Navbar from '../components/Navbar.jsx'
 import StorageContext from '../contexts/StorageContext.jsx'
 import {getItems} from '../api/storage.jsx'
 import StorageItemsAccordion from '../components/StorageItemsAccordion.jsx'
+import {signupUser, loginUser, logoutUser, loadLocalAccountData} from '../api/signIn.jsx'
+import AccountContext from '../contexts/AccountContext.jsx'
 
 function Storage(props) {
   const [items, setItems] = useState([]); 
   const [itemsByCategory, setItemsByCategory] = useState({});
-  const [isVisible, setIsVisible] = useState(new Set());
+  const [loggedInUser, setLoggedInUser] = useState("");
   const [currentStorage, setCurrentStorage] = useState("bag");
-  
-  // Toggle visibility category, make sure to re-render after change
-function toggleVisibility(type) {
-  const newSet = new Set(isVisible); // clone
-  if (newSet.has(type)) {
-    newSet.delete(type);
-  } else {
-    newSet.add(type);
-  }
-  setIsVisible(newSet); // New reference will allow react to re-render
-}
+ 
+
+  useEffect(() => {
+    loadLocalAccountData(setLoggedInUser);
+  }, [])
+
+  //get item of current login  user 
+  useEffect(() => {
+    if (loggedInUser !== "") {
+        getItems(loggedInUser, setItems);
+    } else {
+        setItems([])
+    }
+  }, [loggedInUser])
 
 useEffect(() => {
     getItems(setItems, currentStorage); // Use the getItems to retrieve items for the items state
@@ -46,11 +51,13 @@ useEffect(() => {
 }, [items]);
 
   return (
-    <StorageContext.Provider value={{items, getItems, isVisible, currentStorage}}>
-        <Navbar />
-        <h1>Storage</h1>
-        <StorageItemsAccordion itemsByCategory={itemsByCategory}/>
-    </StorageContext.Provider>
+    <AccountContext.Provider value={{loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser}}>
+      <StorageContext.Provider value={{items, getItems, currentStorage}}>
+          <Navbar />
+          <h1>Storage</h1>
+          <StorageItemsAccordion itemsByCategory={itemsByCategory}/>
+      </StorageContext.Provider>
+    </AccountContext.Provider>
   )
 }
 
