@@ -15,9 +15,8 @@ export default function Budget() {
         loadLocalAccountData(setLoggedInUser);
     }, [])
 
-    const [categoriesDatapoints, setCategoriesDatapoints] = useState([])
-    const [itemsDatapoints, setItemsDatapoints] = useState([])
-    
+    const [counter, setCounter] = useState(0); // increase to trigger an update
+
     let categoriesData = {
         labels: [],
         datasets: [{
@@ -59,7 +58,7 @@ export default function Budget() {
         for (let item of items) {
             if (itemsData.labels.indexOf(item.name) == -1) { // if there is no item with the given name, add it to the data
                 itemsData.labels.push(item.name)
-                setItemsDatapoints(prevDatapoints => [...prevDatapoints, item.price]) // set itemDatapoints to itemDatapoints with item.price at the end 
+                itemsData.datasets[0].data.push(item.price) // set itemDatapoints to itemDatapoints with item.price at the end 
             }
 
             if (!categories[item.category]) { // if the category is not already in categories, create it and set the category's value to the item price
@@ -68,26 +67,30 @@ export default function Budget() {
             else { // otherwise, add the item's price to the category's value
                 categories[item.category] += item.price;
             }
+
+
+            // set background color depending on category here, because category is accessible from here
         }
         for (let category of Object.entries(categories)) {
             let indexOfCategory = categoriesData.labels.indexOf(category[0]);
             if (indexOfCategory == -1) { // if the category does not already exist in the labels, push it 
                 categoriesData.labels.push(category[0])
-                setCategoriesDatapoints(prevDatapoints => [...prevDatapoints, category[1]]) // set categoriesDatapoints to itemDatapoints with the at the end 
+                categoriesData.datasets[0].data.push(category[1]) // set categoriesDatapoints to itemDatapoints with the at the end 
             }
             else {
-                setCategoriesDatapoints(categoriesDatapoints.map((element, index) => index == indexOfCategory ? (categories[1] + categoriesDatapoints[index]) : (categoriesDatapoints[index])))
+                categoriesData.datasets[0].data[indexOfCategory] += category[1]
             }
         }
+        setCounter(prevCount => prevCount + 1)
     }
 
 
     async function getItemsAndAddToData() {
         try {// get the budget items from the current user and send them to the addItemsToChartData method
             const items = await getBudgetItems(); // an array of objects
-            
-            setItemsDatapoints([])
-            setCategoriesDatapoints([])
+
+            itemsData.datasets[0].data
+            categoriesData.datasets[0].data = []
             itemsData.labels = []
             categoriesData.labels = [] // empty out the data
 
@@ -134,20 +137,18 @@ export default function Budget() {
     }
 
     useEffect(() => {
+        makeCharts()
         async function asyncWrapper() {
             await getItemsAndAddToData()
         }
         asyncWrapper()
 
     }, []);
-    useEffect(makeCharts, [])
     useEffect(() => {
-        categoriesData.datasets.data = categoriesDatapoints
-        itemsData.datasets.data = itemsDatapoints
         Chart.getChart(categoriesCanvas.current).update()
         Chart.getChart(itemsCanvas.current).update()
         console.log("actual: ", itemsData)
-    }, [categoriesDatapoints, itemsDatapoints])
+    }, [counter])
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
             <Navbar />
@@ -175,16 +176,16 @@ export default function Budget() {
                     <input type="number" id="price" />
                     <label htmlFor="category">Category</label>
                     <select id="category" required>
+                        <option value="Entertainment">Entertainment</option>
                         <option value="Food">Food</option>
                         <option value="Housing">Housing</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Entertainment">Entertainment</option>
                         <option value="Transportation">Transportation</option>
+                        <option value="Utilities">Utilities</option>
                     </select>
                     <button type="submit">Submit</button>
                 </form>
             </div>
-            <button onClick={getItemsAndAddToData}></button>
+            <button onClick={() => setCounter(prevCount => prevCount + 1)}></button>
         </main>
         <script>
 
