@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { Chart, ArcElement, Tooltip, Legend, DoughnutController, Title } from 'chart.js'
+import { Chart, ArcElement, Tooltip, DoughnutController } from 'chart.js'
 import "./Budget.css"
 import { useEffect, useRef } from "react";
 import AccountContext from "../contexts/AccountContext";
@@ -7,7 +7,7 @@ import { signupUser, loginUser, logoutUser, loadLocalAccountData } from '../api/
 import { useState } from "react";
 import { addBudgetItem, getBudgetItems } from "../api/budget.jsx";
 
-Chart.register(ArcElement, Tooltip, Legend, DoughnutController, Title);
+Chart.register(ArcElement, Tooltip, DoughnutController);
 
 
 let chartData = {
