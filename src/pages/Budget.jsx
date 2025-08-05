@@ -149,44 +149,6 @@ export default function Budget() {
                 }
             }
         );
-
-        // Chart.getChart(itemsCanvas.current)?.destroy(); // delete the chart from the canvas if there is already one
-        // //make chart for items
-        // const itemsChart = new Chart(itemsCanvas.current,
-        //     {
-        //         type: 'doughnut',
-        //         data: itemsData,
-        //         options: {
-        //             plugins: {
-        //                 title: {
-        //                     display: true,
-        //                     text: "Price by Item"
-        //                 },
-        //                 tooltip: {
-        //                     callbacks: {
-        //                         title: (context) => {
-        //                             const item = context[0].raw;
-        //                             if (!item) {
-        //                                 return "";
-        //                             }
-        //                             return item.name
-        //                         },
-        //                         label: (context) => {
-        //                             return `\$${context.parsed}`
-
-        //                         }
-        //                     }
-        //                 },
-        //                 legend: {
-        //                     display: true
-        //                 }
-        //             },
-        //             parsing: {
-        //                 key: "price"
-        //             }
-        //         }
-        //     }
-        // );
     }
 
     useEffect(() => {
@@ -206,7 +168,7 @@ export default function Budget() {
         </AccountContext.Provider>
         <main>
             <div className="gridContainer">
-                <div className="pieContainer cell1">
+                <div className="pieContainer">
                     <canvas className="chart"
                         ref={chartCanvas}
                     >
@@ -229,15 +191,6 @@ export default function Budget() {
                     <button type="submit">Submit</button>
                 </form>
             </div>
-            <button onClick={() => {
-                addItemsToChartData([{
-                    ownerId: localStorage.getItem("userId"),
-                    name: "Test",
-                    price: 10,
-                    date: new Date(),
-                    category: "Transportation"
-                }])
-            }}></button>
         </main>
     </>)
 }
