@@ -74,7 +74,6 @@ export default function Budget() {
         chartData.datasets[1].data = [...chartData.datasets[1].data, ...items] // append items to the data
         for (let item of items) {
             let indexOfCategory = categories.findIndex((element) => element.category == item.category)
-            console.log(indexOfCategory)
             if (indexOfCategory == -1) { // if the category is not already in chart, create it and set the category's value to the item price
                 categories.push({category: item.category, price: item.price}); 
             }
