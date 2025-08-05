@@ -10,20 +10,32 @@ import { addBudgetItem, getBudgetItems } from "../api/budget.jsx";
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController, Title);
 
 
-let categoriesData = {
-    labels: [],
+let chartData = {
     datasets: [{
-        label: "$",
         data: [],
-        backgroundColor: []
-    }]
-}
-let itemsData = {
-    labels: [],
-    datasets: [{
-        label: "$",
+        backgroundColor: (context) => {
+            const item = context.raw;
+            if (!item) {
+                return 0;
+            }
+            const colors = ["red", "blue", "green", "orange", "purple"]
+            const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // for choosing colors
+            const color = colors[categoryNames.indexOf(item.category)];
+            return color;
+        }
+    },
+    {
         data: [],
-        backgroundColor: []
+        backgroundColor: (context) => {
+            const item = context.raw;
+            if (!item) {
+                return 0;
+            }
+            const colors = ["red", "blue", "green", "orange", "purple"]
+            const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // for choosing colors
+            const color = colors[categoryNames.indexOf(item.category)];
+            return color;
+        }
     }]
 }
 export default function Budget() {
@@ -34,8 +46,7 @@ export default function Budget() {
 
     const [counter, setCounter] = useState(0); // increase to trigger an update
 
-    const categoriesCanvas = useRef("") //maybe add reduced motion options?
-    const itemsCanvas = useRef("")
+    const chartCanvas = useRef("") //maybe add reduced motion options?
 
     async function handleFormSubmit(event) {
         event.preventDefault();
@@ -54,55 +65,34 @@ export default function Budget() {
     }
     
     function addItemsToChartData(items, clearData=false) {
-        const colors = ["red", "blue", "green", "orange", "purple"]
-        const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // for choosing colors
-
         if (clearData == true) {
-            itemsData.datasets[0].data
-            categoriesData.datasets[0].data = []
-            itemsData.labels = []
-            categoriesData.labels = [] // empty out the data and labels
+            chartData.datasets[1].data = []
+            chartData.datasets[0].data = []
 
         }
-        let categories = {};
+        let categories = [];
+        chartData.datasets[1].data = [...chartData.datasets[1].data, ...items] // append items to the data
         for (let item of items) {
-            itemsData.labels.push(item.name)
-            itemsData.datasets[0].data.push(item.price) // set itemDatapoints to itemDatapoints with item.price at the end 
-
-            if (!categories[item.category]) { // if the category is not already in categories, create it and set the category's value to the item price
-                categories[item.category] = item.price;
+            let indexOfCategory = categories.findIndex((element) => element.category == item.category)
+            console.log(indexOfCategory)
+            if (indexOfCategory == -1) { // if the category is not already in chart, create it and set the category's value to the item price
+                categories.push({category: item.category, price: item.price}); 
             }
             else { // otherwise, add the item's price to the category's value
-                categories[item.category] += item.price;
-            }
-
-
-            // set background color depending on category here, because category is accessible from here
-            let index = categoryNames.indexOf(item.category)
-            if (index != -1) {
-                itemsData.datasets[0].backgroundColor.push(colors[index]) // get the color that has the same index as the category of the item
-            }
-            else {
-                itemsData.datasets[0].backgroundColor.push("black") // as a failsafe, color it black.
+                categories[indexOfCategory].price += item.price;
             }
         }
-        for (let category of Object.entries(categories)) {
-            let indexOfCategory = categoriesData.labels.indexOf(category[0]);
+        for (let category of categories) {
+            let indexOfCategory = chartData.datasets[0].data.findIndex((element) => element.category == category.category); // index of category in data
             if (indexOfCategory == -1) { // if the category does not already exist in the labels, push it 
-                categoriesData.labels.push(category[0])
-                categoriesData.datasets[0].data.push(category[1]) // set categoriesDatapoints to itemDatapoints with the at the end 
+                chartData.datasets[0].data.push(category) // set chartDatapoints to itemDatapoints with the at the end 
             }
             else {
-                categoriesData.datasets[0].data[indexOfCategory] += category[1]
-            }
-            let index = categoryNames.indexOf(category[0])
-            if (index != -1) {
-                categoriesData.datasets[0].backgroundColor.push(colors[index]) // get the color that corresponds to the category
-            }
-            else {
-                categoriesData.datasets[0].backgroundColor.push("black") // as a failsafe, color it black.
+                chartData.datasets[0].data[indexOfCategory] += category.price
             }
         }
+        chartData.datasets[1].data.sort((a, b) => a.category.localeCompare(b.category))
+        chartData.datasets[0].data.sort((a, b) => a.category.localeCompare(b.category))
         setCounter(prevCount => prevCount + 1) // only used to make the page update
     }
 
@@ -117,12 +107,12 @@ export default function Budget() {
         }
     }
     function makeCharts() { //todo: match colors for items that are in a certain category
-        Chart.getChart(categoriesCanvas.current)?.destroy(); // delete the chart from the canvas if there is already one
-        // make chart for categories
-        const categoriesChart = new Chart(categoriesCanvas.current,
+        Chart.getChart(chartCanvas.current)?.destroy(); // delete the chart from the canvas if there is already one
+        // make chart for chart
+        const chartChart = new Chart(chartCanvas.current,
             {
                 type: 'doughnut',
-                data: categoriesData,
+                data: chartData,
                 options: {
                     plugins: {
                         title: {
@@ -131,44 +121,72 @@ export default function Budget() {
                         },
                         tooltip: {
                             callbacks: {
+                                title: (context) => {
+                                    const item = context[0].raw;
+                                        if (!item) {
+                                            return "";
+                                        }
+                                        if (context[0].datasetIndex == 0) {
+                                            return item.category;
+                                        }
+                                        if (context[0].datasetIndex == 1) {
+                                            return item.name;
+                                        }
+                                        else {
+                                            return "";
+                                        }
+                                },
                                 label: (context) => {
                                     return `\$${context.parsed}`
 
                                 }
                             }
                         }
+                    },
+                    parsing: {
+                        key: "price"
                     }
                 }
             }
         );
 
-        Chart.getChart(itemsCanvas.current)?.destroy(); // delete the chart from the canvas if there is already one
-        //make chart for items
-        const itemsChart = new Chart(itemsCanvas.current,
-            {
-                type: 'doughnut',
-                data: itemsData,
-                options: {
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: "Price by Item"
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: (context) => {
-                                    return `\$${context.parsed}`
+        // Chart.getChart(itemsCanvas.current)?.destroy(); // delete the chart from the canvas if there is already one
+        // //make chart for items
+        // const itemsChart = new Chart(itemsCanvas.current,
+        //     {
+        //         type: 'doughnut',
+        //         data: itemsData,
+        //         options: {
+        //             plugins: {
+        //                 title: {
+        //                     display: true,
+        //                     text: "Price by Item"
+        //                 },
+        //                 tooltip: {
+        //                     callbacks: {
+        //                         title: (context) => {
+        //                             const item = context[0].raw;
+        //                             if (!item) {
+        //                                 return "";
+        //                             }
+        //                             return item.name
+        //                         },
+        //                         label: (context) => {
+        //                             return `\$${context.parsed}`
 
-                                }
-                            }
-                        },
-                        legend: {
-                            display: true
-                        }
-                    }
-                }
-            }
-        );
+        //                         }
+        //                     }
+        //                 },
+        //                 legend: {
+        //                     display: true
+        //                 }
+        //             },
+        //             parsing: {
+        //                 key: "price"
+        //             }
+        //         }
+        //     }
+        // );
     }
 
     useEffect(() => {
@@ -180,8 +198,7 @@ export default function Budget() {
 
     }, []);
     useEffect(() => {
-        Chart.getChart(categoriesCanvas.current).update()
-        Chart.getChart(itemsCanvas.current).update()
+        Chart.getChart(chartCanvas.current).update()
     }, [counter])
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
@@ -190,15 +207,8 @@ export default function Budget() {
         <main>
             <div className="gridContainer">
                 <div className="pieContainer cell1">
-                    <canvas className="categories-chart"
-                        ref={categoriesCanvas}
-                    >
-                        The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
-                    </canvas>
-                </div>
-                <div className="pieContainer cell2">
-                    <canvas className="items-chart"
-                        ref={itemsCanvas}
+                    <canvas className="chart"
+                        ref={chartCanvas}
                     >
                         The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
                     </canvas>
@@ -229,8 +239,5 @@ export default function Budget() {
                 }])
             }}></button>
         </main>
-        <script>
-
-        </script>
     </>)
 }
