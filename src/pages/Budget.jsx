@@ -15,7 +15,7 @@ let categoriesData = {
     datasets: [{
         label: "$",
         data: [],
-        backgroundColor: ["red", "blue", "green"]
+        backgroundColor: []
     }]
 }
 let itemsData = {
@@ -23,7 +23,7 @@ let itemsData = {
     datasets: [{
         label: "$",
         data: [],
-        backgroundColor: ["red", "blue", "green"]
+        backgroundColor: []
     }]
 }
 export default function Budget() {
@@ -52,8 +52,11 @@ export default function Budget() {
             addItemsToChartData([data])
         }
     }
-
+    
     function addItemsToChartData(items, clearData=false) {
+        const colors = ["red", "blue", "green", "orange", "purple"]
+        const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // for choosing colors
+
         if (clearData == true) {
             itemsData.datasets[0].data
             categoriesData.datasets[0].data = []
@@ -75,6 +78,13 @@ export default function Budget() {
 
 
             // set background color depending on category here, because category is accessible from here
+            let index = categoryNames.indexOf(item.category)
+            if (index != -1) {
+                itemsData.datasets[0].backgroundColor.push(colors[index]) // get the color that has the same index as the category of the item
+            }
+            else {
+                itemsData.datasets[0].backgroundColor.push("black") // as a failsafe, color it black.
+            }
         }
         for (let category of Object.entries(categories)) {
             let indexOfCategory = categoriesData.labels.indexOf(category[0]);
@@ -84,6 +94,13 @@ export default function Budget() {
             }
             else {
                 categoriesData.datasets[0].data[indexOfCategory] += category[1]
+            }
+            let index = categoryNames.indexOf(category[0])
+            if (index != -1) {
+                categoriesData.datasets[0].backgroundColor.push(colors[index]) // get the color that corresponds to the category
+            }
+            else {
+                categoriesData.datasets[0].backgroundColor.push("black") // as a failsafe, color it black.
             }
         }
         setCounter(prevCount => prevCount + 1) // only used to make the page update
@@ -146,7 +163,7 @@ export default function Budget() {
                             }
                         },
                         legend: {
-                            display: false
+                            display: true
                         }
                     }
                 }
