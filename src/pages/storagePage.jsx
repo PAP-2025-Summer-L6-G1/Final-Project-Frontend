@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Navbar from '../components/Navbar.jsx'
 import StorageContext from '../contexts/StorageContext.jsx'
-import {getItems} from '../api/storage.jsx'
 import StorageItemsAccordion from '../components/StorageItemsAccordion.jsx'
+import StorageDeposit from '../components/StorageDeposit.jsx'
+import StorageSelect from '../components/StorageSelect.jsx'
 import {signupUser, loginUser, logoutUser, loadLocalAccountData} from '../api/signIn.jsx'
+import { updateStorageType, updateQuantity, deleteItem, getItems } from '../api/groceryList.jsx'
 import AccountContext from '../contexts/AccountContext.jsx'
+import './storage.css'
+
 
 function Storage(props) {
-  const [items, setItems] = useState([]); 
+  const [items, setItems] = useState([]);
   const [itemsByCategory, setItemsByCategory] = useState({});
   const [loggedInUser, setLoggedInUser] = useState("");
-  const [currentStorage, setCurrentStorage] = useState("bag");
- 
+  
+  const storageContext = useContext(StorageContext);
+  const [currentStorage, setCurrentStorage] = useState(storageContext.currentStorage);
+  const [selectedItems , setSelectedItems] = useState({});
 
   useEffect(() => {
     loadLocalAccountData(setLoggedInUser);
@@ -28,7 +34,7 @@ function Storage(props) {
 
 useEffect(() => {
     getItems(setItems, currentStorage); // Use the getItems to retrieve items for the items state
-}, [setItems,currentStorage]);
+}, [setItems, currentStorage]);
 
 //We want to split the items by category to make them easier to turn into cards
 useEffect(() => {
@@ -52,10 +58,20 @@ useEffect(() => {
 
   return (
     <AccountContext.Provider value={{loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser}}>
-      <StorageContext.Provider value={{items, getItems, currentStorage}}>
+      <StorageContext.Provider value={{items, setItems, getItems, currentStorage, setCurrentStorage, selectedItems, setSelectedItems, updateStorageType, updateQuantity, deleteItem}}>
           <Navbar />
           <h1>Storage</h1>
-          <StorageItemsAccordion itemsByCategory={itemsByCategory}/>
+          <div className="storage-select">
+            <StorageSelect />
+          </div>
+          <div className="storage-interact">
+            <div className = "storage-left">
+              <StorageItemsAccordion itemsByCategory={itemsByCategory}/>
+            </div>
+            <div className = "storage-right">
+              <StorageDeposit />
+            </div>
+          </div>
       </StorageContext.Provider>
     </AccountContext.Provider>
   )

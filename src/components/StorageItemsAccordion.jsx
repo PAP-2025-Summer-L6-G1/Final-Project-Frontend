@@ -1,9 +1,22 @@
-import { useState } from "react";
+import { useState , useContext} from "react";
+import StorageContext from "../contexts/StorageContext";
 import "./StorageItemsAccordion.css";
+import Trash from "../assets/Trash.svg"
 
 const Accordion = ({ itemsByCategory }) => {
     const [openCategories, setOpenCategories] = useState(new Set());
-    const [selectedItems, setSelectedItems] = useState({}); // e.g., { itemId: true }
+
+    const storageContext = useContext(StorageContext);
+    const selectedItems = storageContext.selectedItems;
+    const setSelectedItems = storageContext.setSelectedItems;
+
+    const increaseQuantity = (item) => {
+        storageContext.updateQuantity(item._id, item.quantity + 1, storageContext.items, storageContext.setItems);
+    };
+
+     const decreaseQuantity = (item) => {
+        storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
+    };
 
     const handleToggle = (category) => {
         setOpenCategories(prev => {
@@ -57,7 +70,9 @@ const Accordion = ({ itemsByCategory }) => {
                                     <input type="text" value={item.quantity} readOnly />
                                     <button onClick={() => increaseQuantity(item)}>+</button>
                                 </div>
-                                <button className="delete-button" onClick={() => deleteItem(item)} />
+                                <button className="delete-button" onClick={() => deleteItem(item)}>
+                                    <img className ="delete-icon" src={Trash} alt="Delete" />
+                                </button>
                             </div>
                         ))}
                     </div>
