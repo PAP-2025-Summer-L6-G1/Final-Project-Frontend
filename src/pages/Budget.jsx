@@ -64,7 +64,6 @@ export default function Budget() {
         chartData.datasets[1].data = [...chartData.datasets[1].data, ...items] // append items to the data
         for (let item of items) {
             let indexOfCategory = categories.findIndex((element) => element.category == item.category)
-            console.log(indexOfCategory, item.category)
             if (indexOfCategory == -1) { // if the category is not already in chart, create it and set the category's value to the item price
                 categories.push({ category: item.category, price: item.price });
             }
@@ -74,7 +73,6 @@ export default function Budget() {
         }
         for (let category of categories) {
             let indexOfCategory = chartData.datasets[0].data.findIndex((element) => element.category == category.category); // index of category in data
-            console.log(indexOfCategory, category.category)
             if (indexOfCategory == -1) { // if the category does not already exist in the labels, push it 
                 chartData.datasets[0].data.push(category) // set chartDatapoints to itemDatapoints with the at the end 
             }
@@ -186,7 +184,6 @@ export default function Budget() {
                             }
                             for (let category of categories) {
                                 const indexOfCategory = chartData.datasets[0].data.findIndex((element) => element.category == category.category); // index of category in data
-                                console.log(indexOfCategory, category.category)
                                 if (indexOfCategory != -1) { // if the category is in the data, 
                                     chartData.datasets[0].data[indexOfCategory].price -= category.price // subtract the price of the deleted items from it
                                 }
