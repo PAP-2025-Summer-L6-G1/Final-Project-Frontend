@@ -67,18 +67,20 @@
     padding: 4px;
 }
 
-.recipe-right-side {
+.recipe-action-col {
     display: flex;
-    flex-direction: row;
-    flex: 1;
-    justify-content: space-between;
-    align-items: stretch;
-    min-width: 0;
+    align-items: center; /* Vertically center the button */
+    justify-content: center;
+    min-width: 170px;
 }
 
 .recipe-save-btn {
-    align-self: flex-start;
-    margin-left: 20px;
     height: 40px;
-    min-width: 80px;
+    background-color: white;
+    color: black;
+}
+
+.recipe-saved-btn {
+    height: 40px;
+    background-color: rgb(225, 225, 16);
 }

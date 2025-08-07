@@ -9,6 +9,10 @@ import RecipeCard from '../components/RecipeCard.jsx'
 import FilterIngredient from '../components/FilterIngredient.jsx'
 
 function Recipe() {
+    const [loggedInUser, setLoggedInUser] = useState("");
+    useEffect(() => {
+        loadLocalAccountData(setLoggedInUser);
+    }, [])
     let test = [
         {
             "id": 715415,
@@ -106,14 +110,48 @@ function Recipe() {
         SetSearchIngreds(SearchIngreds.filter(ingred => ingred !== name)); //creates a new array that excludes the ingred name
     }
 
-    const saveRecipe = ()=> {
-        //fetch
+    const saveRecipe = (recipeId)=> {
+        // const params = new URLSearchParams({
+        //     apiKey: process.env.SPOONACULAR_KEY,
+        //     includeNutrition: "false"
+        // });
+        // fetch(`https://localhost:3002/recipe/search/${recipeId}/information?${params}`)
+        var raw = JSON.stringify({
+            "ownerId": loggedInUser,
+            "recipeId": recipeId
+        });
+        var requestOptions = {
+            method: 'POST',
+            body: raw,
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch(`https://localhost:3002/recipe/save`, requestOptions)
+        .then(response => response.json())
+        .catch(error => console.log('error', error));
     }
 
+    const checkIfSaved = (recipeId)=>{
+        var raw = JSON.stringify({
+            "recipeId": recipeId
+        });
+        var requestOptions = {
+            method: 'GET',
+            body: raw,
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch(`https://localhost:3002/recipe/check`, requestOptions)
+        .then(response => response.json())
+        .catch(error => console.log('error', error));
+    }
 
 
     return (
         <>
+            <AccountContext.Provider value={{loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser}}>
+                <Navbar />
+            </AccountContext.Provider>
             <main>
                 <form onSubmit={onSearchSubmit}>
                     <input type='text' placeholder='Search recipe' value={SearchQuery} onChange={(event)=>{
@@ -132,11 +170,11 @@ function Recipe() {
                         <button type='submit' className='filter-button'>Add</button>
                     </form>
 
-                    {SearchIngreds.map((ingred)=>{ return <FilterIngredient key={ingred} name={ingred} x={removeIngred}/> })}
+                    {SearchIngreds.map((ingred)=>{ return <FilterIngredient key={ingred} name={ingred} func={removeIngred}/> })}
                 </div>
 
                 {/*setShownRecipes calls a rerender which calls .map again*/}
-                {ShownRecipes.map((recipe)=>{ return <RecipeCard key={recipe.id} image={recipe.image} title={recipe.title} servings={recipe.servings} readyInMinutes={recipe.readyInMinutes} vegetarian={recipe.vegetarian} vegan={recipe.vegan} glutenFree={recipe.glutenFree} dairyFree={recipe.dairyFree}/> })}
+                {ShownRecipes.map((recipe)=>{ return <RecipeCard key={recipe.id} recipeId={recipe.id} func={saveRecipe} check={checkIfSaved} image={recipe.image} title={recipe.title} servings={recipe.servings} readyInMinutes={recipe.readyInMinutes} vegetarian={recipe.vegetarian} vegan={recipe.vegan} glutenFree={recipe.glutenFree} dairyFree={recipe.dairyFree}/> })}
 
             </main>
         </>
