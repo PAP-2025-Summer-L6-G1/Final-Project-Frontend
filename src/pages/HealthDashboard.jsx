@@ -52,6 +52,17 @@ function HealthDashboard() {
 
   const handleCreateEntry = async (entryData) => {
     try {
+      // Optimistic update - add the entry immediately to the UI
+      const optimisticEntry = {
+        ...entryData,
+        _id: 'temp-' + Date.now(), // temporary ID
+        createdAt: new Date().toISOString(),
+        isOptimistic: true // flag to identify optimistic entries
+      };
+      
+      setEntries(prev => [optimisticEntry, ...prev]);
+      setShowForm(false);
+
       const response = await fetch('http://localhost:3002/health/', {
         method: 'POST',
         headers: {
@@ -68,21 +79,28 @@ function HealthDashboard() {
       const createdEntry = await response.json();
       console.log('Entry created successfully:', createdEntry);
 
-      setShowForm(false);
-      // Add a small delay to ensure the database operation completes
-      setTimeout(() => {
-        if (testUser && testUser.userId) {
-          console.log('Refreshing entries after creation...');
-          fetchEntries();
-        }
-      }, 100);
+      // Replace the optimistic entry with the real one from the server
+      setEntries(prev => prev.map(entry => 
+        entry.isOptimistic ? createdEntry : entry
+      ));
     } catch (err) {
+      // Remove the optimistic entry on error
+      setEntries(prev => prev.filter(entry => !entry.isOptimistic));
       setError(err.message);
     }
   };
 
   const handleUpdateEntry = async (entryId, updateData) => {
     try {
+      // Optimistic update - update the entry immediately in the UI
+      setEntries(prev => prev.map(entry => 
+        entry._id === entryId 
+          ? { ...entry, ...updateData, isOptimistic: true }
+          : entry
+      ));
+      
+      setEditingEntry(null);
+
       const response = await fetch(`http://localhost:3002/health/${entryId}`, {
         method: 'PATCH',
         headers: {
@@ -96,14 +114,17 @@ function HealthDashboard() {
         throw new Error('Failed to update entry');
       }
 
-      setEditingEntry(null);
-      // Add a small delay to ensure the database operation completes
-      setTimeout(() => {
-        if (testUser && testUser.userId) {
-          fetchEntries();
-        }
-      }, 100);
+      const updatedEntry = await response.json();
+      
+      // Replace the optimistic entry with the real one from the server
+      setEntries(prev => prev.map(entry => 
+        entry._id === entryId ? { ...updatedEntry, isOptimistic: false } : entry
+      ));
     } catch (err) {
+      // Revert the optimistic update on error
+      setEntries(prev => prev.map(entry => 
+        entry._id === entryId ? { ...entry, isOptimistic: false } : entry
+      ));
       setError(err.message);
     }
   };
@@ -114,6 +135,12 @@ function HealthDashboard() {
     }
 
     try {
+      // Store the entry to restore if deletion fails
+      const entryToDelete = entries.find(entry => entry._id === entryId);
+      
+      // Optimistic update - remove the entry immediately from the UI
+      setEntries(prev => prev.filter(entry => entry._id !== entryId));
+
       const response = await fetch(`http://localhost:3002/health/${entryId}`, {
         method: 'DELETE',
         credentials: 'include'
@@ -127,13 +154,12 @@ function HealthDashboard() {
         }
       }
 
-      // Add a small delay to ensure the database operation completes
-      setTimeout(() => {
-        if (testUser && testUser.userId) {
-          fetchEntries();
-        }
-      }, 100);
+      // Success - entry is already removed from UI
     } catch (err) {
+      // Restore the entry on error
+      if (entryToDelete) {
+        setEntries(prev => [entryToDelete, ...prev]);
+      }
       setError(err.message);
     }
   };

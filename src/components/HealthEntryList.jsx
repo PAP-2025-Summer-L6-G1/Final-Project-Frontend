@@ -60,7 +60,7 @@ function HealthEntryList({ entries, onEdit, onDelete }) {
         {entries.map((entry) => (
           <div 
             key={entry._id} 
-            className="health-entry"
+            className={`health-entry ${entry.isOptimistic ? 'optimistic' : ''}`}
             style={{ borderLeftColor: getEntryColor(entry.type) }}
           >
             <div className="entry-header">
