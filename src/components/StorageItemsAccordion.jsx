@@ -51,35 +51,37 @@ const Accordion = ({ itemsByCategory }) => {
         ).map(([category, items]) => (
             <div className={`accordion ${openCategories.has(category) ? "toggled" : ""}`} key={category}>
                 <button className="toggle" onClick={() => handleToggle(category)}>
-                    <p>{category}</p>
+                    <p>{category.charAt(0).toUpperCase() + category.slice(1)}</p>
                     <div className="toggle-icon">{openCategories.has(category) ? "-" : "+"}</div>
                 </button>
                 {openCategories.has(category) && (
                     <div className="content-parent">
                         {items.map((item, idx) => (
                             <div key={item._id || idx} className="item-row">
-                                <div className="item-info">
-                                    <input
+                                <input
                                     type="checkbox"
                                     className="item-checkbox"
                                     checked={!!selectedItems[item._id]}
                                     onChange={() => handleCheckboxToggle(item)}
                                     />
+                                <div className="item-info">
                                     <div>
-                                        <div className="item-name">{item.name}</div>
+                                        <p className="item-name">{item.name}</p>
                                         {item.expiryDate && (
                                             <div className="item-expiry">exp: {item.expiryDate || "N/A"}</div>
                                         )}
                                     </div>
+                                    <div className="item-controls">
+                                        <div className="quantity-controls">
+                                            <button onClick={() => decreaseQuantity(item)}>-</button>
+                                            <input type="text" value={item.quantity} readOnly />
+                                            <button onClick={() => increaseQuantity(item)}>+</button>
+                                        </div>
+                                        <button className="delete-button" onClick={() => deleteItem(item)}>
+                                            <img className ="delete-icon" src={Trash} alt="Delete" />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="quantity-controls">
-                                    <button onClick={() => decreaseQuantity(item)}>-</button>
-                                    <input type="text" value={item.quantity} readOnly />
-                                    <button onClick={() => increaseQuantity(item)}>+</button>
-                                </div>
-                                <button className="delete-button" onClick={() => deleteItem(item)}>
-                                    <img className ="delete-icon" src={Trash} alt="Delete" />
-                                </button>
                             </div>
                         ))}
                     </div>

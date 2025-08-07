@@ -19,11 +19,16 @@
     border: none;
     width: 100%;
     text-align: center;
-    padding: 12px;
+    padding: 8px;
     font-size: 1.1rem;
     font-weight: bold;
     color: #333;
     cursor: pointer;
+   /*For the Toggle button (otherwise it shows up at the top right for some reason) */
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;           
+    gap: 10px; 
 }
 
 .accordion.toggled .toggle {
@@ -38,25 +43,28 @@
     gap: 12px;
 }
 
-.accordion .item-row {
+.accordion .item-controls {
     display: flex;
+}
+
+.accordion .item-row {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
     border-radius: 8px;
     background-color: #fdfdfd;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
 }
 
 .item-info {
-    display: flex;
     align-items: center;
     gap: 10px;
     flex: 1;
 }
 
 .item-name {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .item-expiry {
@@ -73,7 +81,7 @@
 .quantity-controls button {
     background-color: #ccc;
     border: none;
-    padding: 4px 8px;
+    padding: 1px 10px;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
@@ -105,8 +113,8 @@
 }
 
 .item-checkbox {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-right: 10px;
     cursor: pointer;
     accent-color: gray; /* gets overridden dynamically via inline style */
