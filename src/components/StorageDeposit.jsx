@@ -15,8 +15,14 @@ const StorageDeposit = () => {
         const selected = storageContext.items.filter(item => selectedItems[item._id]);
 
         for (const item of selected) {
-            console.log(item.name, name)
-            storageContext.updateStorageType(item._id, name, storageContext.items, storageContext.setItems);
+            const existingBagItem = storageContext.items.find((bagItem) => (bagItem.storageType === name && bagItem.name.toLowerCase() === item.name.toLowerCase())); 
+            if (existingBagItem) { // if item already exist we sum the quantity
+                const newQuantity = existingBagItem.quantity + item.quantity;
+                storageContext.updateQuantity(existingBagItem._id, newQuantity, storageContext.items, storageContext.setItems);
+                storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+            } else {
+                storageContext.updateStorageType(item._id, name, storageContext.items, storageContext.setItems);
+            }
         }
 
         setSelectedItems({}); // Clear selectedItems object
@@ -40,7 +46,7 @@ const StorageDeposit = () => {
             {storageContext.currentStorage === "fridge" ? null : DepositCard("Fridge", Fridge, "The refrigerator keeps food cold (typically between 32°F and 40°F or 0°C and 4°C).")}
             {storageContext.currentStorage === "pantry" ? null : DepositCard("Pantry", Pantry, "A pantry's primary purpose is to provide storage for food and kitchen supplies at room temperature.")}
             {storageContext.currentStorage === "freezer" ? null : DepositCard("Freezer", Freezer, "The freezer is designed for long-term storage, maintaining temperatures at or below 0°F (-18°C).")}
-            {storageContext.currentStorage === "bag" ? null : DepositCard("Grocery Bag", GroceryBag, "A steward of resources that sustain daily life, a grocery bag is a place to stage ingredient for preparation.")}
+            {storageContext.currentStorage === "bag" ? null : DepositCard("Bag", GroceryBag, "A steward of resources that sustain daily life, a grocery bag is a place to stage ingredient for preparation.")}
         </div>
     )
 
