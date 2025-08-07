@@ -5,7 +5,7 @@
 
 .grocery-list {
     height: 88vh;
-    width: 50%;
+    width: 55%;
     padding: 16px;
     background-color: whitesmoke;
     border-right: 2px solid gray;
@@ -14,7 +14,7 @@
 
 .grocery-list-form {
     height: 100%;
-    width: 50%;
+    width: 45%;
     padding: 16px;
 }
 
@@ -28,11 +28,15 @@
 
 .category-label {
     font-weight: bold;
-    margin-bottom: 8px;
-    border-bottom: 1px solid lightgrey;
-    padding-bottom: 4px;
+    margin: 16px 0 8px 0;
+    padding: 8px 12px;
+    border: 2px solid lightgray;
+    border-radius: 6px;
+    background-color: lightyellow;
     text-transform: capitalize;
-    width: 75%;
+    width: 89%;
+    text-align: center;
+    box-sizing: border-box;
 }
 
 .filter {
@@ -43,4 +47,22 @@
 
 .filter select {
   padding: 4px 8px;
+}
+
+.grocery-header {
+    display: flex;
+    justify-content: space-between;
+    width: 89%;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.send-bag button {
+    background: gray;
+    border: none;
+    cursor: pointer;
+}
+
+.send-bag button:hover{
+    background: lightgray;
 }
