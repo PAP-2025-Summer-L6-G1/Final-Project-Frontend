@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import GroceryContext from "../contexts/GroceryContext";
 import AccountContext from "../contexts/AccountContext";
 import "./GroceryListForm.css";
+import RestockList from "./RestockList"
 
 export default function GroceryList() {
     const groceryContext = useContext(GroceryContext);
@@ -14,6 +15,7 @@ export default function GroceryList() {
 
     async function handleAddItem(event) {
         event.preventDefault();
+
         const success = await groceryContext.newItem({
             ownerId: accountContext.loggedInUser,
             name: name, 
@@ -26,44 +28,61 @@ export default function GroceryList() {
         if (success) {
             setName("");
             setQuantity(1);
-            setCategory("");
+            setCategory("dairy");
             setIsBought(false);
         } 
 
         await groceryContext.getItems(accountContext.loggedInUser, groceryContext.setItems);
     }
     
+    //need to probably add in the items in list with items the other storage context
+    const lowStockItems = groceryContext.items.filter((item) => item.quantity <= 2);
+
     return (
-        <form id="add-item-form" onSubmit={handleAddItem}>
-            <label>Owner: {accountContext.loggedInUser}</label>
+        <>
+            <form id="add-item-form" onSubmit={handleAddItem}>
+                <label id="owner-label">Owner: {accountContext.loggedInUser === "" ? "Guest" : accountContext.loggedInUser}</label>
 
-            <label htmlFor="item-name">Item Name:</label>
-            <input
-                type="text"
-                id="item-name"
-                value={name}
-                onChange={(event)=> setName(event.target.value)}
-                required />
-            <label htmlFor="item-quantity">Quantity:</label>
-            <input
-                type="number"
-                id="item-quantity"
-                value={quantity}
-                onChange={(event) => setQuantity(event.target.value)}
-                required />
-            <label htmlFor="item-category">Category:</label>
-            <select
-                id="item-category"
-                value={category}
-                onChange={(event) => setCategory(event.target.value)}
-                required>
+                <div className="form-row">
+                    <label htmlFor="item-name">Item Name:</label>
+                    <input
+                        type="text"
+                        id="item-name"
+                        value={name}
+                        onChange={(event)=> setName(event.target.value)}
+                        required />
+                </div>
+                <div className="form-row">
+                <label htmlFor="item-quantity">Quantity:</label>
+                <input
+                    type="number"
+                    step="1"
+                    min="1"
+                    id="item-quantity"
+                    value={quantity}
+                    onChange={(event) => setQuantity(event.target.value)}
+                    required />
+                </div>
+                <div className="form-row">
+                <label htmlFor="item-category">Category:</label>
+                <select
+                    id="item-category"
+                    value={category}
+                    onChange={(event) => setCategory(event.target.value)}
+                    required>
 
-                <option value="dairy">Dairy</option>
-                <option value="meat">Meat</option>
-                <option value="fruit">Fruit</option>
-                <option value="grain">Grain</option>
-            </select>
-            <button type="submit">Add Item</button>
-        </form>
+                    <option value="dairy">Dairy</option>
+                    <option value="meat">Meat</option>
+                    <option value="fruit">Fruit</option>
+                    <option value="grain">Grain</option>
+                </select>
+                </div>
+                <button type="submit">Add Item</button>
+            </form>
+            <div className="recommended-restock">
+                <h3> Recommended Restock </h3>
+                <RestockList lowStockItems={lowStockItems} />
+            </div>
+        </>
     )
 }
