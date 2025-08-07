@@ -1,5 +1,5 @@
 .navbar {
-    background-color: darkgreen;
+    background-color: rgb(148, 169, 91);
     height: fit-content;
     display: flex;
     align-items: center;
@@ -11,8 +11,12 @@
 }
 a {
     margin: 0 5px;
+    text-decoration: none;
+    color: #424242;
 }
 nav {
+    gap: 0.75rem;
     display: flex;
     align-items: center;
 }
+
