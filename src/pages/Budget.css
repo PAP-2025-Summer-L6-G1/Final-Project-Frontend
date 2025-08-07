@@ -1,6 +1,16 @@
+body {
+    height: 100vh;
+}
+main {
+    height: 100%;
+}
+
 .pieContainer {
-    border: solid black;
     grid-column: 1 / 2;
+    grid-row: 1/3;
+    p {
+        text-align: center;
+    }
 }
 #budgetForm {
     border: black solid;
@@ -14,9 +24,26 @@
     button {
         height:fit-content;
     }
+    select, input {
+        display: block;
+        width: 100%;
+    }
 }
 .gridContainer {
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
     column-gap: 2em;
+}
+
+table {
+    height: fit-content;
+    width: fit-content;
+    border: black solid;
+    grid-row: 2/3;
+    grid-column: 2/3;
+    th {
+        border: solid black;
+    }
 }

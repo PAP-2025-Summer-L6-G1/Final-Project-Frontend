@@ -20,7 +20,7 @@ function colorGenerator(context) { // match a color with the name of an item's c
     return color;
 }
 
-let chartData = {
+const chartData = {
     datasets: [{
         data: [],
         backgroundColor: colorGenerator
@@ -36,7 +36,8 @@ export default function Budget() {
         loadLocalAccountData(setLoggedInUser);
     }, [])
 
-    const chartCanvas = useRef("") //maybe add reduced motion options?
+    const chartCanvas = useRef(null) //maybe add reduced motion options?
+    const tableBodyRef = useRef(null)
 
     async function handleFormSubmit(event) {
         event.preventDefault();
@@ -82,7 +83,7 @@ export default function Budget() {
         }
         chartData.datasets[1].data.sort((a, b) => a.category.localeCompare(b.category))
         chartData.datasets[0].data.sort((a, b) => a.category.localeCompare(b.category))
-        Chart.getChart(chartCanvas.current).update();
+        update()
     }
 
 
@@ -147,6 +148,24 @@ export default function Budget() {
         asyncWrapper()
 
     }, []);
+    function makeTable() {
+        const tableBody = tableBodyRef.current 
+        if (tableBody) {
+            tableBody.innerHTML = ""
+            chartData.datasets[1].data.map(item => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <th>${item.name}</th>
+                        <td>${item.price}</td>
+                        <td>${item.category}</td>
+                    </tr>`
+            })
+        }
+    }
+    function update() {
+        const currentChart = Chart.getChart(chartCanvas.current)?.update()
+        makeTable()
+    }
 
     return (<>
         <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
@@ -188,18 +207,18 @@ export default function Budget() {
                                     chartData.datasets[0].data[indexOfCategory].price -= category.price // subtract the price of the deleted items from it
                                 }
                             }
-                            Chart.getChart(chartCanvas.current).update();
+                            update()
                         }}
                     >
                         The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
                     </canvas>
-                    <p>Click on an item to delete it.</p>
+                    <p>Click on an item in the chart to delete it.</p>
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
                     <label htmlFor="name">Item name:</label>
                     <input type="text" id="name" />
                     <label htmlFor="price">Price:</label>
-                    <input type="number" id="price" step=".01" min="0" inputMode="decimal" />
+                    <input type="number" id="price" step=".01" min="0.01" inputMode="decimal" />
                     <label htmlFor="category">Category</label>
                     <select id="category" required>
                         {/* To add another category, add an option here, ideally in alphabetical order, and then add it to categoryNames in colorGenerator and a correctponding color to colors in colorGenerator  */}
@@ -211,6 +230,17 @@ export default function Budget() {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
+                <table>
+                    <caption>Items</caption>
+                    <thead>
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Category</th>
+                        </tr>
+                    </thead>
+                    <tbody ref={tableBodyRef}></tbody>
+                </table>
             </div>
         </main>
     </>)
