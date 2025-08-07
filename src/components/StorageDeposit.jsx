@@ -8,13 +8,19 @@ import GroceryBag from "../assets/GroceryBag.svg"
 
 const StorageDeposit = () => {
     const storageContext = useContext(StorageContext);
-    const [selectedItems, setSelectedItems] = useState(storageContext.selectedItems);
+    const selectedItems = storageContext.selectedItems;
+    const setSelectedItems = storageContext.setSelectedItems;
 
-    // handleDeposit = () => {
-    //     for (const item of selectedItems) {
-    //         storageContext.updateItem
-    //     }
-    // }
+    const handleDeposit = (name) => {
+        const selected = storageContext.items.filter(item => selectedItems[item._id]);
+
+        for (const item of selected) {
+            console.log(item.name, name)
+            storageContext.updateStorageType(item._id, name, storageContext.items, storageContext.setItems);
+        }
+
+        setSelectedItems({}); // Clear selectedItems object
+    };
 
     const DepositCard = (name, src, message) => {
         return (
@@ -23,7 +29,7 @@ const StorageDeposit = () => {
                 <div className="card-text">
                     <h3>{name}</h3>
                     <p>{message}</p>
-                    <button onClick={() => console.log(name)}>Add Selected</button>
+                    <button onClick={() => {handleDeposit(name.toLowerCase())}}>Add Selected</button>
                 </div>
             </div>
         )

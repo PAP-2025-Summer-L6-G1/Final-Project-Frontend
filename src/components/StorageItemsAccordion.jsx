@@ -18,6 +18,10 @@ const Accordion = ({ itemsByCategory }) => {
         storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
     };
 
+    const deleteItem = (item) => {
+        storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+    };
+
     const handleToggle = (category) => {
         setOpenCategories(prev => {
             const newSet = new Set(prev);
@@ -41,7 +45,10 @@ const Accordion = ({ itemsByCategory }) => {
 
   return (
     <div className="accordion-parent">
-        {Object.entries(itemsByCategory).map(([category, items]) => (
+        {Object.entries(itemsByCategory)
+        .filter(([_, items]) =>
+            items.some(item => item.storageType === storageContext.currentStorage)
+        ).map(([category, items]) => (
             <div className={`accordion ${openCategories.has(category) ? "toggled" : ""}`} key={category}>
                 <button className="toggle" onClick={() => handleToggle(category)}>
                     <p>{category}</p>
@@ -61,7 +68,7 @@ const Accordion = ({ itemsByCategory }) => {
                                     <div>
                                         <div className="item-name">{item.name}</div>
                                         {item.expiryDate && (
-                                            <div className="item-expiry">exp: {item.expiryDate}</div>
+                                            <div className="item-expiry">exp: {item.expiryDate || "N/A"}</div>
                                         )}
                                     </div>
                                 </div>

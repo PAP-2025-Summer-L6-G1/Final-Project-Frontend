@@ -5,7 +5,7 @@ const defaultValues = {
   items: [],
   setItems: null,
   getItems: null,
-  currentStorage: "bag",
+  currentStorage: "",
   setCurrentStorage: null,
   selectedItems: null,
   setSelectedItems: null,
