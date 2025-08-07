@@ -25,10 +25,12 @@ function RestockRow(props) {
     const [amount, setAmount] = useState(1);
 
     async function handleAdd() {
+        const existingItem = groceryContext.items.find((item) => (item.storageType === "list" && item.name.toLowerCase() === props.item.name.toLowerCase()))
+        const newQty = existingItem ? existingItem.quantity += amount : amount
         await groceryContext.newItem({
             ownerId: accountContext.loggedInUser,
             name: props.item.name,
-            quantity: amount,
+            quantity: newQty,
             category: props.item.category,
             isBought: false,
             storageType: "list",

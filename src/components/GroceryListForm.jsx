@@ -35,8 +35,19 @@ export default function GroceryList() {
         await groceryContext.getItems(accountContext.loggedInUser, groceryContext.setItems);
     }
     
-    //need to probably add in the items in list with items the other storage context
-    const lowStockItems = groceryContext.items.filter((item) => item.quantity <= 2);
+    // combines all the item qty with same name from all storagetype
+    const lowStockItemsMap = new Map();
+
+    groceryContext.items.forEach((item) => {
+        const name = item.name.toLowerCase();
+        if (!lowStockItemsMap.has(name)) {
+            lowStockItemsMap.set(name, { name: item.name, quantity: 0, category: item.category });
+        }
+
+        lowStockItemsMap.get(name).quantity += item.quantity;
+    });
+
+    const lowStockItems = Array.from(lowStockItemsMap.values()).filter((item) => item.quantity <= 2);
 
     return (
         <>
