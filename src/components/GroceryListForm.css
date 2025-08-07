@@ -1,0 +1,20 @@
+#add-item-form input {
+    padding: 4px;
+    margin-bottom: 4px;
+    width: 50%;
+}
+
+#add-item-form select {
+    padding: 4px;
+    margin-bottom: 4px;
+    width: 50%;
+}
+
+#add-item-form button {
+    display: block;
+    padding: 4px;
+    margin-top: 8px;
+    width: 50%;
+
+}
+

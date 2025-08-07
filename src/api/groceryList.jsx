@@ -1,4 +1,4 @@
-const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-vincently-api.onrender.com" : "https://localhost:3002";
+const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "https://localhost:3002";
 
 const apiAddItem = hostURL+ "/grocery";
 const apiGetAll = hostURL+ "/grocery/";
@@ -26,7 +26,38 @@ const deleteOneParams = {
   credentials: 'include'
 };
 
-async function newItem(item, items, showItems){ // [items, showItems] = useState()...
+// export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
+//   try {
+
+//       const postNewParamsWithBody = {
+//       ...postNewParams,
+//       body: JSON.stringify(item)
+//     };
+//     const prev = items;
+//     //Begin Fetch
+//     fetch(apiAddItem, postNewParamsWithBody).then(response => {
+//       //If add fails...
+//       if(!response.ok){
+//         //Reset items to previous
+//         items = prev;
+//         throw new Error("Add Item Failed!")
+//       }
+      
+//       return response.json()
+//     }).then(() => {
+//       //If add succeeds, add the item
+//       setItems([item, ...items]);
+//     });
+
+//     //Show the item (we don't know if add failed or not yet, show the user what they want)
+//     setItems([item, ...items]);
+//   } catch(e) {
+//       console.error(e);
+//   }
+
+// }
+
+export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
   try {
 
       const postNewParamsWithBody = {
@@ -35,26 +66,25 @@ async function newItem(item, items, showItems){ // [items, showItems] = useState
     };
 
     const response = await fetch(apiAddItem, postNewParamsWithBody);
-
-    if (response.status === 201) {
-      showItems([item, ...items]);
-    }else{
-      console.error(`Failed to add item: ${response.status}`);
+    if (!response.ok) {
+      throw new Error("Add Item Failed!")
     }
 
-  } catch(e) {
-      console.error(e);
+    setItems([item, ...items]);
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
   }
 }
 
-// Just like isSecret, we will have a filter option to show items of a certain type
-// Perhaps we have the Dairy section unopened...
-async function getItems(isVisible, showItems){ 
+// get all items from certain user via the ownerId
+export async function getItems(ownerId, setItems){ 
   try{
-      const response = await fetch(apiGetAll + isVisible, getAllParams)
+      const response = await fetch(apiGetAll + ownerId, getAllParams)
       if (response.status === 200) {
       let receivedItems = await response.json();
-      showItems(receivedItems);
+      setItems(receivedItems);
     }
   } catch (error) {
     console.error(error);
@@ -62,7 +92,7 @@ async function getItems(isVisible, showItems){
 }
 
 //This update function will be used whenever quantity is updated by hand or by the decrement / increment
-async function updateQuantity(itemId, newQuantity, items, showItems){// [items, showItems] = useState()...
+export async function updateQuantity(itemId, newQuantity, items, setItems){// [items, showItems] = useState()...
   try {
       //If the newQuantity is zero, delete it
       if(newQuantity > 0){
@@ -75,39 +105,79 @@ async function updateQuantity(itemId, newQuantity, items, showItems){// [items, 
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
         item.quantity = newQuantity;
-        showItems([...items]);
+        setItems([...items]);
       }
       }else {
         //If the newQuantity is zero, delete it
-        deleteItem(itemId)
+        deleteItem(itemId, items, setItems)
       }
   } catch (error) {
     console.error(error);
   }
 }
 
-async function updateName(itemId, newName, items, showItems){// [items, showItems] = useState()...
+export async function updateName(itemId, newName, items, setItems){// [items, setItems] = useState()...
     try {
-        
         const response = await fetch(apiUpdateItem + itemId, {
             ...updateOneParams,
             body: JSON.stringify({
                 name: newName
             })
         });
+        const prev = items;
+
+        fetch(response => {
+
+        })
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
         item.name = newName;
-        showItems([...items]);
+        setItems([...items]);
       }
     } catch (error) {
       console.error(error);
     }
 }
 
-//UpdateCheckMark?
+export async function updateIsBought(itemId, newIsBought,items, setItems){// [items, setItems] = useState()...
+    try {
+        
+        const response = await fetch(apiUpdateItem + itemId, {
+            ...updateOneParams,
+            body: JSON.stringify({
+                isBought: newIsBought
+            })
+        });
+        if (response.status === 200) {
+        const item = items.find(item => item._id === itemId);
+        item.isBought = newIsBought;
+        setItems([...items]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+}
 
-async function deleteItem(itemId, items, showItems) { // [items, showItems] = useState()...
+export async function updateStorageType(itemId, newStorageType, items, setItems) {
+  try {
+        
+        const response = await fetch(apiUpdateItem + itemId, {
+            ...updateOneParams,
+            body: JSON.stringify({
+                storageType: newStorageType
+            })
+        });
+        if (response.status === 200) {
+        const item = items.find(item => item._id === itemId);
+        item.storageType = newStorageType;
+        setItems([...items]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+}
+
+export async function deleteItem(itemId, items, showItems) { // [items, showItems] = useState()...
     try {
       const response = await fetch(apiDeleteItem + itemId, deleteOneParams);
       if (response.status === 200) {
@@ -119,3 +189,4 @@ async function deleteItem(itemId, items, showItems) { // [items, showItems] = us
       console.error(error);
     }
   }
+
