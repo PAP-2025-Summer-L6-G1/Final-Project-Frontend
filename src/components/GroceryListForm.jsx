@@ -15,7 +15,6 @@ export default function GroceryList() {
 
     async function handleAddItem(event) {
         event.preventDefault();
-
         const success = await groceryContext.newItem({
             ownerId: accountContext.loggedInUser,
             name: name, 

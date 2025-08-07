@@ -1,0 +1,44 @@
+.select-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.select-card {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: left;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: left;
+  cursor: pointer;
+}
+
+.select-card img {
+  width: 100px;
+  height: auto;
+}
+
+.select-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.select-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.select-card.current {
+  background-color: #f0e9c3; /* pale yellow */
+  border: 1px solid #aaa;
+  cursor: not-allowed;
+}
