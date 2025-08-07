@@ -5,15 +5,20 @@
 }
 .card {
     border: black solid;
-
     border-radius: 25px;
     padding: 10px;
     margin: 20px 2.5%;
     flex: 0.5 40%;
-    h2 {
-        width: 70px;
-    }
+    justify-content: start;
+    height: 10em;
 
+    a {
+        margin: 0;
+        width: fit-content;
+        h2 {
+            width: fit-content;
+        }
+    }
 }
 .card-container {
     width: 100%;
