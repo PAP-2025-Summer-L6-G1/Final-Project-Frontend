@@ -1,0 +1,46 @@
+.grocery-list-page-container {
+    display: flex;
+    height: 100%;   
+}
+
+.grocery-list {
+    height: 88vh;
+    width: 50%;
+    padding: 16px;
+    background-color: whitesmoke;
+    border-right: 2px solid gray;
+    overflow-y: auto;
+}
+
+.grocery-list-form {
+    height: 100%;
+    width: 50%;
+    padding: 16px;
+}
+
+.send-bag-button {
+    height: auto;
+}
+
+.category-group {
+    margin-bottom: 30px;
+}
+
+.category-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 4px;
+    text-transform: capitalize;
+    width: 75%;
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter select {
+  padding: 4px 8px;
+}
