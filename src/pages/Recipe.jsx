@@ -6,6 +6,7 @@ import { signupUser, loginUser, logoutUser, loadLocalAccountData } from '../api/
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard.jsx'
+import FilterIngredient from '../components/FilterIngredient.jsx'
 
 function Recipe() {
     let test = [
@@ -58,51 +59,84 @@ function Recipe() {
         }
     ]
     
-    const [Recipes, SetRecipes] = useState(test);
-    const [RecipeSearch, SetRecipeSearch] = useState("");
+    const [SearchQuery, SetSearchQuery] = useState("");
+    const [ShownRecipes, SetShownRecipes] = useState([]); //recipes to display
+    const [SearchIngred, AddSearchIngred] = useState("");
+    const [SearchIngreds, SetSearchIngreds] = useState([]); //applied filtered ingredients
     
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     const onSearchSubmit = (event)=> {
         var raw = JSON.stringify({
-        "query": RecipeSearch,
-        "ingreds": [
-            "cheese"
-        ]
+            "query": SearchQuery,
+            "ingreds": SearchIngreds
         });
     
         var requestOptions = {
-        method: 'POST',
-        body: raw,
-        headers: myHeaders,
-        redirect: 'follow'
+            method: 'POST',
+            body: raw,
+            headers: myHeaders,
+            redirect: 'follow'
         };
         
         event.preventDefault();
-        console.log(RecipeSearch);
+        console.log(SearchQuery);
         fetch("https://localhost:3002/recipe/search", requestOptions)
         .then(response => response.json())
-        .then(result => SetRecipes(result.results))
+        .then(result => SetShownRecipes(result.results))
         .catch(error => console.log('error', error));
     }
+
+    const onIngredAdd = (event)=> {
+        event.preventDefault();
+        if(SearchIngreds.includes(SearchIngred)) {
+            AddSearchIngred(""); //clear
+            return
+        }
+        SetSearchIngreds([...SearchIngreds, SearchIngred]); //creates a new array with all previous ingredients plus the new one at the end
+        AddSearchIngred(""); //clear
+    }
+
+    useEffect(()=>{
+        console.log(SearchIngreds);
+    }, [SearchIngreds])
+
+    const removeIngred = (name)=> {
+        SetSearchIngreds(SearchIngreds.filter(ingred => ingred !== name)); //creates a new array that excludes the ingred name
+    }
+
+    const saveRecipe = ()=> {
+        //fetch
+    }
+
+
 
     return (
         <>
             <main>
                 <form onSubmit={onSearchSubmit}>
-                    <input type='text' placeholder='Search recipe' value={RecipeSearch} onChange={(event)=>{
-                        SetRecipeSearch(event.target.value);
+                    <input type='text' placeholder='Search recipe' value={SearchQuery} onChange={(event)=>{
+                        SetSearchQuery(event.target.value);
                     }}></input>
                     <button type='submit'>Search</button>
                 </form>
 
-                <Link to="/recipe/saved-recipes"><h2>Saved recipes</h2></Link>
+                <Link to="/recipe/saved-recipes"><button>Saved recipes</button></Link>
+                
+                <div id='ingreds'>
+                    <form onSubmit={onIngredAdd} id='ingred-form'>
+                        <input type='text' placeholder='Filter by ingredient' value={SearchIngred} onChange={(event)=>{
+                            AddSearchIngred(event.target.value);
+                        }}></input>
+                        <button type='submit' className='filter-button'>Add</button>
+                    </form>
 
-                <input type='text' id='filterIngreds' placeholder='Filter by ingredient'></input>
+                    {SearchIngreds.map((ingred)=>{ return <FilterIngredient key={ingred} name={ingred} x={removeIngred}/> })}
+                </div>
 
-                {/*setRecipes calls a rerender which calls .map again*/}
-                {Recipes.map((recipe)=>{ return <RecipeCard key={recipe.id} image={recipe.image} title={recipe.title} servings={recipe.servings}/> })}
+                {/*setShownRecipes calls a rerender which calls .map again*/}
+                {ShownRecipes.map((recipe)=>{ return <RecipeCard key={recipe.id} image={recipe.image} title={recipe.title} servings={recipe.servings} readyInMinutes={recipe.readyInMinutes} vegetarian={recipe.vegetarian} vegan={recipe.vegan} glutenFree={recipe.glutenFree} dairyFree={recipe.dairyFree}/> })}
 
             </main>
         </>

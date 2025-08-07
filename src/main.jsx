@@ -5,7 +5,7 @@ import Home from './pages/Home.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import Budget from './pages/budget.jsx'
 import Recipe from './pages/Recipe.jsx'
-
+import SavedRecipe from './pages/SavedRecipe.jsx'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
   path: "/budget",
   element: <Budget />,
   },
+  {
+    path: "/recipe/saved-recipes",
+    element: <SavedRecipe/>
+  }
 ])
 
 
