@@ -35,7 +35,7 @@ export default function Budget() {
     useEffect(() => {
         loadLocalAccountData(setLoggedInUser);
     }, [])
-
+    const [hasBudgetItems, setHasBudgetItems] = useState(false);
     const chartCanvas = useRef(null) //maybe add reduced motion options?
     const tableBodyRef = useRef(null)
 
@@ -163,6 +163,12 @@ export default function Budget() {
         }
     }
     function update() {
+        if (chartData.datasets[1].data.length > 0 && !hasBudgetItems) {
+            setHasBudgetItems(true)
+        }
+        else if (chartData.datasets[1].data.length <= 0 && hasBudgetItems) {
+            setHasBudgetItems(false)
+        }
         const currentChart = Chart.getChart(chartCanvas.current)?.update()
         makeTable()
     }
@@ -212,7 +218,7 @@ export default function Budget() {
                     >
                         The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
                     </canvas>
-                    {chartData.datasets[1].length > 0 ? <p>Click on an item in the chart to delete it.</p>: <h2>You do not have any budget items yet. Please add one.</h2>}
+                    {hasBudgetItems ? <p>Click on an item in the chart to delete it.</p>: <h2>You do not have any budget items yet. Please add one.</h2>}
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
                     <label htmlFor="name">Item name:</label>
@@ -230,7 +236,7 @@ export default function Budget() {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
-                <table>
+                <table hidden={!hasBudgetItems}>
                     <caption>Items</caption>
                     <thead>
                         <tr>
