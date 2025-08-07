@@ -5,7 +5,7 @@ import Home from './pages/Home.jsx'
 import Storage from './pages/storagePage.jsx'
 import List from './pages/List.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import Budget from './pages/budget.jsx'
+import Budget from './pages/Budget.jsx'
 
 
 const router = createBrowserRouter([
