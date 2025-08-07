@@ -149,7 +149,7 @@ export default function Budget() {
 
     }, []);
     function makeTable() {
-        const tableBody = tableBodyRef.current 
+        const tableBody = tableBodyRef.current
         if (tableBody) {
             tableBody.innerHTML = ""
             chartData.datasets[1].data.map(item => {
@@ -212,7 +212,7 @@ export default function Budget() {
                     >
                         The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
                     </canvas>
-                    <p>Click on an item in the chart to delete it.</p>
+                    {chartData.datasets[1].length > 0 ? <p>Click on an item in the chart to delete it.</p>: <h2>You do not have any budget items yet. Please add one.</h2>}
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
                     <label htmlFor="name">Item name:</label>
@@ -234,9 +234,9 @@ export default function Budget() {
                     <caption>Items</caption>
                     <thead>
                         <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Category</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Category</th>
                         </tr>
                     </thead>
                     <tbody ref={tableBodyRef}></tbody>
