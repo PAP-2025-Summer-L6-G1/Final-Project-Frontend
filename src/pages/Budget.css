@@ -43,7 +43,21 @@ table {
     border: black solid;
     grid-row: 2/3;
     grid-column: 2/3;
-    th {
+    border-collapse: collapse;
+    th, td {
         border: solid black;
+        padding: 10px;
+        text-align: center;
+    }
+    th {
+        background-color: lightgray;
+    }
+}
+.legend {
+    text-align: center;
+    p {
+        display: inline;
+        width: fit-content;
+        margin: 10px
     }
 }

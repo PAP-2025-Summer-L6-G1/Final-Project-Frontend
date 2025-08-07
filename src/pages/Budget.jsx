@@ -1,5 +1,5 @@
 import Navbar from "../components/Navbar";
-import { Chart, ArcElement, Tooltip, DoughnutController } from 'chart.js'
+import { Chart, ArcElement, Tooltip, DoughnutController, Legend } from 'chart.js'
 import "./Budget.css"
 import { useEffect, useRef } from "react";
 import AccountContext from "../contexts/AccountContext";
@@ -7,7 +7,7 @@ import { signupUser, loginUser, logoutUser, loadLocalAccountData } from '../api/
 import { useState } from "react";
 import { addBudgetItem, deleteBudgetItem, getBudgetItems } from "../api/budget.jsx";
 
-Chart.register(ArcElement, Tooltip, DoughnutController); // These are the elements of the chart that are used. There are others that could be used, but I did not implement them.
+Chart.register(ArcElement, Tooltip, DoughnutController, Legend); // These are the elements of the chart that are used. There are others that could be used, but I did not implement them.
 
 function colorGenerator(context) { // match a color with the name of an item's category or with a category's name
     const object = context.raw;
@@ -38,6 +38,7 @@ export default function Budget() {
     const [hasBudgetItems, setHasBudgetItems] = useState(false);
     const chartCanvas = useRef(null) //maybe add reduced motion options?
     const tableBodyRef = useRef(null)
+    const legendRef = useRef(null)
 
     async function handleFormSubmit(event) {
         event.preventDefault();
@@ -152,13 +153,34 @@ export default function Budget() {
         const tableBody = tableBodyRef.current
         if (tableBody) {
             tableBody.innerHTML = ""
-            chartData.datasets[1].data.map(item => {
+            chartData.datasets[1].data.forEach(item => {
                 tableBody.innerHTML += `
                     <tr>
-                        <th>${item.name}</th>
+                        <td>${item.name}</td>
                         <td>${item.price}</td>
                         <td>${item.category}</td>
                     </tr>`
+            })
+        }
+    }
+    function makeLegend() {
+        const legend = legendRef.current
+        if (legend) {
+            const categories = []
+            legend.innerHTML = ""
+            chartData.datasets[1].data.forEach(category => {
+                if (categories.findIndex((element) => element.category == category.category) == -1) {
+                    categories.push(category.category)
+                }
+
+            })
+            categories.forEach((value) => {
+                const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // For choosing colors
+                const colors = ["red", "blue", "green", "orange", "purple"] // Each color corresponds to the category with the same index
+                const color = colors[categoryNames.indexOf(value)];
+                
+                legend.innerHTML += `<p style="color:${color}">${value}</p>`
+
             })
         }
     }
@@ -171,6 +193,7 @@ export default function Budget() {
         }
         const currentChart = Chart.getChart(chartCanvas.current)?.update()
         makeTable()
+        makeLegend()
     }
 
     return (<>
@@ -180,6 +203,7 @@ export default function Budget() {
         <main>
             <div className="gridContainer">
                 <div className="pieContainer">
+                    <div className="legend" ref={legendRef}></div>
                     <canvas className="chart"
                         ref={chartCanvas}
                         onClick={async (event) => {
@@ -218,7 +242,7 @@ export default function Budget() {
                     >
                         The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
                     </canvas>
-                    {hasBudgetItems ? <p>Click on an item in the chart to delete it.</p>: <h2>You do not have any budget items yet. Please add one.</h2>}
+                    {hasBudgetItems ? <p>Click on an item in the chart to delete it.</p> : <h2>You do not have any budget items yet. Please add one.</h2>}
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
                     <label htmlFor="name">Item name:</label>
@@ -227,7 +251,8 @@ export default function Budget() {
                     <input type="number" id="price" step=".01" min="0.01" inputMode="decimal" />
                     <label htmlFor="category">Category</label>
                     <select id="category" required>
-                        {/* To add another category, add an option here, ideally in alphabetical order, and then add it to categoryNames in colorGenerator and a correctponding color to colors in colorGenerator  */}
+                        {/* To add another category, add an option here, ideally in alphabetical order, and then add it to categoryNames in colorGenerator and a corresponding color to colors in colorGenerator  */
+                        /* Repeat in makeLegend */}
                         <option value="Entertainment">Entertainment</option>
                         <option value="Food">Food</option>
                         <option value="Housing">Housing</option>
