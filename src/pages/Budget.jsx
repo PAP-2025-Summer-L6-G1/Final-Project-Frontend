@@ -105,6 +105,7 @@ export default function Budget() {
                 type: 'doughnut',
                 data: chartData,
                 options: {
+                    maintainAspectRatio: false,
                     plugins: {
                         title: {
                             display: true,
@@ -251,7 +252,7 @@ export default function Budget() {
                     <input type="text" id="name" />
                     <label htmlFor="price">Price:</label>
                     <input type="number" id="price" step=".01" min="0.01" inputMode="decimal" />
-                    <label htmlFor="category">Category</label>
+                    <label htmlFor="category">Category:</label>
                     <select id="category" required>
                         {/* To add another category, add an option here, ideally in alphabetical order, and then add it to categoryNames in colorGenerator and a corresponding color to colors in colorGenerator  */
                         /* Repeat in makeLegend */}
