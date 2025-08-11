@@ -170,7 +170,7 @@ export default function Budget() {
             const categories = []
             legend.innerHTML = ""
             chartData.datasets[1].data.forEach(category => {
-                if (categories.findIndex((element) => element.category == category.category) == -1) {
+                if (categories.findIndex((element) => element == category.category) == -1) {
                     categories.push(category.category)
                 }
 
@@ -249,9 +249,9 @@ export default function Budget() {
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
                     <label htmlFor="name">Item name:</label>
-                    <input type="text" id="name" />
+                    <input type="text" id="name" autoComplete="off" required />
                     <label htmlFor="price">Price:</label>
-                    <input type="number" id="price" step=".01" min="0.01" inputMode="decimal" />
+                    <input type="number" id="price" step=".01" min="0.01" inputMode="decimal" autoComplete="off" required />
                     <label htmlFor="category">Category:</label>
                     <select id="category" required>
                         {/* To add another category, add an option here, ideally in alphabetical order, and then add it to categoryNames in colorGenerator and a corresponding color to colors in colorGenerator  */
