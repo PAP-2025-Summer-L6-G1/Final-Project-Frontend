@@ -1,34 +1,36 @@
 .accordion-parent {
-    padding: 1rem;
-    border-radius: 8px;
+    /*padding: 1rem;*/
+    /*border-radius: 8px;*/
     flex-direction: column;
     align-items: center;
 }
 
 .accordion {
     background-color: #fff;
-    border-radius: 8px;
-    margin: 10px;
-    padding: 5px 15px 5px 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    overflow: hidden;
+    width: 100%;
+    max-width: 720px;     /* or whatever */
+    /*margin: 10px auto;    /* centers the accordion itself */
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 12px;
 }
 
-.accordion .toggle {
-    background-color: #f0e9c3;
-    border: none;
-    width: 100%;
-    text-align: center;
-    padding: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-   /*For the Toggle button (otherwise it shows up at the top right for some reason) */
+.toggle {
     display: flex;
-    justify-content: space-between; 
-    align-items: center;           
-    gap: 10px; 
+    justify-content: space-between;   /* label left, icon right */
+    align-items: center;
+    width: 97%;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background: #f0e9c3;
+    border: 0;
+    cursor: pointer;
+}
+
+/* remove default margins that can nudge layout */
+.toggle p,
+.toggle .toggle-label {
+  margin: 0;
 }
 
 .accordion.toggled .toggle {
@@ -36,25 +38,26 @@
 }
 
 .accordion .content-parent {
-    padding: 10px 15px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    background: transparent;
+    padding: 0 16px 12px;    /* <- match toggle side padding */
+    box-sizing: border-box;
 }
 
 .accordion .item-controls {
     display: flex;
+    align-items: center;
 }
 
 .accordion .item-row {
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #fdfdfd;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;             /* <- align with toggle */
+    padding: 8px 0;
     display: flex;
+    align-items: center;
+    margin-left: 5px;
+    justify-content: space-between;
+    border-radius: 8px;
+    background-color: yellow; /* your debug color */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .item-info {
@@ -97,8 +100,8 @@
 .delete-button {
     background-color: #f99;
     border: none;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 30px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -113,8 +116,8 @@
 }
 
 .item-checkbox {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     margin-right: 10px;
     cursor: pointer;
     accent-color: gray; /* gets overridden dynamically via inline style */

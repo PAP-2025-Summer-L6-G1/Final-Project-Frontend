@@ -14,12 +14,22 @@ const Accordion = ({ itemsByCategory }) => {
         storageContext.updateQuantity(item._id, item.quantity + 1, storageContext.items, storageContext.setItems);
     };
 
-     const decreaseQuantity = (item) => {
-        storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
+    const decreaseQuantity = (item) => {
+        if (item.quantity <= 1) {
+            const confirmDelete = window.confirm(`"${item.name}" is about to be removed. Do you want to delete it?`);
+            if (confirmDelete) {
+                storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+            }
+        } else {
+            storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
+        }
     };
 
     const deleteItem = (item) => {
-        storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+        const confirmDelete = window.confirm(`Are you sure you want to delete "${item.name}"?`);
+        if (confirmDelete) {
+            storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+        }
     };
 
     const handleToggle = (category) => {
@@ -49,21 +59,17 @@ const Accordion = ({ itemsByCategory }) => {
         .filter(([_, items]) =>
             items.some(item => item.storageType === storageContext.currentStorage)
         ).map(([category, items]) => (
-            <div className={`accordion ${openCategories.has(category) ? "toggled" : ""}`} key={category}>
-                <button className="toggle" onClick={() => handleToggle(category)}>
-                    <p>{category.charAt(0).toUpperCase() + category.slice(1)}</p>
-                    <div className="toggle-icon">{openCategories.has(category) ? "-" : "+"}</div>
+            <div className={`accordion ${openCategories.has(category) ? "toggled" : ""}`} key={category} style={{display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <button type="button" className="toggle" onClick={() => handleToggle(category)}>
+                    <span className="toggle-label">
+                        {category.charAt(0).toUpperCase() + category.slice(1)}
+                    </span>
+                    <span className="toggle-icon">{openCategories.has(category) ? "–" : "+"}</span>
                 </button>
                 {openCategories.has(category) && (
                     <div className="content-parent">
                         {items.map((item, idx) => (
                             <div key={item._id || idx} className="item-row">
-                                <input
-                                    type="checkbox"
-                                    className="item-checkbox"
-                                    checked={!!selectedItems[item._id]}
-                                    onChange={() => handleCheckboxToggle(item)}
-                                    />
                                 <div className="item-info">
                                     <div>
                                         <p className="item-name">{item.name}</p>
@@ -82,6 +88,12 @@ const Accordion = ({ itemsByCategory }) => {
                                         </button>
                                     </div>
                                 </div>
+                                <input
+                                    type="checkbox"
+                                    className="item-checkbox"
+                                    checked={!!selectedItems[item._id]}
+                                    onChange={() => handleCheckboxToggle(item)}
+                                    />
                             </div>
                         ))}
                     </div>
