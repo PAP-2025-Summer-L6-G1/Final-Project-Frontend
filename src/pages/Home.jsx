@@ -5,8 +5,13 @@ import AccountContext from '../contexts/AccountContext.jsx'
 import {signupUser, loginUser, logoutUser, loadLocalAccountData} from '../api/signIn.jsx'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import freezerIcon from "../assets/Freezer.svg"
+import fridgeIcon from "../assets/Fridge.svg"
+import veggieIcon from "../assets/veggie-bag.png"
+import healthIcon from "../assets/health-weight.png"
+import cookingIcon from "../assets/cooking.png"
+import budgetIcon from "../assets/budget.png"
 import groceryScene from "../assets/grocery.jpg"
+import HomepageCard from '../components/HomepageCard.jsx'
 function Home() {
   const [loggedInUser, setLoggedInUser] = useState("");
   useEffect(() => {
@@ -19,47 +24,43 @@ function Home() {
       </AccountContext.Provider>
       <main>
         <img id="homepage-background" src={groceryScene} />
-        <div className='card-container'>
-          <div className='homepage-card'>
-            <img src={freezerIcon} className="homepage-card-icon" />
-            <div className="homepage-card-text">
-              <Link to="/inventory"><h2>Inventory</h2></Link>
-              <p>Description</p>
-            </div>
-          </div>
+        <section className='card-container'>
+          <HomepageCard
+            to="/inventory"
+            icon={fridgeIcon}
+            title="Inventory"
+            desc="See what you have in stock"
+          />
 
-          <div className='homepage-card'>
-            <img src={freezerIcon} className="homepage-card-icon" />
-            <div className="homepage-card-text">
-              <Link to="/grocery"><h2>Grocery List</h2></Link>
-              <p>Description</p>
-            </div>
-          </div>
+          <HomepageCard
+            to="/grocery"
+            icon={veggieIcon}
+            title="Grocery List"
+            desc="Add an item to your inventory"
+          />
 
-          <div className='homepage-card'>
-            <img src={freezerIcon} className="homepage-card-icon" />
-            <div className="homepage-card-text">
-              <Link to="/health"><h2>Health</h2></Link>
-              <p>Description</p>
-            </div>
-          </div>
+          <HomepageCard
+            to="/health"
+            icon={healthIcon}
+            title="Health"
+            desc="Keeping track of your health"
+          />
 
-          <div className='homepage-card'>
-            <img src={freezerIcon} className="homepage-card-icon" />
-            <div className="homepage-card-text">
-              <Link to="/recipes"><h2>Recipes</h2></Link>
-              <p>Description</p>
-            </div>
-          </div>
+          <HomepageCard
+            to="/recipes"
+            icon={cookingIcon}
+            title="Recipes"
+            desc="Ready to make some food with ingredients in your inventory?"
+          />
 
-          <div className='homepage-card'>
-            <img src={freezerIcon} className="homepage-card-icon" />
-            <div className="homepage-card-text">
-              <Link to="/budget"><h2>Budget Tracker</h2></Link>
-              <p>Description</p>
-            </div>
-          </div>
-        </div>
+          <HomepageCard
+            to="/budget"
+            icon={budgetIcon}
+            title="Budget Tracker"
+            desc="Keeping track of your budget"
+          />
+        </section>
+
       </main>
     </>
   )
