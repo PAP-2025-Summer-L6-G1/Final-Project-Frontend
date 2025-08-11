@@ -178,7 +178,7 @@ export default function Budget() {
                 const categoryNames = ["Entertainment", "Food", "Housing", "Transportation", "Utilities"] // For choosing colors
                 const colors = ["red", "blue", "green", "orange", "purple"] // Each color corresponds to the category with the same index
                 const color = colors[categoryNames.indexOf(value)];
-                
+
                 legend.innerHTML += `<p style="color:${color}">${value}</p>`
 
             })
@@ -204,44 +204,46 @@ export default function Budget() {
             <div className="gridContainer">
                 <div className="pieContainer">
                     <div className="legend" ref={legendRef}></div>
-                    <canvas className="chart"
-                        ref={chartCanvas}
-                        onClick={async (event) => {
-                            //https://masteringjs.io/tutorials/chartjs/onclick-bar-chart
-                            const clickedObjects = Chart.getChart(event.target).getElementsAtEventForMode(event, "nearest", { intersect: true }, true);
-                            let categories = [];
-                            let numDeleted = 0;
-                            for (let object of clickedObjects) {
-                                if (object.datasetIndex == 1) {
-                                    const actualIndex = object.index - numDeleted;
-                                    const item = chartData.datasets[object.datasetIndex].data[actualIndex];
-                                    const result = await deleteBudgetItem(item._id)
-                                    if (result) { // if the item was successfully deleted, add it to an object in the categories array that is the category name and the price of all the object in that category that were removed
-                                        const indexOfCategory = categories.findIndex((element) => element.category == item.category)
+                    <div className="chartDimensions">
+                        <canvas className="chart"
+                            ref={chartCanvas}
+                            onClick={async (event) => {
+                                //https://masteringjs.io/tutorials/chartjs/onclick-bar-chart
+                                const clickedObjects = Chart.getChart(event.target).getElementsAtEventForMode(event, "nearest", { intersect: true }, true);
+                                let categories = [];
+                                let numDeleted = 0;
+                                for (let object of clickedObjects) {
+                                    if (object.datasetIndex == 1) {
+                                        const actualIndex = object.index - numDeleted;
+                                        const item = chartData.datasets[object.datasetIndex].data[actualIndex];
+                                        const result = await deleteBudgetItem(item._id)
+                                        if (result) { // if the item was successfully deleted, add it to an object in the categories array that is the category name and the price of all the object in that category that were removed
+                                            const indexOfCategory = categories.findIndex((element) => element.category == item.category)
 
-                                        if (indexOfCategory == -1) { // make a list of the amount of money getting removed from the each category 
-                                            categories.push({ category: item.category, price: item.price });
-                                        }
-                                        else {
-                                            categories[indexOfCategory].price += item.price;
-                                        }
+                                            if (indexOfCategory == -1) { // make a list of the amount of money getting removed from the each category 
+                                                categories.push({ category: item.category, price: item.price });
+                                            }
+                                            else {
+                                                categories[indexOfCategory].price += item.price;
+                                            }
 
-                                        chartData.datasets[object.datasetIndex].data.splice(actualIndex, 1); // remove the item from the data
-                                        numDeleted++;
+                                            chartData.datasets[object.datasetIndex].data.splice(actualIndex, 1); // remove the item from the data
+                                            numDeleted++;
+                                        }
                                     }
                                 }
-                            }
-                            for (let category of categories) {
-                                const indexOfCategory = chartData.datasets[0].data.findIndex((element) => element.category == category.category); // index of category in data
-                                if (indexOfCategory != -1) { // if the category is in the data, 
-                                    chartData.datasets[0].data[indexOfCategory].price -= category.price // subtract the price of the deleted items from it
+                                for (let category of categories) {
+                                    const indexOfCategory = chartData.datasets[0].data.findIndex((element) => element.category == category.category); // index of category in data
+                                    if (indexOfCategory != -1) { // if the category is in the data, 
+                                        chartData.datasets[0].data[indexOfCategory].price -= category.price // subtract the price of the deleted items from it
+                                    }
                                 }
-                            }
-                            update()
-                        }}
-                    >
-                        The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
-                    </canvas>
+                                update()
+                            }}
+                        >
+                            The pie chart failed to render. Please check if there is anything preventing canvases from working on your device.
+                        </canvas>
+                    </div>
                     {hasBudgetItems ? <p>Click on an item in the chart to delete it.</p> : <h2>You do not have any budget items yet. Please add one.</h2>}
                 </div>
                 <form onSubmit={handleFormSubmit} id="budgetForm">
