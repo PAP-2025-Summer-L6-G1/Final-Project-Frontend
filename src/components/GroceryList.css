@@ -1,21 +1,31 @@
 .grocery-list-page-container {
     display: flex;
-    height: 100%;   
+    height: 85vh;   
 }
 
 .grocery-list {
-    height: 88vh;
+    height: 100%;
     width: 55%;
     padding: 16px;
+    margin: 40px;
+    margin-right: 15px;
     background-color: whitesmoke;
-    border-right: 2px solid gray;
     overflow-y: auto;
+    max-height: 525px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .grocery-list-form {
     height: 100%;
     width: 45%;
     padding: 16px;
+    margin-right: 14px;
+}
+
+#add-item-form {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
 .send-bag-button {
@@ -52,7 +62,7 @@
 .grocery-header {
     display: flex;
     justify-content: space-between;
-    width: 89%;
+    width: 90%;
     align-items: center;
     margin-bottom: 16px;
 }

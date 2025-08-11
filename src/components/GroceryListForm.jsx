@@ -16,7 +16,7 @@ export default function GroceryList() {
     async function handleAddItem(event) {
         event.preventDefault();
         const success = await groceryContext.newItem({
-            ownerId: accountContext.loggedInUser,
+            ownerId: localStorage.getItem("userId"),
             name: name, 
             quantity: quantity,
             category: category,
@@ -31,7 +31,7 @@ export default function GroceryList() {
             setIsBought(false);
         } 
 
-        await groceryContext.getItems(accountContext.loggedInUser, groceryContext.setItems);
+        await groceryContext.getItems(localStorage.getItem("userId"), groceryContext.setItems);
     }
     
     // combines all the item qty with same name from all storagetype
@@ -59,7 +59,7 @@ export default function GroceryList() {
                         type="text"
                         id="item-name"
                         value={name}
-                        onChange={(event)=> setName(event.target.value)}
+                        onChange={(event)=> setName(event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1).toLowerCase())}
                         required />
                 </div>
                 <div className="form-row">
