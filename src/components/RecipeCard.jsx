@@ -37,21 +37,23 @@ export default function RecipeCard(props) {
                 </div>
             </div>
             <div className="recipe-action-col">
-                <button className="recipe-save-btn" onClick={(event)=>{
+                {/* <button className="recipe-save-btn" onClick={(event)=>{
                     event.preventDefault();
                     props.func(props.recipeId);
-                }}>Save recipe ☆</button>
-                {/* {
+                }}>Save recipe ☆</button> */}
+                {
                     (props.check(props.recipeId))
-                    ? <button className="recipe-save-btn" onClick={(event)=>{
+                    ?
+                    <button className="recipe-saved-btn" onClick={(event)=>{
                         event.preventDefault();
-                        props.func(props.key);
-                    }}>Save recipe ☆</button>
-                    : <button className="recipe-saved-btn" onClick={(event)=>{
-                        event.preventDefault();
-                        props.func(props.key);
+                        props.unsaveFunc(props.recipeId);
                     }}>Unsave recipe ★</button>
-                } */}
+                    :
+                    <button className="recipe-save-btn" onClick={(event)=>{
+                        event.preventDefault();
+                        props.saveFunc(props.recipeId);
+                    }}>Save recipe ☆</button>
+                }
             </div>
         </div>
     );

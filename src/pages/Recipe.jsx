@@ -67,16 +67,17 @@ function Recipe() {
     const [ShownRecipes, SetShownRecipes] = useState([]); //recipes to display
     const [SearchIngred, AddSearchIngred] = useState("");
     const [SearchIngreds, SetSearchIngreds] = useState([]); //applied filtered ingredients
-    
+    const [SavedRecipes, SetSavedRecipes] = useState([]);
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    
     const onSearchSubmit = (event)=> {
         var raw = JSON.stringify({
             "query": SearchQuery,
             "ingreds": SearchIngreds
         });
-    
+        
         var requestOptions = {
             method: 'POST',
             body: raw,
@@ -91,6 +92,10 @@ function Recipe() {
         .then(result => SetShownRecipes(result.results))
         .catch(error => console.log('error', error));
     }
+    
+    useEffect(()=>{
+        console.log("Search ingredients:",SearchIngreds);
+    }, [SearchIngreds])
 
     const onIngredAdd = (event)=> {
         event.preventDefault();
@@ -101,23 +106,39 @@ function Recipe() {
         SetSearchIngreds([...SearchIngreds, SearchIngred]); //creates a new array with all previous ingredients plus the new one at the end
         AddSearchIngred(""); //clear
     }
-
-    useEffect(()=>{
-        console.log(SearchIngreds);
-    }, [SearchIngreds])
-
+    
     const removeIngred = (name)=> {
         SetSearchIngreds(SearchIngreds.filter(ingred => ingred !== name)); //creates a new array that excludes the ingred name
     }
+    
+    const fetchSavedRecipes = () => {
+        fetch(`https://localhost:3002/recipe/search/${localStorage.getItem("userId")}`)
+        .then(response => response.json())
+        .then(result => {
+            // console.log(result);
+            const recipeIds = result.map(obj => obj.recipeId); //cashe the recipeIds
+            SetSavedRecipes(recipeIds);
+        }) 
+        .catch(error => console.log('error', error));
+    }
 
+    useEffect(() => {
+        console.log("SavedRecipes updated:", SavedRecipes);
+    }, [SavedRecipes]);
+    
+    //get saved recipes one time, check every time search
+    useEffect(()=>{
+        fetchSavedRecipes();
+    }, [])
+    
     const saveRecipe = (recipeId)=> {
         // const params = new URLSearchParams({
-        //     apiKey: process.env.SPOONACULAR_KEY,
+            //     apiKey: process.env.SPOONACULAR_KEY,
         //     includeNutrition: "false"
         // });
         // fetch(`https://localhost:3002/recipe/search/${recipeId}/information?${params}`)
         var raw = JSON.stringify({
-            "ownerId": loggedInUser,
+            "ownerId": localStorage.getItem("userId"),
             "recipeId": recipeId
         });
         var requestOptions = {
@@ -128,22 +149,29 @@ function Recipe() {
         };
         fetch(`https://localhost:3002/recipe/save`, requestOptions)
         .then(response => response.json())
+        .then(() => fetchSavedRecipes()) //refresh saved recipes
         .catch(error => console.log('error', error));
     }
-
-    const checkIfSaved = (recipeId)=>{
+    
+    const unsaveRecipe = (recipeId)=> {
         var raw = JSON.stringify({
+            "ownerId": localStorage.getItem("userId"),
             "recipeId": recipeId
         });
         var requestOptions = {
-            method: 'GET',
+            method: 'DELETE',
             body: raw,
             headers: myHeaders,
             redirect: 'follow'
         };
-        fetch(`https://localhost:3002/recipe/check`, requestOptions)
+        fetch(`https://localhost:3002/recipe/unsave`, requestOptions)
         .then(response => response.json())
+        .then(() => fetchSavedRecipes()) //refresh saved recipes
         .catch(error => console.log('error', error));
+    }
+
+    const checkIfSaved = (recipeId)=>{
+        return SavedRecipes.includes(recipeId);
     }
 
 
@@ -174,7 +202,7 @@ function Recipe() {
                 </div>
 
                 {/*setShownRecipes calls a rerender which calls .map again*/}
-                {ShownRecipes.map((recipe)=>{ return <RecipeCard key={recipe.id} recipeId={recipe.id} func={saveRecipe} check={checkIfSaved} image={recipe.image} title={recipe.title} servings={recipe.servings} readyInMinutes={recipe.readyInMinutes} vegetarian={recipe.vegetarian} vegan={recipe.vegan} glutenFree={recipe.glutenFree} dairyFree={recipe.dairyFree}/> })}
+                {ShownRecipes.map((recipe)=>{ return <RecipeCard key={recipe.id} recipeId={recipe.id} saveFunc={saveRecipe} unsaveFunc={unsaveRecipe} check={checkIfSaved} image={recipe.image} title={recipe.title} servings={recipe.servings} readyInMinutes={recipe.readyInMinutes} vegetarian={recipe.vegetarian} vegan={recipe.vegan} glutenFree={recipe.glutenFree} dairyFree={recipe.dairyFree}/> })}
 
             </main>
         </>
