@@ -1,4 +1,4 @@
-const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "http://localhost:3002";
+const hostURL = (process.env.NODE_ENV === "production") ? "https://cfa-summer2025-grocerybuddy-api.onrender.com" : "https://localhost:3002";
 
 const apiSignup = hostURL+ "/signup";
 const apiLogin = hostURL+ "/login";
@@ -84,7 +84,7 @@ export async function loadLocalAccountData(setLoggedInUser) {
   if (username !== null) {
     // Verify that the user is still authenticated on the backend
     try {
-      const response = await fetch(`${hostURL}/health/`, {
+      const response = await fetch(`${hostURL}/verifyToken`, {
         method: 'GET',
         credentials: 'include'
       });
