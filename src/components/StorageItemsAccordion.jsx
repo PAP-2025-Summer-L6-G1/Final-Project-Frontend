@@ -128,9 +128,9 @@ const Accordion = ({ itemsByCategory }) => {
                 )}
             </div>
       ))}
-        <button>
+        {/*<button>
             Add Items
-        </button>
+        </button>*/}
     </div>
   );
 };

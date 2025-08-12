@@ -18,7 +18,7 @@ import { updateStorageType, updateQuantity, deleteItem, getItems } from '../api/
 import Fridge from "../assets/Fridge.svg"
 import Freezer from "../assets/Freezer.svg"
 import Pantry from "../assets/Pantry.svg"
-import GroceryBag from "../assets/GroceryBag.svg"
+import GroceryBag from "../assets/veggie-bag.png"
 
 //CSS
 import './storage.css'

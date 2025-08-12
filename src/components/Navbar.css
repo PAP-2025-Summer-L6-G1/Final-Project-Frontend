@@ -1,5 +1,6 @@
 .navbar {
-    background-color: rgb(83, 110, 7);
+    /*background-color: rgb(83, 110, 7);*/
+    background-color: #5da73d;
     height: fit-content;
     display: flex;
     align-items: center;
@@ -9,6 +10,11 @@
     padding: 5px 1%;
     flex-direction: row;
 }
+
+.logo {
+    max-width: 50px;
+}
+
 a {
     margin: 0px 5px;
     text-decoration: none;

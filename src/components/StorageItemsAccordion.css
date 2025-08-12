@@ -13,8 +13,10 @@
 
 .accordion-clear{
     background: #f0e9c3;
-    padding: 5px;
+    padding: 10px;
     color: black;
+    margin-bottom: 20px;
+    font-weight: 500;
 }
 
 .accordion {
