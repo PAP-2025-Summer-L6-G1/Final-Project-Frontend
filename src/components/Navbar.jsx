@@ -11,9 +11,7 @@ export default function Navbar() {
     return (
         <header className="navbar">
             <nav>
-                <Link to="/">
-                <img src={logo} className="logo"/>
-                </Link>
+                <Link to="/"><img src={logo} className="logo"/></Link>
                 <Link to="/inventory">Inventory</Link>
                 <Link to="/grocery">Grocery</Link>
                 <Link to="/health">Health</Link>

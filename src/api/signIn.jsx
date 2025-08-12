@@ -114,7 +114,6 @@ export function saveLocalAccountData(username, userId) {
 
 export function clearLocalAccountData() {
   localStorage.removeItem("username");
-  localStorage.removeItem("userId")
 }
 
 
