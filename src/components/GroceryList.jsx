@@ -67,13 +67,13 @@ export default function GroceryList() {
                         </select>
                     </div>
                     <div className="send-bag">
-                        <button onClick={sendAllBoughtToBag}>Send bought to bag</button>
+                        <button onClick={sendAllBoughtToBag}>Send selected to bag</button>
                     </div>
             
                 </div>
                 {filteredItems.length === 0 ? (<p>No items in list for selected category.</p>) : null}
-                {Object.entries(groupedItems).map(([category, items]) => (
-                    <div className="category-group">
+                {Object.entries(groupedItems).map(([category, items], index) => (
+                    <div className="category-group" key={index}>
                         <h3 className="category-label">{category}</h3>
                         {items.map((item, index) => (
                             <GroceryListItem key={index} item={item} />
