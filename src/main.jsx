@@ -5,7 +5,6 @@ import Home from './pages/Home.jsx'
 import Storage from './pages/storagePage.jsx'
 import List from './pages/List.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import Budget from './pages/Budget.jsx'
 
 
 const router = createBrowserRouter([
@@ -24,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
   path: "/budget",
-  element: <Budget />,
+  element: <Home />,
   },
 
   {
@@ -39,5 +38,7 @@ const router = createBrowserRouter([
 
 
 createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>,
 )
