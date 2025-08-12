@@ -4,6 +4,7 @@ import './index.css'
 import Home from './pages/Home.jsx'
 import Storage from './pages/storagePage.jsx'
 import List from './pages/List.jsx'
+import Budget from './pages/Budget.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 
 
