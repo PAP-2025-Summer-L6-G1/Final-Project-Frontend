@@ -1,0 +1,18 @@
+.ingred {
+    display: flex;
+    color: black;
+    background-color: rgb(199, 158, 120);
+    border: 100px;
+    border-color: black;
+    border-radius: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    gap: 3px;
+    align-items: center;
+    height: 25px;
+    padding: 3px;
+}
+
+.ingred:hover {
+    cursor: pointer;
+}
