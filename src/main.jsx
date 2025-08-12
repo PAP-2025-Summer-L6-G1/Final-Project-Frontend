@@ -14,6 +14,14 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
+    path: "/inventory",
+    element: <Storage />
+  },
+  {
+    path: "/grocery",
+    element: <List />
+  },
+  {
   path: "/health",
   element: <Home />,
   },
@@ -23,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
   path: "/budget",
-  element: <Home />,
+  element: <Budget />,
   },
 
   {
