@@ -1,15 +1,20 @@
+.storage-deposit{
+  top: 0px;               
+  height: max-content;   
+}
+
 .card {
-  background-color: white;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
-  max-width: 100%;
-  transition: transform 0.2s ease;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    max-width: 100%;
+    transition: transform 0.2s ease;
 }
 
 .card:hover {

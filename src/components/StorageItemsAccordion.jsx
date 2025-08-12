@@ -1,5 +1,6 @@
 import { useState , useContext} from "react";
 import StorageContext from "../contexts/StorageContext";
+import GroceryListForm from "./GroceryListForm"
 import "./StorageItemsAccordion.css";
 import Trash from "../assets/Trash.svg"
 
@@ -10,27 +11,51 @@ const Accordion = ({ itemsByCategory }) => {
     const selectedItems = storageContext.selectedItems;
     const setSelectedItems = storageContext.setSelectedItems;
 
-    const increaseQuantity = (item) => {
-        storageContext.updateQuantity(item._id, item.quantity + 1, storageContext.items, storageContext.setItems);
+    const increaseQuantity = async (item) => {
+        await storageContext.updateQuantity(item._id, item.quantity + 1, storageContext.items, storageContext.setItems);
     };
 
-    const decreaseQuantity = (item) => {
+    const decreaseQuantity = async (item) => {
         if (item.quantity <= 1) {
             const confirmDelete = window.confirm(`"${item.name}" is about to be removed. Do you want to delete it?`);
             if (confirmDelete) {
-                storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+                await storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
             }
         } else {
-            storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
+            await storageContext.updateQuantity(item._id, item.quantity - 1, storageContext.items, storageContext.setItems);
         }
     };
 
-    const deleteItem = (item) => {
+    const deleteItem = async (item) => {
         const confirmDelete = window.confirm(`Are you sure you want to delete "${item.name}"?`);
         if (confirmDelete) {
-            storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
+            await storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
         }
     };
+
+    const handleClear = async () => {
+        //We need some way to get our selectedLength, but it's a set T-T
+        // We have to gather all the ids that are actually selected (value === true)
+        const selectedIds = Object.entries(selectedItems)
+            .filter(([_, isSelected]) => Boolean(isSelected))
+            .map(([id]) => id);
+
+        if (selectedIds.length === 0) return; // nothing to do
+
+        //Finally we can see our newly mapped array's length
+        const ok = window.confirm(
+            `Are you sure you want to delete ${selectedIds.length} selected item${selectedIds.length === 1 ? "" : "s"}?`
+        );
+        if (!ok) return;
+
+        // Delete each selected item (the delete Item is async)
+        for (const id of selectedIds) {
+            await storageContext.deleteItem(id, storageContext.items, storageContext.setItems);
+        }
+
+        // Clear selection
+        setSelectedItems({});
+        };
 
     const handleToggle = (category) => {
         setOpenCategories(prev => {
@@ -55,6 +80,9 @@ const Accordion = ({ itemsByCategory }) => {
 
   return (
     <div className="accordion-parent">
+        <button className="accordion-clear" onClick={() => handleClear()}>
+            Clear Selected
+        </button>
         {Object.entries(itemsByCategory)
         .filter(([_, items]) =>
             items.some(item => item.storageType === storageContext.currentStorage)
@@ -100,6 +128,9 @@ const Accordion = ({ itemsByCategory }) => {
                 )}
             </div>
       ))}
+        <button>
+            Add Items
+        </button>
     </div>
   );
 };

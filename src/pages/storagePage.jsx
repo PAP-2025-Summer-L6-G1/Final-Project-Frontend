@@ -63,18 +63,10 @@ function Storage() {
     loadLocalAccountData(setLoggedInUser);
   }, [])
 
-  // //get item of current login  user 
-  // useEffect(() => {
-  //   if (loggedInUser !== "") {
-  //     getItems(loggedInUser, setItems); // correct order
-  //   }
-  // }, [loggedInUser, setItems]);
-
   useEffect(() => {
   if (loggedInUser) {
     getItems(loggedInUser, setItems);
   } else {
-    // ✅ Clear out items when logged out
     setItems([]);
     setItemsByCategory({});
     setSelectedItems({});
@@ -105,7 +97,6 @@ function Storage() {
     <AccountContext.Provider value={{loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser}}>
       <StorageContext.Provider value={{items, setItems, getItems, currentStorage, setCurrentStorage, selectedItems, setSelectedItems, updateStorageType, updateQuantity, deleteItem, storages}}>
           <Navbar />
-          <h1>Storage</h1>
           <div className="storage-select">
             <StorageSelect />
           </div>

@@ -1,37 +1,51 @@
+/**{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}*/
+
 .accordion-parent {
-    /*padding: 1rem;*/
-    /*border-radius: 8px;*/
+    /*padding: 1rem;
+    border-radius: 8px;*/
     flex-direction: column;
     align-items: center;
 }
 
+.accordion-clear{
+    background: #f0e9c3;
+    padding: 5px;
+    color: black;
+}
+
 .accordion {
-    background-color: #fff;
+    /*background-color: #fff;*/
     width: 100%;
-    max-width: 720px;     /* or whatever */
-    /*margin: 10px auto;    /* centers the accordion itself */
+    max-width: 720px;     
+    /*margin: 10px auto;   */ 
     padding: 0;
     box-sizing: border-box;
     border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.accordion:last-child {
+    margin-bottom: 0;
 }
 
 .toggle {
     display: flex;
-    justify-content: space-between;   /* label left, icon right */
+    justify-content: space-between;   
     align-items: center;
-    width: 97%;
+    width: calc(100% - 10px);
     padding: 12px 16px;
     box-sizing: border-box;
     background: #f0e9c3;
+    color: black;
+    font-weight: 700;
     border: 0;
     cursor: pointer;
 }
 
-/* remove default margins that can nudge layout */
-.toggle p,
-.toggle .toggle-label {
-  margin: 0;
-}
 
 .accordion.toggled .toggle {
     background-color: #f0e9c3;
@@ -39,7 +53,8 @@
 
 .accordion .content-parent {
     background: transparent;
-    padding: 0 16px 12px;    /* <- match toggle side padding */
+    padding: 5px 10px 12px; 
+    margin-right: 10px;   
     box-sizing: border-box;
 }
 
@@ -49,15 +64,15 @@
 }
 
 .accordion .item-row {
-    width: 100%;             /* <- align with toggle */
-    padding: 8px 0;
+    width: 100%;            
+    padding: 0px 0 8px 8px;
     display: flex;
     align-items: center;
-    margin-left: 5px;
     justify-content: space-between;
     border-radius: 8px;
-    background-color: yellow; /* your debug color */
+    background-color: white; 
     box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
 }
 
 .item-info {
@@ -120,6 +135,6 @@
     height: 20px;
     margin-right: 10px;
     cursor: pointer;
-    accent-color: gray; /* gets overridden dynamically via inline style */
+    accent-color: gray; 
 }
 
