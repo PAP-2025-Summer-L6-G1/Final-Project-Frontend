@@ -1,9 +1,13 @@
-import logo from "../assets/logo.svg"
+import logo from "../assets/GroceryBag.svg"
 import "./Navbar.css"
 import Accounts from "./Login.jsx"
 import {Link} from "react-router-dom"
+import { useContext } from "react"
+import AccountContext from "../contexts/AccountContext"
 
 export default function Navbar() {
+    const { loggedInUser } = useContext(AccountContext);
+    
     return (
         <header className="navbar">
             <nav>

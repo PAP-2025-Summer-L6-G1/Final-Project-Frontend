@@ -14,14 +14,34 @@
     display: flex;
     align-items: center;
     margin-bottom: 16px;
+#add-item-form {
+    width: 90%;
+    padding: 20px;
+    margin:20px auto;
+    background-color: whitesmoke;
 }
 
+#add-item-form label {
+    color: black;
+    width: 120px;
+}
+
+#add-item-form .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+#add-item-form .form-row input, 
+#add-item-form .form-row select {
+    flex: 1;
 #add-item-form .form-row input, 
 #add-item-form .form-row select {
     flex: 1;
     padding: 4px;
     margin-bottom: 4px;
     width: 50%;
+    border: 1px solid lightgray;
     border: 1px solid lightgray;
 }
 
