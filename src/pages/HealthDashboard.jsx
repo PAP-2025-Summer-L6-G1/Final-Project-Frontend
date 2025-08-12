@@ -1,12 +1,23 @@
-import { useState, useEffect, useContext } from 'react';
-import AccountContext from '../contexts/AccountContext';
+import { useState, useEffect } from 'react';
 import HealthEntryForm from '../components/HealthEntryForm';
 import HealthEntryList from '../components/HealthEntryList';
 import HealthStats from '../components/HealthStats';
 import './HealthDashboard.css';
 
 function HealthDashboard() {
-  const { loggedInUser } = useContext(AccountContext);
+  // Handle authentication locally for this component
+  const [loggedInUser, setLoggedInUser] = useState("");
+  
+  // Load authentication state when component mounts
+  useEffect(() => {
+    const username = localStorage.getItem("username");
+    if (username) {
+      setLoggedInUser(username);
+    }
+  }, []);
+  
+  console.log('HealthDashboard - loggedInUser:', loggedInUser);
+  console.log('HealthDashboard - loggedInUser type:', typeof loggedInUser);
   
   // Use the same userId that the backend is hardcoded to use
   const userId = '507f1f77bcf86cd799439011';

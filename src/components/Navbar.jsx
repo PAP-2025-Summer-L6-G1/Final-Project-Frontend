@@ -20,13 +20,6 @@ export default function Navbar() {
                 <Link to="/recipes">Recipes</Link>
                 <Link to="/budget">Budget</Link>
             </nav>
-            {loggedInUser && (
-                    <div className="nav-links">
-                        <Link to="/health" className="nav-link">
-                            Health Dashboard
-                        </Link>
-                    </div>
-                )}
             <Accounts/>
         </header>
     )

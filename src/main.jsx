@@ -17,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
   path: "/health",
-  element: <Home />,
+  element: <HealthDashboard />,
   },
   {
   path: "/recipes",
