@@ -21,14 +21,6 @@ const StorageDeposit = () => {
             } else {
                 storageContext.updateStorageType(item._id, name, storageContext.items, storageContext.setItems);
             }
-            const existingBagItem = storageContext.items.find((bagItem) => (bagItem.storageType === name && bagItem.name.toLowerCase() === item.name.toLowerCase())); 
-            if (existingBagItem) { // if item already exist we sum the quantity
-                const newQuantity = existingBagItem.quantity + item.quantity;
-                storageContext.updateQuantity(existingBagItem._id, newQuantity, storageContext.items, storageContext.setItems);
-                storageContext.deleteItem(item._id, storageContext.items, storageContext.setItems);
-            } else {
-                storageContext.updateStorageType(item._id, name, storageContext.items, storageContext.setItems);
-            }
         }
 
         setSelectedItems({}); // Clear selectedItems object

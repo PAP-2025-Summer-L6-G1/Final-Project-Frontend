@@ -3,7 +3,6 @@ import GroceryContext from "../contexts/GroceryContext";
 import AccountContext from "../contexts/AccountContext";
 import "./GroceryListForm.css";
 import RestockList from "./RestockList"
-import RestockList from "./RestockList"
 
 export default function GroceryList(props) {
     const groceryContext = useContext(GroceryContext);
@@ -53,9 +52,6 @@ export default function GroceryList(props) {
     const lowStockItems = Array.from(lowStockItemsMap.values()).filter((item) => item.quantity <= 2);
 
     return (
-        <>
-            <form id="add-item-form" onSubmit={handleAddItem}>
-                <label id="owner-label">Owner: {accountContext.loggedInUser === "" ? "Guest" : accountContext.loggedInUser}</label>
         <>
             <form id="add-item-form" onSubmit={handleAddItem}>
                 <label id="owner-label">Owner: {accountContext.loggedInUser === "" ? "Guest" : accountContext.loggedInUser}</label>
