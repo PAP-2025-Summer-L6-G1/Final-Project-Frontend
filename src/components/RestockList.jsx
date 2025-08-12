@@ -9,9 +9,11 @@ export default function RestockList(props) {
         return <div className="restock-item">No recommended restock items yet.</div>
     }
 
+    const sortedItems = [...props.lowStockItems].sort((a, b) => a.quantity - b.quantity);
+
     return (
         <div className="restock-list">
-            {props.lowStockItems.map((item)=> (
+            {sortedItems.map((item)=> (
                 <RestockRow item={item} />
             ))}
         </div>
@@ -28,7 +30,7 @@ function RestockRow(props) {
         const existingItem = groceryContext.items.find((item) => (item.storageType === "list" && item.name.toLowerCase() === props.item.name.toLowerCase()))
         const newQty = existingItem ? existingItem.quantity += amount : amount
         await groceryContext.newItem({
-            ownerId: accountContext.loggedInUser,
+            ownerId: localStorage.getItem("userId"),
             name: props.item.name,
             quantity: newQty,
             category: props.item.category,
@@ -37,7 +39,7 @@ function RestockRow(props) {
         }, groceryContext.items, groceryContext.setItems);
 
         setAmount(1)
-        await groceryContext.getItems(accountContext.loggedInUser, groceryContext.setItems);
+        await groceryContext.getItems(localStorage.getItem("userId"), groceryContext.setItems);
     }
 
     return (
