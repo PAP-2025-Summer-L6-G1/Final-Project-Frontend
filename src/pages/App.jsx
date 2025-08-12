@@ -10,7 +10,10 @@ import { Outlet } from 'react-router-dom'
 function App() {
   const [loggedInUser, setLoggedInUser] = useState("");
   useEffect(() => {
-    loadLocalAccountData(setLoggedInUser);
+    const initializeAuth = async () => {
+      await loadLocalAccountData(setLoggedInUser);
+    };
+    initializeAuth();
   }, [])
   return (
     <>

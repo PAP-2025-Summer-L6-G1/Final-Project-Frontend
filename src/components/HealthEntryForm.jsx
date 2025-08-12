@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './HealthEntryForm.css';
 
-function HealthEntryForm({ onSubmit, onCancel, entry }) {
+function HealthEntryForm({ onSubmit, onCancel, entry, updateSuccess }) {
   const [formData, setFormData] = useState({
     type: 'weight',
     value: '',
@@ -35,6 +35,7 @@ function HealthEntryForm({ onSubmit, onCancel, entry }) {
   });
 
   const [showExerciseForm, setShowExerciseForm] = useState(false);
+  // const [updateSuccess, setUpdateSuccess] = useState(false); // This line is removed
 
   useEffect(() => {
     if (entry) {
@@ -58,6 +59,9 @@ function HealthEntryForm({ onSubmit, onCancel, entry }) {
         duration: entry.duration || '',
         exercises: entry.exercises || []
       });
+      // setUpdateSuccess(false); // Reset success state when editing - This line is removed
+    } else {
+      // setUpdateSuccess(false); // Reset success state for new entries - This line is removed
     }
   }, [entry]);
 
@@ -82,6 +86,12 @@ function HealthEntryForm({ onSubmit, onCancel, entry }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // If update was successful, just close the form
+    if (updateSuccess) {
+      onCancel();
+      return;
+    }
     
     const submitData = {
       type: formData.type,
@@ -112,9 +122,19 @@ function HealthEntryForm({ onSubmit, onCancel, entry }) {
       submitData.exercises = formData.exercises;
     }
 
-    if (entry) {
+    console.log('Form submission - entry prop:', entry);
+    console.log('Form submission - submitData:', submitData);
+    
+    if (entry && entry._id) {
+      // Don't set updateSuccess immediately, let the parent handle the success
+      console.log('EDITING MODE: Submitting update for entry:', entry);
+      console.log('Entry ID:', entry._id);
+      console.log('Entry ID type:', typeof entry._id);
+      console.log('Entry keys:', Object.keys(entry));
+      
       onSubmit(entry._id, submitData);
     } else {
+      console.log('CREATE MODE: Submitting new entry');
       onSubmit(submitData);
     }
   };
@@ -462,7 +482,7 @@ function HealthEntryForm({ onSubmit, onCancel, entry }) {
 
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">
-              {entry ? 'Update Entry' : 'Add Entry'}
+              {updateSuccess ? 'OK' : (entry ? 'Update Entry' : 'Add Entry')}
             </button>
             <button type="button" className="btn btn-secondary" onClick={onCancel}>
               Cancel

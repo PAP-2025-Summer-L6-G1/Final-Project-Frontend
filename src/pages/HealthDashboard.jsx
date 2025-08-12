@@ -8,8 +8,8 @@ import './HealthDashboard.css';
 function HealthDashboard() {
   const { loggedInUser } = useContext(AccountContext);
   
-  // For testing purposes, create a mock user if not logged in
-  const testUser = loggedInUser || { userId: '507f1f77bcf86cd799439011', username: 'testuser' };
+  // Use the same userId that the backend is hardcoded to use
+  const userId = '507f1f77bcf86cd799439011';
   
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,16 +17,17 @@ function HealthDashboard() {
   const [selectedType, setSelectedType] = useState('all');
   const [showForm, setShowForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
   const fetchEntries = async () => {
-    if (!testUser || !testUser.userId) {
-      console.log('testUser not available yet');
+    if (!loggedInUser) {
+      console.log('User not logged in');
       return;
     }
     
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3002/health/${testUser.userId}?type=${selectedType !== 'all' ? selectedType : ''}`, {
+      const response = await fetch(`http://localhost:3002/health/?type=${selectedType !== 'all' ? selectedType : ''}`, {
         credentials: 'include'
       });
       
@@ -36,6 +37,9 @@ function HealthDashboard() {
       
       const data = await response.json();
       console.log('Fetched entries:', data);
+      console.log('First entry structure:', data[0]);
+      console.log('First entry _id:', data[0]?._id);
+      console.log('First entry keys:', data[0] ? Object.keys(data[0]) : 'No entries');
       setEntries(data);
     } catch (err) {
       setError(err.message);
@@ -45,10 +49,31 @@ function HealthDashboard() {
   };
 
   useEffect(() => {
-    if (testUser && testUser.userId) {
+    if (loggedInUser) {
       fetchEntries();
+    } else {
+      // Clear entries when user logs out
+      setEntries([]);
+      setLoading(false);
+      setError(null);
     }
-  }, [selectedType, testUser]);
+  }, [selectedType, loggedInUser]);
+
+  // If user is not logged in, show a message instead of the dashboard
+  if (!loggedInUser) {
+    return (
+      <div className="health-dashboard">
+        <div className="dashboard-header">
+          <h1>Personal Health Dashboard</h1>
+        </div>
+        <div className="dashboard-content">
+          <div className="login-required">
+            <p>Please log in to view your health dashboard.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const handleCreateEntry = async (entryData) => {
     try {
@@ -92,6 +117,9 @@ function HealthDashboard() {
 
   const handleUpdateEntry = async (entryId, updateData) => {
     try {
+      console.log('Updating entry with ID:', entryId);
+      console.log('Update data:', updateData);
+      
       // Optimistic update - update the entry immediately in the UI
       setEntries(prev => prev.map(entry => 
         entry._id === entryId 
@@ -120,6 +148,9 @@ function HealthDashboard() {
       setEntries(prev => prev.map(entry => 
         entry._id === entryId ? { ...updatedEntry, isOptimistic: false } : entry
       ));
+      
+      // Set success state to show "OK" button
+      setUpdateSuccess(true);
     } catch (err) {
       // Revert the optimistic update on error
       setEntries(prev => prev.map(entry => 
@@ -165,8 +196,27 @@ function HealthDashboard() {
   };
 
   const handleEditEntry = (entry) => {
+    console.log('handleEditEntry called with:', entry);
+    console.log('Entry _id:', entry._id);
+    console.log('Entry type:', typeof entry._id);
     setEditingEntry(entry);
     setShowForm(true);
+    setUpdateSuccess(false); // Reset success state when starting to edit
+  };
+
+  const handleFormSubmit = (entryId, updateData) => {
+    console.log('handleFormSubmit called with:');
+    console.log('entryId:', entryId);
+    console.log('updateData:', updateData);
+    console.log('entryId type:', typeof entryId);
+    
+    if (entryId && updateData) {
+      // Update existing entry - both parameters should exist
+      handleUpdateEntry(entryId, updateData);
+    } else {
+      // Create new entry - entryId is actually the form data when creating
+      handleCreateEntry(entryId);
+    }
   };
 
   return (
@@ -235,12 +285,14 @@ function HealthDashboard() {
         <div className="main-content">
           {showForm && (
             <HealthEntryForm
-              onSubmit={editingEntry ? handleUpdateEntry : handleCreateEntry}
+              onSubmit={handleFormSubmit}
               onCancel={() => {
                 setShowForm(false);
                 setEditingEntry(null);
+                setUpdateSuccess(false);
               }}
               entry={editingEntry}
+              updateSuccess={updateSuccess}
             />
           )}
 

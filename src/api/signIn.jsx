@@ -78,10 +78,31 @@ export async function logoutUser(setLoggedInUser) {
   return false;
 }
 
-export function loadLocalAccountData(setLoggedInUser) {
+export async function loadLocalAccountData(setLoggedInUser) {
   const username = localStorage.getItem("username");
   if (username !== null) {
-    setLoggedInUser(username);
+    // Verify that the user is still authenticated on the backend
+    try {
+      const response = await fetch(`${hostURL}/health/`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+      
+      if (response.status === 200) {
+        // User is still authenticated
+        setLoggedInUser(username);
+      } else {
+        // User is no longer authenticated, clear local data
+        console.log('User session expired, clearing local data');
+        clearLocalAccountData();
+        setLoggedInUser("");
+      }
+    } catch (error) {
+      // Network error or other issue, clear local data to be safe
+      console.log('Error validating user session, clearing local data');
+      clearLocalAccountData();
+      setLoggedInUser("");
+    }
   }
 }
 
