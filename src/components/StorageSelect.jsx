@@ -1,10 +1,6 @@
 import { useRef , useContext} from "react";
 import "./StorageSelect.css";
 import StorageContext from "../contexts/StorageContext";
-import Fridge from "../assets/Fridge.svg"
-import Freezer from "../assets/Freezer.svg"
-import Pantry from "../assets/Pantry.svg"
-import GroceryBag from "../assets/GroceryBag.svg"
 import { handleMouseLeave, handleMouseMove } from "../utils/tilt-hover";
 
 const StorageSelect = () => {
@@ -14,32 +10,8 @@ const StorageSelect = () => {
     const setSelectedItems = storageContext.setSelectedItems;
     const cardRefs = useRef({});
 
-    const storages = [
-      {
-        key: "fridge",
-        name: "Fridge",
-        src: Fridge,
-        message: "The refrigerator keeps food cold (typically between 32°F and 40°F or 0°C and 4°C)."
-      },
-      {
-        key: "freezer",
-        name: "Freezer",
-        src: Freezer,
-        message: "The freezer is designed for long-term storage, maintaining temperatures at or below 0°F (-18°C)."
-      },
-      {
-        key: "pantry",
-        name: "Pantry",
-        src: Pantry,
-        message: "A pantry's primary purpose is to provide storage for food and kitchen supplies at room temperature."
-      },
-      {
-        key: "bag", // match default state and context
-        name: "Grocery Bag",
-        src: GroceryBag,
-        message: "Items recently bought from the store typically arrive in grocery bags. These items have not been distributed yet."
-      }
-    ];
+    const storages = storageContext.storages
+
 
     return (
         <div className="select-card-container">
