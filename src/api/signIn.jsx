@@ -30,14 +30,14 @@ export async function signupUser(user, setLoggedInUser) {
     const response = await fetch(apiSignup, postSignupParamsWithBody);
     if (response.status === 201) {
       setLoggedInUser(user.username);
-      saveLocalAccountData(user.username);
-
+      const json = await response.json();
+      saveLocalAccountData(user.username, json.userId);
       return true;
     }
   } catch (error) {
     console.error(error);
   }
-
+  
   return false;
 }
 
@@ -47,11 +47,12 @@ export async function loginUser(user, setLoggedInUser) {
       ...postLoginParams,
       body: JSON.stringify(user)
     };
-
+    
     const response = await fetch(apiLogin, postLoginParamsWithBody);
     if (response.status === 200) {
       setLoggedInUser(user.username);
-      saveLocalAccountData(user.username);
+      const json = await response.json();
+      saveLocalAccountData(user.username, json.userId);
 
       return true;
     }
@@ -106,12 +107,14 @@ export async function loadLocalAccountData(setLoggedInUser) {
   }
 }
 
-export function saveLocalAccountData(username) {
+export function saveLocalAccountData(username, userId) {
   localStorage.setItem("username", username);
+  localStorage.setItem("userId", userId)
 }
 
 export function clearLocalAccountData() {
   localStorage.removeItem("username");
+  localStorage.removeItem("userId")
 }
 
 
