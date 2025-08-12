@@ -1,4 +1,4 @@
-import logo from "../assets/logo.svg"
+import logo from "../assets/GroceryBag.svg"
 import "./Navbar.css"
 import Accounts from "./Login.jsx"
 import {Link} from "react-router-dom"

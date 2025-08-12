@@ -24,6 +24,13 @@ export default function GroceryListItem(props) {
     }
 
     async function handleSave() {
+        const duplicate = groceryContext.items.some((currItem) => currItem._id !== item._id && currItem.name.toLowerCase() === newName.trim().toLowerCase() && currItem.storageType === item.storageType)
+
+        if (duplicate) {
+            alert("An item with that name already exists.");
+            return;
+        }
+
         groceryContext.updateName(item._id, newName, groceryContext.items, groceryContext.setItems);
         groceryContext.updateQuantity(item._id, newQuantity, groceryContext.items, groceryContext.setItems);
         setEditing(false);
@@ -75,7 +82,11 @@ export default function GroceryListItem(props) {
             </div>
 
             <div className="item-container-right">
-                {editing ? (<input value={newQuantity} type="number" onChange={(event) => setNewQuantity(Number(event.target.value))}/>) : (
+                {editing ? (<input value={newQuantity} type="number" step="1" min="0" onChange={(event) => {
+                    if (/^\d*$/.test(event.target.value)) {
+                        setNewQuantity(Number(event.target.value));
+                    }
+                }}/>) : (
                     <>
                         <button type="button" className="quantity-button" onClick={() => handleQuantityChange(-1)}>-</button>
                             <span className="item-quantity">{item.quantity}</span>

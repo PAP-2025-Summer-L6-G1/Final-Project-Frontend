@@ -59,6 +59,8 @@ const deleteOneParams = {
 
 export async function newItem(item, items, setItems){ // [items, setItems] = useState()...
   try {
+      const newCapitalizedName = item.name.charAt(0).toUpperCase() + item.name.slice(1);
+      item.name = newCapitalizedName
 
       const postNewParamsWithBody = {
       ...postNewParams,
@@ -118,10 +120,12 @@ export async function updateQuantity(itemId, newQuantity, items, setItems){// [i
 
 export async function updateName(itemId, newName, items, setItems){// [items, setItems] = useState()...
     try {
+        const newCapitalizedName = newName.charAt(0).toUpperCase() + newName.slice(1);
+        
         const response = await fetch(apiUpdateItem + itemId, {
             ...updateOneParams,
             body: JSON.stringify({
-                name: newName
+                name: newCapitalizedName
             })
         });
         const prev = items;
@@ -131,7 +135,7 @@ export async function updateName(itemId, newName, items, setItems){// [items, se
         })
         if (response.status === 200) {
         const item = items.find(item => item._id === itemId);
-        item.name = newName;
+        item.name = newCapitalizedName;
         setItems([...items]);
       }
     } catch (error) {

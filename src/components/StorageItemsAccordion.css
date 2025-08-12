@@ -1,62 +1,90 @@
+/**{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}*/
+
 .accordion-parent {
-    padding: 1rem;
-    border-radius: 8px;
+    /*padding: 1rem;
+    border-radius: 8px;*/
     flex-direction: column;
     align-items: center;
 }
 
-.accordion {
-    background-color: #fff;
-    border-radius: 8px;
-    margin: 10px;
-    padding: 5px 15px 5px 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    overflow: hidden;
+.accordion-clear{
+    background: #f0e9c3;
+    padding: 10px;
+    color: black;
+    margin-bottom: 20px;
+    font-weight: 500;
 }
 
-.accordion .toggle {
-    background-color: #f0e9c3;
-    border: none;
+.accordion {
+    /*background-color: #fff;*/
     width: 100%;
-    text-align: center;
-    padding: 12px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
+    max-width: 720px;     
+    /*margin: 10px auto;   */ 
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.accordion:last-child {
+    margin-bottom: 0;
+}
+
+.toggle {
+    display: flex;
+    justify-content: space-between;   
+    align-items: center;
+    width: calc(100% - 10px);
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background: #f0e9c3;
+    color: black;
+    font-weight: 700;
+    border: 0;
     cursor: pointer;
 }
+
 
 .accordion.toggled .toggle {
     background-color: #f0e9c3;
 }
 
 .accordion .content-parent {
-    padding: 10px 15px;
-    background-color: white;
+    background: transparent;
+    padding: 5px 10px 12px; 
+    margin-right: 10px;   
+    box-sizing: border-box;
+}
+
+.accordion .item-controls {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    align-items: center;
 }
 
 .accordion .item-row {
+    width: 100%;            
+    padding: 0px 0 8px 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
     border-radius: 8px;
-    background-color: #fdfdfd;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background-color: white; 
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
 }
 
 .item-info {
-    display: flex;
     align-items: center;
     gap: 10px;
     flex: 1;
 }
 
 .item-name {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .item-expiry {
@@ -73,7 +101,7 @@
 .quantity-controls button {
     background-color: #ccc;
     border: none;
-    padding: 4px 8px;
+    padding: 1px 10px;
     border-radius: 4px;
     font-weight: bold;
     cursor: pointer;
@@ -89,8 +117,8 @@
 .delete-button {
     background-color: #f99;
     border: none;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 30px;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
@@ -105,10 +133,10 @@
 }
 
 .item-checkbox {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     margin-right: 10px;
     cursor: pointer;
-    accent-color: gray; /* gets overridden dynamically via inline style */
+    accent-color: gray; 
 }
 
