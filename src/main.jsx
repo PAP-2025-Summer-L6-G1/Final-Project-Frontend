@@ -4,11 +4,8 @@ import './index.css'
 import Home from './pages/Home.jsx'
 import Storage from './pages/storagePage.jsx'
 import List from './pages/List.jsx'
-import HealthDashboard from './pages/HealthDashboard.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import Budget from './pages/Budget.jsx'
-import Recipe from './pages/Recipe.jsx'
-import SavedRecipe from './pages/SavedRecipe.jsx'
+
 
 const router = createBrowserRouter([
   
@@ -18,20 +15,25 @@ const router = createBrowserRouter([
   },
   {
   path: "/health",
-  element: <HealthDashboard />,
+  element: <Home />,
   },
   {
   path: "/recipes",
-  element: <Recipe />,
+  element: <Home />,
   },
   {
   path: "/budget",
   element: <Home />,
   },
+
   {
-    path: "/recipe/saved-recipes",
-    element: <SavedRecipe/>
-  }
+    path: "/grocery",
+    element: <List />
+  },
+  {
+    path: "/inventory",
+    element: <Storage />
+  },
 ])
 
 
