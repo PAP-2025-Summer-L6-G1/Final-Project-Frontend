@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import mkcert from 'vite-plugin-mkcert'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -7,5 +8,9 @@ export default defineConfig({
         port: 5174,
         host: true
       },
-      plugins: [react()],
+      https: {
+        key: '../localhost-key.pem',
+        cert: '../localhost.pem'
+      },
+      plugins: [react(), mkcert()],
     })
