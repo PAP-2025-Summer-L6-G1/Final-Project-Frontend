@@ -24,7 +24,20 @@ export default function GroceryList() {
         }
     }
 
-    const allCategories = ["dairy", "meat", "grain", "fruit"];
+    const allCategories = [
+        "Produce",
+        "Dairy & Eggs",
+        "Meat & Poultry",
+        "Seafood",
+        "Grains & Pasta",
+        "Baked Goods",
+        "Pantry Staples",
+        "Snacks",
+        "Frozen Foods",
+        "Beverages",
+        "Prepared/Ready Meals",
+        "Condiments & Sauces"
+    ];
 
     const filteredItems = groceryContext.items.filter((item) => (
         item.storageType === "list" && (item.category === filterCategory || filterCategory === "")
@@ -49,7 +62,7 @@ export default function GroceryList() {
                         <select id="category-filter" value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)} >
                             <option value="">All Categories</option>
                             {allCategories.map((category) => (
-                                <option key={category} value={category}>{category}</option>
+                                <option key={category} value={category.toLowerCase()}>{category}</option>
                             ))}
                         </select>
                     </div>
@@ -70,7 +83,7 @@ export default function GroceryList() {
             </div>
 
             <div className="grocery-list-form">
-                <GroceryListForm />
+                <GroceryListForm cat={allCategories}/>
             </div>
         </div>
     )

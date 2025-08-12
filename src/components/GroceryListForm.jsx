@@ -4,13 +4,15 @@ import AccountContext from "../contexts/AccountContext";
 import "./GroceryListForm.css";
 import RestockList from "./RestockList"
 
-export default function GroceryList() {
+export default function GroceryList(props) {
     const groceryContext = useContext(GroceryContext);
     const accountContext = useContext(AccountContext);
+
+    const allCategories = props.cat;
     
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState(1);
-    const [category, setCategory] = useState("dairy");
+    const [category, setCategory] = useState(allCategories[0].toLowerCase());
     const [isBought, setIsBought] = useState(false);
 
     async function handleAddItem(event) {
@@ -27,7 +29,7 @@ export default function GroceryList() {
         if (success) {
             setName("");
             setQuantity(1);
-            setCategory("dairy");
+            setCategory(allCategories[0].toLowerCase());
             setIsBought(false);
         } 
 
@@ -81,10 +83,11 @@ export default function GroceryList() {
                     onChange={(event) => setCategory(event.target.value)}
                     required>
 
-                    <option value="dairy">Dairy</option>
-                    <option value="meat">Meat</option>
-                    <option value="fruit">Fruit</option>
-                    <option value="grain">Grain</option>
+                    {allCategories.map((cat) => (
+                        <option key={cat} value={cat.toLowerCase()}>
+                            {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+                        </option>
+                    ))}
                 </select>
                 </div>
                 <button type="submit">Add Item</button>
