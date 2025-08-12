@@ -221,6 +221,11 @@ export default function Budget() {
             <Navbar />
         </AccountContext.Provider>
         <main>
+            {loggedInUser == "" ?
+          <main className="login-required">
+            <h1>Please log in to view this page.</h1>
+          </main>
+        :
             <div className="gridContainer">
                 <div className="pieContainer">
                     <div className="legend" ref={legendRef}></div>
@@ -297,6 +302,7 @@ export default function Budget() {
                     </table>
                 </div>
             </div>
+}
         </main>
     </>)
 }

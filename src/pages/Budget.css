@@ -1,6 +1,13 @@
 body {
     height: 100vh;
 }
+main > h1 {
+    margin: 10rem auto;
+
+    text-align: center;
+    height: fit-content;
+    width: fit-content;
+}
 
 .pieContainer {
     grid-column: 1 / 2;
