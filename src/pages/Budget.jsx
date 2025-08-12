@@ -151,17 +151,22 @@ export default function Budget() {
 
     }, []);
     function makeTable() {
-        const tableBody = tableBodyRef.current
+        const tableBody = tableBodyRef.current;
         if (tableBody) {
-            tableBody.innerHTML = ""
+            let total = 0;
+            tableBody.innerHTML = "";
             chartData.datasets[1].data.forEach(item => {
                 tableBody.innerHTML += `
                     <tr>
                         <td>${item.name}</td>
-                        <td>${item.price}</td>
+                        <td>$${item.price}</td>
                         <td>${item.category}</td>
-                    </tr>`
+                    </tr>`;
+                    total += item.price
             })
+            tableBody.innerHTML += `
+            <th>Total:</th>
+            <td colspan='2'>$${total}</td>`
         }
     }
     function makeLegend() {
@@ -264,17 +269,19 @@ export default function Budget() {
                     </select>
                     <button type="submit">Submit</button>
                 </form>
-                <table hidden={!hasBudgetItems}>
-                    <caption>Items</caption>
-                    <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Category</th>
-                        </tr>
-                    </thead>
-                    <tbody ref={tableBodyRef}></tbody>
-                </table>
+                <div className="tableWrapper">
+                    <table hidden={!hasBudgetItems}>
+                        <caption>Items</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Category</th>
+                            </tr>
+                        </thead>
+                        <tbody ref={tableBodyRef}></tbody>
+                    </table>
+                </div>
             </div>
         </main>
     </>)
