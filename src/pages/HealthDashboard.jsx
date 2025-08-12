@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import Navbar from '../components/Navbar';
 import HealthEntryForm from '../components/HealthEntryForm';
 import HealthEntryList from '../components/HealthEntryList';
 import HealthStats from '../components/HealthStats';
+import AccountContext from '../contexts/AccountContext';
+import { signupUser, loginUser, logoutUser } from '../api/signIn';
 import './HealthDashboard.css';
 
 function HealthDashboard() {
@@ -231,7 +234,9 @@ function HealthDashboard() {
   };
 
   return (
-    <div className="health-dashboard">
+    <AccountContext.Provider value={{ loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser }}>
+      <Navbar />
+      <div className="health-dashboard">
       <div className="dashboard-header">
         <h1>Personal Health Dashboard</h1>
         <button 
@@ -319,6 +324,7 @@ function HealthDashboard() {
         </div>
       </div>
     </div>
+    </AccountContext.Provider>
   );
 }
 

@@ -6,7 +6,7 @@ import Storage from './pages/storagePage.jsx'
 import List from './pages/List.jsx'
 import HealthDashboard from './pages/HealthDashboard.jsx'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
-import Budget from './pages/budget.jsx'
+import Budget from './pages/Budget.jsx'
 import Recipe from './pages/Recipe.jsx'
 import SavedRecipe from './pages/SavedRecipe.jsx'
 
