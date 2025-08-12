@@ -9,9 +9,11 @@ export default function RestockList(props) {
         return <div className="restock-item">No recommended restock items yet.</div>
     }
 
+    const sortedItems = [...props.lowStockItems].sort((a, b) => a.quantity - b.quantity);
+
     return (
         <div className="restock-list">
-            {props.lowStockItems.map((item)=> (
+            {sortedItems.map((item)=> (
                 <RestockRow item={item} />
             ))}
         </div>
