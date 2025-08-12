@@ -14,6 +14,8 @@
     max-height: 525px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    position: relative;
+    padding-top: 0;
 }
 
 .grocery-list-form {
@@ -38,11 +40,11 @@
 
 .category-label {
     font-weight: bold;
-    margin: 16px 0 8px 0;
+    margin: 12px 0 8px 0;
     padding: 8px 12px;
     border: 2px solid lightgray;
     border-radius: 6px;
-    background-color: lightyellow;
+    background-color: #f0e9c3;
     text-transform: capitalize;
     width: 89%;
     text-align: center;
@@ -62,9 +64,15 @@
 .grocery-header {
     display: flex;
     justify-content: space-between;
-    width: 90%;
+    width: 89%;
     align-items: center;
-    margin-bottom: 16px;
+    position: sticky;
+    top: 0;
+    background-color: whitesmoke;
+    z-index: 10;
+    padding: 10px 0px;
+    padding-right: 40px;
+    padding-left: 4px;
 }
 
 .send-bag button {
@@ -75,4 +83,9 @@
 
 .send-bag button:hover{
     background: lightgray;
+}
+
+h2 {
+    padding-left: 4px;
+    margin-bottom: 12px;
 }
