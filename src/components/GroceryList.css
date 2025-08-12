@@ -46,7 +46,7 @@
     border-radius: 6px;
     background-color: #f0e9c3;
     text-transform: capitalize;
-    width: 89%;
+    width: 93%;
     text-align: center;
     box-sizing: border-box;
 }
@@ -64,7 +64,7 @@
 .grocery-header {
     display: flex;
     justify-content: space-between;
-    width: 89%;
+    width: 93%;
     align-items: center;
     position: sticky;
     top: 0;
