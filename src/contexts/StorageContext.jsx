@@ -11,7 +11,8 @@ const defaultValues = {
   setSelectedItems: null,
   updateStorageType: null,
   updateQuantity: null,
-  deleteItem: null
+  deleteItem: null,
+  storages: []
 };
 
 export default React.createContext(defaultValues);

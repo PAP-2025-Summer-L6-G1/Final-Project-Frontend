@@ -13,11 +13,31 @@ export default function GroceryList() {
         const checkedItem = groceryContext.items.filter((item) => item.storageType === "list" && item.isBought)
 
         for (let item of checkedItem) {
-            await groceryContext.updateStorageType(item._id, "bag", groceryContext.items, groceryContext.setItems);
+            const existingBagItem = groceryContext.items.find((bagItem) => (bagItem.storageType === "bag" && bagItem.name.toLowerCase() === item.name.toLowerCase()));
+            if (existingBagItem) {
+                const newQuantity = existingBagItem.quantity + item.quantity;
+                await groceryContext.updateQuantity(existingBagItem._id, newQuantity, groceryContext.items, groceryContext.setItems); // update quantity in bag
+                await groceryContext.deleteItem(item._id, groceryContext.items, groceryContext.setItems); // deletes the list entry
+            } else {
+                await groceryContext.updateStorageType(item._id, "bag", groceryContext.items, groceryContext.setItems); //just moves list item to bag
+            }
         }
     }
 
-    const allCategories = ["dairy", "meat", "grain", "fruit"];
+    const allCategories = [
+        "Produce",
+        "Dairy & Eggs",
+        "Meat & Poultry",
+        "Seafood",
+        "Grains & Pasta",
+        "Baked Goods",
+        "Pantry Staples",
+        "Snacks",
+        "Frozen Foods",
+        "Beverages",
+        "Prepared/Ready Meals",
+        "Condiments & Sauces"
+    ];
 
     const filteredItems = groceryContext.items.filter((item) => (
         item.storageType === "list" && (item.category === filterCategory || filterCategory === "")
@@ -36,30 +56,34 @@ export default function GroceryList() {
         <div className="grocery-list-page-container">
             <div className="grocery-list">
                 <h2> Grocery list </h2>
-                <div className="filter">
-                    <label htmlFor="category-filter">Filter by category:</label>
-                    <select id="category-filter" value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)} >
-                        <option value="">All Categories</option>
-                        {allCategories.map((category) => (
-                            <option key={category} value={category}>{category}</option>
-                        ))}
-                    </select>
+                <div className="grocery-header">
+                    <div className="filter">
+                        <label htmlFor="category-filter">Filter by category:</label>
+                        <select id="category-filter" value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)} >
+                            <option value="">All Categories</option>
+                            {allCategories.map((category) => (
+                                <option key={category} value={category.toLowerCase()}>{category}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="send-bag">
+                        <button onClick={sendAllBoughtToBag}>Send selected to bag</button>
+                    </div>
+            
                 </div>
                 {filteredItems.length === 0 ? (<p>No items in list for selected category.</p>) : null}
-                {Object.entries(groupedItems).map(([category, items]) => (
-                    <div className="category-group">
+                {Object.entries(groupedItems).map(([category, items], index) => (
+                    <div className="category-group" key={index}>
                         <h3 className="category-label">{category}</h3>
                         {items.map((item, index) => (
                             <GroceryListItem key={index} item={item} />
                         ))}
                     </div>
                 ))}
-
-                <button type="button" className="send-bag-button" onClick={sendAllBoughtToBag}>Send bought to bag</button>
             </div>
 
             <div className="grocery-list-form">
-                <GroceryListForm />
+                <GroceryListForm cat={allCategories}/>
             </div>
         </div>
     )

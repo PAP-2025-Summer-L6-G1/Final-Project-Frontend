@@ -1,0 +1,35 @@
+.restock-list {
+    width: 100%;
+    margin-top: 16px;
+    max-height: 215px;  
+    overflow-y: auto; 
+}
+
+.restock-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid lightgray;
+    padding: 8px 0;
+}
+
+.restock-item input {
+    width: 60px;
+}
+
+.restock-item button {
+    padding: 6px 12px;
+    background: gray;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.restock-item button:hover {
+    background: lightgray;
+}
+
+.restock-item span {
+    flex: 1;
+}
