@@ -65,7 +65,7 @@ function Storage() {
 
   useEffect(() => {
   if (loggedInUser) {
-    getItems(loggedInUser, setItems);
+    getItems(localStorage.getItem("userId"), setItems);
   } else {
     setItems([]);
     setItemsByCategory({});

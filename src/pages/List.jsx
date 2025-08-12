@@ -19,7 +19,7 @@ function List() {
   //get item of current login  user 
   useEffect(() => {
     if (loggedInUser !== "") {
-        getItems(loggedInUser, setItems);
+        getItems(localStorage.getItem("userId"), setItems);
     } else {
         setItems([])
     }
