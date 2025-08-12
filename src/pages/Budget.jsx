@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import AccountContext from "../contexts/AccountContext";
 import { signupUser, loginUser, logoutUser, loadLocalAccountData } from '../api/signIn.jsx'
 import { useState } from "react";
-import { addBudgetItem, deleteBudgetItem, getBudgetItems } from "../api/budget.jsx";
+import { addBudgetItem, getBudgetItems } from "../api/budget.jsx";
 
 Chart.register(ArcElement, Tooltip, DoughnutController, Legend); // These are the elements of the chart that are used. There are others that could be used, but I did not implement them.
 
@@ -31,6 +31,20 @@ const chartData = {
     }]
 }
 export default function Budget() {
+
+    function handleFormSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        let data = {
+            "ownerId": localStorage.getItem("userId"),
+            "name": form.name.value,
+            "price": form.price.value,
+            "date": new Date(),
+            "category": form.category.value
+        }
+        addBudgetItem(data);
+    }
+
     const [loggedInUser, setLoggedInUser] = useState(""); // login code
     useEffect(() => {
         loadLocalAccountData(setLoggedInUser);
@@ -264,8 +278,9 @@ export default function Budget() {
                         <option value="Entertainment">Entertainment</option>
                         <option value="Food">Food</option>
                         <option value="Housing">Housing</option>
-                        <option value="Transportation">Transportation</option>
                         <option value="Utilities">Utilities</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Transportation">Transportation</option>
                     </select>
                     <button type="submit">Submit</button>
                 </form>

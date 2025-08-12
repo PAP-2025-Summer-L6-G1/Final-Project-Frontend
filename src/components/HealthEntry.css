@@ -1,0 +1,274 @@
+.health-entry-list {
+    width: 100%;
+  }
+  
+  .list-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .list-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+  }
+  
+  .entries-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .health-entry {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .health-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .entry-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .entry-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+  }
+  
+  .entry-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .entry-type {
+    font-weight: 600;
+    color: #2c3e50;
+    text-transform: capitalize;
+    font-size: 16px;
+  }
+  
+  .entry-date {
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .entry-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .entry-content {
+    margin-left: 55px;
+  }
+  
+  .entry-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .entry-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .entry-meal-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f39c12;
+    text-transform: capitalize;
+  }
+  
+  .entry-calories {
+    background-color: #f39c12;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .entry-workout-type {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #27ae60;
+    text-transform: capitalize;
+  }
+  
+  .entry-duration {
+    background-color: #27ae60;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  .nutrition-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .nutrition-info span {
+    background-color: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  .exercises-info {
+    margin-bottom: 10px;
+  }
+  
+  .exercises-info > span {
+    display: block;
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+  
+  .exercise-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .exercise-item {
+    background-color: #f8f9fa;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #2c3e50;
+    border-left: 3px solid #27ae60;
+  }
+  
+  .more-exercises {
+    color: #7f8c8d;
+    font-size: 12px;
+    font-style: italic;
+  }
+  
+  .entry-notes {
+    margin: 10px 0 0 0;
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.4;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #95a5a6;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #7f8c8d;
+  }
+  
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+  
+  .empty-state h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+  }
+  
+  .empty-state p {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .health-entry {
+      padding: 15px;
+    }
+  
+    .entry-header {
+      gap: 10px;
+    }
+  
+    .entry-icon {
+      width: 35px;
+      height: 35px;
+      font-size: 20px;
+    }
+  
+    .entry-content {
+      margin-left: 45px;
+    }
+  
+    .entry-main {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  
+    .nutrition-info {
+      gap: 8px;
+    }
+  
+    .nutrition-info span {
+      font-size: 11px;
+    }
+  
+    .entry-actions {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .health-entry {
+      padding: 12px;
+    }
+  
+    .entry-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  
+    .entry-content {
+      margin-left: 0;
+    }
+  
+    .entry-actions {
+      flex-direction: row;
+      width: 100%;
+      justify-content: flex-end;
+    }
+  
+    .nutrition-info {
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
