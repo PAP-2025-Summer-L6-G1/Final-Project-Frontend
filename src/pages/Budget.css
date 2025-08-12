@@ -45,10 +45,11 @@ body {
 
 }
 #budgetForm {
-    border: black solid;
-    border-radius: 25px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     
-    padding: 1em;
+    padding: 1rem;
     margin: 20px 0;
 
     width: fit-content;
@@ -68,25 +69,34 @@ body {
         margin: 0 12.5%;
     }
     button {
-        margin-top: 1em;
+        margin-top: 1rem;
     }
 }
 .gridContainer {
-    height: 100%;
-    width: 100vw;
+    width: fit-content;
+
+    margin: auto;
+    
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    column-gap: 2em;
+    column-gap: 4rem;
+    row-gap: 2rem;
     overflow: auto;
+
+    justify-items: center;
+    align-items: center;
 }
 
 table {
     height: fit-content;
     width: fit-content;
+
     border: black solid;
+    
     grid-row: 2/3;
     grid-column: 2/3;
+    
     border-collapse: collapse;
     th, td {
         border: solid black;
@@ -102,4 +112,9 @@ table {
         border: black solid;
         border-bottom: 0;
     }
+}
+.tableWrapper {
+    overflow: auto;
+    height: 20rem;
+    padding: 10px
 }
