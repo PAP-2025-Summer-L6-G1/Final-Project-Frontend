@@ -9,8 +9,10 @@
     margin-right: 3px;
     gap: 3px;
     align-items: center;
-    height: 25px;
+    height: 20px;
     padding: 3px;
+    font-size: smaller;
+    font-weight: 500;
 }
 
 .ingred:hover {

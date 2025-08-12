@@ -1,0 +1,26 @@
+.saved-recipes-header {
+    display: flex;
+    align-items: center;       /* vertical alignment */
+    justify-content: space-between; /* h1 left, button right */
+    margin: 90px 14% 30px 14%; /* top, right, bottom, left */
+}
+
+.saved-recipes-title {
+    font-size: 3rem;
+    /* margin-top: 90px;
+    margin-bottom: 30px;
+    margin-left: 14%;
+    text-align: left; */
+    margin: 0;
+}
+
+#recipes-btn {
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    color: black;
+    cursor: pointer;
+    height: 40px;
+}

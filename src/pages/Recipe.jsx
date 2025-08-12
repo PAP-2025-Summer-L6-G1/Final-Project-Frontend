@@ -74,10 +74,12 @@ function Recipe() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     
-    const onSearchSubmit = (event)=> {
+    const onSearchSubmit = (event, ingredList = SearchIngreds)=> {
+        if (event) event.preventDefault(); //make event optional
+
         var raw = JSON.stringify({
             "query": SearchQuery,
-            "ingreds": SearchIngreds
+            "ingreds": ingredList
         });
         
         var requestOptions = {
@@ -87,7 +89,6 @@ function Recipe() {
             redirect: 'follow'
         };
         
-        event.preventDefault();
         console.log(SearchQuery);
         fetch("https://localhost:3002/recipe/search", requestOptions)
         .then(response => response.json())
@@ -101,16 +102,20 @@ function Recipe() {
 
     const onIngredAdd = (event)=> {
         event.preventDefault();
-        if(SearchIngreds.includes(SearchIngred)) {
+        if(SearchIngred === "" || SearchIngreds.includes(SearchIngred)) {
             AddSearchIngred(""); //clear
             return
         }
-        SetSearchIngreds([...SearchIngreds, SearchIngred]); //creates a new array with all previous ingredients plus the new one at the end
+        const newIngreds = [...SearchIngreds, SearchIngred]; //creates a new array with all previous ingredients plus the new one at the end
+        SetSearchIngreds(newIngreds);
         AddSearchIngred(""); //clear
+        onSearchSubmit(null, newIngreds); //trigger search with added ingredients
     }
     
     const removeIngred = (name)=> {
-        SetSearchIngreds(SearchIngreds.filter(ingred => ingred !== name)); //creates a new array that excludes the ingred name
+        const updatedIngreds = SearchIngreds.filter(ingred => ingred !== name); //creates a new array that excludes the ingred name
+        SetSearchIngreds(updatedIngreds);
+        onSearchSubmit(null, updatedIngreds)
     }
 
 
@@ -120,24 +125,29 @@ function Recipe() {
                 <Navbar />
             </AccountContext.Provider>
             <main>
-                <form onSubmit={onSearchSubmit}>
-                    <input type='text' placeholder='Search recipe' value={SearchQuery} onChange={(event)=>{
-                        SetSearchQuery(event.target.value);
-                    }}></input>
-                    <button type='submit'>Search</button>
-                </form>
+                <h1>Recipe Lookup</h1>
 
-                <Link to="/recipe/saved-recipes"><button>Saved recipes</button></Link>
-                
-                <div id='ingreds'>
+                <div className='search-row'>
+                    <form onSubmit={onSearchSubmit} className="search-form">
+                        <input type='text' id="query-search-bar" placeholder='Search recipe' value={SearchQuery} onChange={(event)=>{
+                            SetSearchQuery(event.target.value);
+                        }}></input>
+                        <button id='search-btn' type='submit'>Search</button>
+                    </form>
+                    <div className="search-spacer"/>
+                    <Link to="/recipe/saved-recipes"><button className="saved-recipes-btn">Saved recipes ⇨</button></Link>
+                </div>
+
+                <div className='filter-row'>
                     <form onSubmit={onIngredAdd} id='ingred-form'>
                         <input type='text' placeholder='Filter by ingredient' value={SearchIngred} onChange={(event)=>{
                             AddSearchIngred(event.target.value);
                         }}></input>
                         <button type='submit' className='filter-button'>Add</button>
                     </form>
-
-                    {SearchIngreds.map((ingred)=>{ return <FilterIngredient key={ingred} name={ingred} func={removeIngred}/> })}
+                    <div className='selected-ingreds'>
+                        {SearchIngreds.map((ingred)=>{ return <FilterIngredient key={ingred} name={ingred} func={removeIngred}/> })}
+                    </div>
                 </div>
 
                 {/*setShownRecipes calls a rerender which calls .map again*/}
@@ -156,11 +166,11 @@ function Recipe() {
                             vegetarian={recipe.vegetarian}
                             vegan={recipe.vegan}
                             glutenFree={recipe.glutenFree}
-                            dairyFree={recipe.dairyFree} />
+                            dairyFree={recipe.dairyFree}
+                            sum={recipe.summary}
+                        />
                     )
-                }
-                )}
-
+                })}
             </main>
         </>
     )
