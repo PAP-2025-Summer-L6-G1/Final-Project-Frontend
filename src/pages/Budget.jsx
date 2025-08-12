@@ -278,9 +278,8 @@ export default function Budget() {
                         <option value="Entertainment">Entertainment</option>
                         <option value="Food">Food</option>
                         <option value="Housing">Housing</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Entertainment">Entertainment</option>
                         <option value="Transportation">Transportation</option>
+                        <option value="Utilities">Utilities</option>
                     </select>
                     <button type="submit">Submit</button>
                 </form>
