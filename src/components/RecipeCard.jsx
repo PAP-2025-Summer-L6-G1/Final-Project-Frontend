@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export default function RecipeCard(props) {
     const [showPopup, setShowPopup] = useState(false);
 
-    const popUpFunc = () => {
+    const popUpFunc = (event) => {
         setShowPopup(true);
     };
 
@@ -14,7 +14,7 @@ export default function RecipeCard(props) {
     };
 
     return (
-        <div className="recipe-card" onClick={()=> popUpFunc()}>
+        <div className="recipe-card" onClick={(event)=> popUpFunc()}>
             <div className="recipe-img">
                 <img src={props.image}></img>
 
@@ -53,11 +53,13 @@ export default function RecipeCard(props) {
                     (props.check(props.recipeId))
                     ?
                     <button className="recipe-saved-btn" onClick={(event)=>{
+                        event.stopPropagation();
                         event.preventDefault();
                         props.unsaveFunc(props.recipeId);
                     }}>Unsave recipe ★</button>
                     :
                     <button className="recipe-save-btn" onClick={(event)=>{
+                        event.stopPropagation();
                         event.preventDefault();
                         props.saveFunc(props.recipeId);
                     }}>Save recipe ☆</button>
