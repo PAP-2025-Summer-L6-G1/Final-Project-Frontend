@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import AccountContext from "../contexts/AccountContext";
 import { signupUser, loginUser, logoutUser, loadLocalAccountData } from '../api/signIn.jsx'
 import { useState } from "react";
-import { addBudgetItem, getBudgetItems } from "../api/budget.jsx";
+import { addBudgetItem, getBudgetItems, deleteBudgetItem } from "../api/budget.jsx";
 
 Chart.register(ArcElement, Tooltip, DoughnutController, Legend); // These are the elements of the chart that are used. There are others that could be used, but I did not implement them.
 

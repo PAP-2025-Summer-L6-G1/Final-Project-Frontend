@@ -7,16 +7,22 @@ import AccountContext from "../contexts/AccountContext"
 
 export default function Navbar() {
     const { loggedInUser } = useContext(AccountContext);
-    
     return (
         <header className="navbar">
             <nav>
+                { loggedInUser != "" ? 
+                <>
                 <Link to="/"><img src={logo} className="logo"/></Link>
                 <Link to="/inventory">Inventory</Link>
                 <Link to="/grocery">Grocery</Link>
                 <Link to="/health">Health</Link>
                 <Link to="/recipes">Recipes</Link>
                 <Link to="/budget">Budget</Link>
+                </> :
+                <>
+                <Link to="/"><img src={logo} className="logo"/></Link>
+                </>
+                }
             </nav>
             <Accounts/>
         </header>

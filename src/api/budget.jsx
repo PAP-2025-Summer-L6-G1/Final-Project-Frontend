@@ -12,6 +12,12 @@ const postParams = {
   method: 'POST',
   credentials: 'include'
 };
+const deleteParams = {
+  headers: { 'Content-Type': 'application/json' },
+  method: 'DELETE',
+  credentials: 'include'
+};
+
 
 export async function getBudgetItems() {
     const userID = localStorage.getItem("userId");
@@ -33,6 +39,19 @@ export async function addBudgetItem(item) {
 
   const response = await fetch(apiURL, postParamsWithBody);
   if (response.status === 200) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+export async function deleteBudgetItem(itemID) {
+  const deleteParamsWithBody = {
+    ...deleteParams,
+    body: JSON.stringify({_id: itemID})
+  }
+  const response = await fetch(apiURL, deleteParamsWithBody)
+  if (response.status == 200) {
     return true;
   }
   else {
