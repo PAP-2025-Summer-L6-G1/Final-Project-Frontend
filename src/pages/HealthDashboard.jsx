@@ -41,7 +41,7 @@ function HealthDashboard() {
     
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3002/health/?type=${selectedType !== 'all' ? selectedType : ''}`, {
+      const response = await fetch(`https://localhost:3002/health/?type=${selectedType !== 'all' ? selectedType : ''}`, {
         credentials: 'include'
       });
       
@@ -102,7 +102,7 @@ function HealthDashboard() {
       setEntries(prev => [optimisticEntry, ...prev]);
       setShowForm(false);
 
-      const response = await fetch('http://localhost:3002/health/', {
+      const response = await fetch('https://localhost:3002/health/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ function HealthDashboard() {
       
       setEditingEntry(null);
 
-      const response = await fetch(`http://localhost:3002/health/${entryId}`, {
+      const response = await fetch(`https://localhost:3002/health/${entryId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function HealthDashboard() {
       // Optimistic update - remove the entry immediately from the UI
       setEntries(prev => prev.filter(entry => entry._id !== entryId));
 
-      const response = await fetch(`http://localhost:3002/health/${entryId}`, {
+      const response = await fetch(`https://localhost:3002/health/${entryId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
