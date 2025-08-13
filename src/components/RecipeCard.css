@@ -1,7 +1,9 @@
 .recipe-card {
     background-color: #33382B;
     border-radius: 8px;
-    margin: 30px 10%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
     padding: 20px;
     display: flex;
     /* justify-content: flex-start; */
@@ -84,4 +86,33 @@
     height: 40px;
     background-color: rgb(225, 225, 16);
     color: black;
+}
+
+.recipe-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.recipe-popup-content {
+    background: #2e3227;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    color: white;
+}
+
+.close-popup {
+    float: right;
+    margin-bottom: 10px;
 }

@@ -1,8 +1,20 @@
 import "./RecipeCard.css"
+import { useState, useEffect } from "react";
 
 export default function RecipeCard(props) {
+    const [showPopup, setShowPopup] = useState(false);
+
+    const popUpFunc = (event) => {
+        setShowPopup(true);
+    };
+
+    const closePopup = (event) => {
+        event.stopPropagation(); //If you have a button inside a div, and both have click event listeners, clicking the button would normally trigger both the button's click handler and then the div's click handler (due to bubbling). If you call event.stopPropagation() in the button's click handler, the div's click handler will not be executed.
+        setShowPopup(false);
+    };
+
     return (
-        <div className="recipe-card">
+        <div className="recipe-card" onClick={(event)=> popUpFunc()}>
             <div className="recipe-img">
                 <img src={props.image}></img>
 
@@ -37,24 +49,31 @@ export default function RecipeCard(props) {
                 </div>
             </div>
             <div className="recipe-action-col">
-                {/* <button className="recipe-save-btn" onClick={(event)=>{
-                    event.preventDefault();
-                    props.func(props.recipeId);
-                }}>Save recipe ☆</button> */}
                 {
                     (props.check(props.recipeId))
                     ?
                     <button className="recipe-saved-btn" onClick={(event)=>{
+                        event.stopPropagation();
                         event.preventDefault();
                         props.unsaveFunc(props.recipeId);
                     }}>Unsave recipe ★</button>
                     :
                     <button className="recipe-save-btn" onClick={(event)=>{
+                        event.stopPropagation();
                         event.preventDefault();
                         props.saveFunc(props.recipeId);
                     }}>Save recipe ☆</button>
                 }
             </div>
+            {showPopup && (
+                <div className="recipe-popup" onClick={closePopup}>
+                    <div className="recipe-popup-content" onClick={e => e.stopPropagation()}>
+                        <button className="close-popup" onClick={closePopup}>Close</button>
+                        <h3>{props.title}</h3>
+                        <div dangerouslySetInnerHTML={{ __html: props.sum }} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
