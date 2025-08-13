@@ -21,7 +21,6 @@ function Home() {
     <>
       <AccountContext.Provider value={{loggedInUser, setLoggedInUser, signupUser, loginUser, logoutUser}}>
         <Navbar />
-      </AccountContext.Provider>
       <main>
         <img id="homepage-background" src={groceryScene} />
         <section className='card-container'>
@@ -30,38 +29,39 @@ function Home() {
             icon={fridgeIcon}
             title="Inventory"
             desc="See what you have in stock"
-          />
+            />
 
           <HomepageCard
             to="/grocery"
             icon={veggieIcon}
             title="Grocery List"
             desc="Add an item to your inventory"
-          />
+            />
 
           <HomepageCard
             to="/health"
             icon={healthIcon}
             title="Health"
             desc="Keeping track of your health"
-          />
+            />
 
           <HomepageCard
             to="/recipes"
             icon={cookingIcon}
             title="Recipes"
             desc="Ready to make some food with ingredients in your inventory?"
-          />
+            />
 
           <HomepageCard
             to="/budget"
             icon={budgetIcon}
             title="Budget Tracker"
             desc="Keeping track of your budget"
-          />
+            />
         </section>
 
       </main>
+            </AccountContext.Provider>
     </>
   )
 }
