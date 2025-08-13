@@ -13,8 +13,8 @@ export default function RestockList(props) {
 
     return (
         <div className="restock-list">
-            {sortedItems.map((item)=> (
-                <RestockRow item={item} />
+            {sortedItems.map((item, index)=> (
+                <RestockRow item={item} key={index} />
             ))}
         </div>
     )
