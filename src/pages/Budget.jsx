@@ -211,7 +211,7 @@ export default function Budget() {
         else if (chartData.datasets[1].data.length <= 0 && hasBudgetItems) {
             setHasBudgetItems(false)
         }
-        const currentChart = Chart.getChart(chartCanvas.current)?.update()
+        Chart.getChart(chartCanvas.current).update()
         makeTable()
         makeLegend()
     }
