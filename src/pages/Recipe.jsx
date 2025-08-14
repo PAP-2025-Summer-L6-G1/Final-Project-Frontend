@@ -14,6 +14,8 @@ function Recipe() {
     useEffect(() => {
         loadLocalAccountData(setLoggedInUser);
     }, [])
+
+    //this is what is in each object in ShownRecipes
     let test = [
         {
             "id": 715415,
@@ -69,17 +71,20 @@ function Recipe() {
     const [SearchIngred, AddSearchIngred] = useState("");
     const [SearchIngreds, SetSearchIngreds] = useState([]); //applied filtered ingredients
     // const [SavedRecipes, SetSavedRecipes] = useState([]);
-    const { SavedRecipes, saveRecipe, unsaveRecipe, checkIfSaved } = useSavedRecipes();
+    const { fetchSavedRecipes, saveRecipe, unsaveRecipe, checkIfSaved } = useSavedRecipes();
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     
-    const onSearchSubmit = (event, ingredList = SearchIngreds)=> {
+    const onSearchSubmit = (event, ingredList)=> {
         if (event) event.preventDefault(); //make event optional
+
+        //nullish coalescing operator. Use ingredList if it’s not null or undefined, otherwise use SearchIngreds.
+        const ingredsToUse = ingredList ?? SearchIngreds;
 
         var raw = JSON.stringify({
             "query": SearchQuery,
-            "ingreds": ingredList
+            "ingreds": ingredsToUse
         });
         
         var requestOptions = {
@@ -90,9 +95,11 @@ function Recipe() {
         };
         
         console.log(SearchQuery);
+        console.log("hit api");
         fetch("https://localhost:3002/recipe/search", requestOptions)
         .then(response => response.json())
         .then(result => SetShownRecipes(result.results))
+        .then(() => fetchSavedRecipes()) //only fetch saved recipes when searching
         .catch(error => console.log('error', error));
     }
     
@@ -109,7 +116,7 @@ function Recipe() {
         const newIngreds = [...SearchIngreds, SearchIngred]; //creates a new array with all previous ingredients plus the new one at the end
         SetSearchIngreds(newIngreds);
         AddSearchIngred(""); //clear
-        onSearchSubmit(null, newIngreds); //trigger search with added ingredients
+        onSearchSubmit(null, newIngreds); //trigger search with added ingredients, to fix lag. old state is async and doesnt update in time
     }
     
     const removeIngred = (name)=> {
@@ -151,26 +158,31 @@ function Recipe() {
                 </div>
 
                 {/*setShownRecipes calls a rerender which calls .map again*/}
-                {ShownRecipes.map((recipe) => {
-                    return (
-                        <RecipeCard
-                            key={recipe.id}
-                            recipeId={recipe.id}
-                            saveFunc={saveRecipe}
-                            unsaveFunc={unsaveRecipe}
-                            check={checkIfSaved}
-                            image={recipe.image}
-                            title={recipe.title}
-                            servings={recipe.servings}
-                            readyInMinutes={recipe.readyInMinutes}
-                            vegetarian={recipe.vegetarian}
-                            vegan={recipe.vegan}
-                            glutenFree={recipe.glutenFree}
-                            dairyFree={recipe.dairyFree}
-                            sum={recipe.summary}
-                        />
-                    )
-                })}
+                {
+                    (ShownRecipes) ? (ShownRecipes.map((recipe) => {
+                        return (
+                            <RecipeCard
+                                key={recipe.id}
+                                recipeId={recipe.id}
+                                recipeObj={recipe}
+                                saveFunc={saveRecipe}
+                                unsaveFunc={unsaveRecipe}
+                                check={checkIfSaved}
+                                image={recipe.image}
+                                title={recipe.title}
+                                servings={recipe.servings}
+                                readyInMinutes={recipe.readyInMinutes}
+                                vegetarian={recipe.vegetarian}
+                                vegan={recipe.vegan}
+                                glutenFree={recipe.glutenFree}
+                                dairyFree={recipe.dairyFree}
+                                sum={recipe.summary}
+                            />
+                        )
+                    })
+                    ) :
+                    <p>Spoonacular API could not connect.</p>
+            }
             </main>
         </>
     )

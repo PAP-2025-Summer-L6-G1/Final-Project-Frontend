@@ -55,13 +55,13 @@ export default function RecipeCard(props) {
                     <button className="recipe-saved-btn" onClick={(event)=>{
                         event.stopPropagation();
                         event.preventDefault();
-                        props.unsaveFunc(props.recipeId);
+                        props.unsaveFunc(props.recipeObj);
                     }}>Unsave recipe ★</button>
                     :
                     <button className="recipe-save-btn" onClick={(event)=>{
                         event.stopPropagation();
                         event.preventDefault();
-                        props.saveFunc(props.recipeId);
+                        props.saveFunc(props.recipeObj);
                     }}>Save recipe ☆</button>
                 }
             </div>
