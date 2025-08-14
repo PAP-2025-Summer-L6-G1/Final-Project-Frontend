@@ -38,7 +38,7 @@ export async function addBudgetItem(item) {
   };
 
   const response = await fetch(apiURL, postParamsWithBody);
-  if (response.status === 200) {
+  if (response.status === 201) {
     return true;
   }
   else {
