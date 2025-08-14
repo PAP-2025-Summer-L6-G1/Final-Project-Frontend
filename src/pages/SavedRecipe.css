@@ -24,3 +24,7 @@
     cursor: pointer;
     height: 40px;
 }
+
+p {
+    color: red;
+}
